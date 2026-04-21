@@ -1,12 +1,61 @@
 import React, { useState, useEffect, useMemo, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import {
-  Search, Plus, Flame, Drumstick, Wheat, Droplet, Target, TrendingUp,
-  Mic, Camera, Barcode, Star, Clock, ChevronRight, ChevronLeft, X,
-  Check, Settings, Trophy, Flag, Sparkles, Activity, Moon, Sun,
-  Calendar, BarChart3, Heart, Zap, Award, Edit3, Trash2, Copy,
-  Home, BookOpen, User, ChevronDown, Minus
+  Search, Plus, Drumstick, Wheat, Droplet, Target,
+  Mic, Camera, Barcode, Star, ChevronRight, ChevronLeft, X,
+  Check, Flag, Sparkles, Activity, Moon, Sun,
+  BarChart3, Heart, Zap, Edit3, Trash2,
+  Home, BookOpen, User, ChevronDown, Minus,
 } from 'lucide-react';
+
+// ============ BRAND ============
+const BRAND = {
+  name: 'Fitora',
+  tagline: 'Nutrition, simplified.',
+};
+
+// Logo: stylized F with an integrated leaf
+function FitoraLogo({ size = 32, color = '#10B981', accent = '#34D399' }) {
+  return (
+    <svg width={size} height={size} viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+      {/* Rounded square background */}
+      <rect width="64" height="64" rx="16" fill={color} />
+      {/* The F */}
+      <path
+        d="M20 16 H44 V23 H27 V31 H40 V38 H27 V48 H20 Z"
+        fill="white"
+      />
+      {/* Leaf on top of the F's horizontal stroke — organic curve */}
+      <path
+        d="M44 13 Q52 13 52 21 Q52 28 45 28 Q38 28 38 21 Q38 17 41 14.5 Q42.5 13.5 44 13 Z"
+        fill={accent}
+      />
+      {/* Leaf vein */}
+      <path
+        d="M42 26 Q44 22 48 18"
+        stroke="white"
+        strokeWidth="1.2"
+        strokeLinecap="round"
+        fill="none"
+      />
+    </svg>
+  );
+}
+
+// Text wordmark
+function FitoraWordmark({ theme, size = 22 }) {
+  return (
+    <div className="serif" style={{
+      fontSize: `${size}px`,
+      fontWeight: 400,
+      letterSpacing: '-0.02em',
+      color: theme.text,
+      display: 'flex', alignItems: 'center',
+    }}>
+      Fit<span style={{ color: theme.accent }}>ora</span>
+    </div>
+  );
+}
 
 // ============ FOOD DATABASE ============
 const FOOD_DB = [
@@ -47,7 +96,6 @@ const FOOD_DB = [
   { id: 30, name: 'Dark Chocolate 85%', brand: 'Square', per: 10, unit: 'g', kcal: 60, p: 1, c: 3, f: 4.5, fiber: 1.2, sugar: 1.5, sodium: 2, emoji: '🍫' },
 ];
 
-// ============ SAMPLE MEAL PLANS ============
 const MEAL_PLANS = [
   {
     id: 1, name: 'Lean & Strong', tag: 'Muscle gain', kcal: 2400, emoji: '💪',
@@ -83,6 +131,14 @@ const useStorage = (key, initial) => {
 // ============ HELPERS ============
 const todayKey = () => new Date().toISOString().slice(0, 10);
 const fmtDate = (k) => new Date(k + 'T00:00:00').toLocaleDateString(undefined, { weekday: 'short', month: 'short', day: 'numeric' });
+const greeting = () => {
+  const h = new Date().getHours();
+  if (h < 5) return 'Late night';
+  if (h < 12) return 'Good morning';
+  if (h < 17) return 'Good afternoon';
+  if (h < 22) return 'Good evening';
+  return 'Good night';
+};
 const scale = (food, amount) => {
   const r = amount / food.per;
   return {
@@ -96,19 +152,62 @@ const scale = (food, amount) => {
   };
 };
 
+// ============ THEMES ============
+const lightTheme = {
+  bg: '#F6F7F5',
+  surface: '#FFFFFF',
+  surfaceAlt: '#F1F2EF',
+  text: '#1A1F1C',
+  textSub: '#5C6560',
+  textMuted: '#95A098',
+  border: '#E5E8E3',
+  accent: '#10B981',          // emerald
+  accentSoft: 'rgba(16, 185, 129, 0.1)',
+  accentDeep: '#059669',
+  accentLeaf: '#34D399',
+  blue: '#3B82F6',
+  orange: '#F59E0B',
+  red: '#EF4444',
+  purple: '#8B5CF6',
+  pink: '#EC4899',
+  toast: '#1A1F1C',
+  toastText: '#fff',
+};
+
+const darkTheme = {
+  bg: '#0B0F0C',
+  surface: '#151A16',
+  surfaceAlt: '#1F2521',
+  text: '#F6F7F5',
+  textSub: '#A8B0AA',
+  textMuted: '#6B7670',
+  border: '#252B27',
+  accent: '#34D399',
+  accentSoft: 'rgba(52, 211, 153, 0.12)',
+  accentDeep: '#10B981',
+  accentLeaf: '#6EE7B7',
+  blue: '#60A5FA',
+  orange: '#FBBF24',
+  red: '#F87171',
+  purple: '#A78BFA',
+  pink: '#F472B6',
+  toast: '#F6F7F5',
+  toastText: '#0B0F0C',
+};
+
 // ============ MAIN APP ============
-export default function FoodTracker() {
-  const [dark, setDark] = useStorage('ft_dark', false);
+export default function Fitora() {
+  const [dark, setDark] = useStorage('fitora_dark', false);
   const [tab, setTab] = useState('today');
   const [date, setDate] = useState(todayKey());
-  const [logs, setLogs] = useStorage('ft_logs', {});
-  const [favorites, setFavorites] = useStorage('ft_favs', [1, 2, 9, 22]);
-  const [recent, setRecent] = useStorage('ft_recent', [1, 9, 22, 3]);
-  const [goals, setGoals] = useStorage('ft_goals', { kcal: 2200, p: 150, c: 230, f: 75, type: 'maintenance' });
-  const [weight, setWeight] = useStorage('ft_weight', [
+  const [logs, setLogs] = useStorage('fitora_logs', {});
+  const [favorites, setFavorites] = useStorage('fitora_favs', [1, 2, 9, 22]);
+  const [recent, setRecent] = useStorage('fitora_recent', [1, 9, 22, 3]);
+  const [goals, setGoals] = useStorage('fitora_goals', { kcal: 2200, p: 150, c: 230, f: 75, type: 'maintenance' });
+  const [weight, setWeight] = useStorage('fitora_weight', [
     { date: todayKey(), kg: 75.2 },
   ]);
-  const [streak, setStreak] = useStorage('ft_streak', 0);
+  const [streak, setStreak] = useStorage('fitora_streak', 0);
   const [showSearch, setShowSearch] = useState(false);
   const [editEntry, setEditEntry] = useState(null);
   const [showGoals, setShowGoals] = useState(false);
@@ -116,13 +215,11 @@ export default function FoodTracker() {
 
   const dayLog = logs[date] || [];
 
-  // Toast helper
   const showToast = (msg, emoji = '✓') => {
     setToast({ msg, emoji, id: Date.now() });
     setTimeout(() => setToast(null), 2000);
   };
 
-  // Totals for current day
   const totals = useMemo(() => {
     return dayLog.reduce((a, e) => ({
       kcal: a.kcal + e.kcal, p: a.p + e.p, c: a.c + e.c, f: a.f + e.f,
@@ -130,7 +227,6 @@ export default function FoodTracker() {
     }), { kcal: 0, p: 0, c: 0, f: 0, fiber: 0, sugar: 0, sodium: 0 });
   }, [dayLog]);
 
-  // Streak calc (days with >=1 log, consecutive from today backwards)
   useEffect(() => {
     let s = 0;
     const d = new Date();
@@ -191,23 +287,25 @@ export default function FoodTracker() {
       color: theme.text,
       fontFamily: "'Inter Tight', -apple-system, BlinkMacSystemFont, system-ui, sans-serif",
       transition: 'background 0.3s ease, color 0.3s ease',
-      paddingBottom: '100px',
+      paddingBottom: '110px',
+      position: 'relative',
     }}>
       <style>{`
-        @import url('https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Inter+Tight:wght@400;500;600;700;800&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;0,9..144,600;1,9..144,400&family=Inter+Tight:wght@400;500;600;700;800&display=swap');
         * { box-sizing: border-box; margin: 0; padding: 0; }
         button { font-family: inherit; cursor: pointer; border: none; background: none; color: inherit; }
         input, textarea { font-family: inherit; }
         ::-webkit-scrollbar { width: 6px; height: 6px; }
         ::-webkit-scrollbar-thumb { background: ${theme.border}; border-radius: 3px; }
-        .serif { font-family: 'Instrument Serif', serif; font-weight: 400; letter-spacing: -0.01em; }
-        .tabular { font-variant-numeric: tabular-nums; }
+        .serif { font-family: 'Fraunces', 'Instrument Serif', serif; font-weight: 500; letter-spacing: -0.02em; }
+        .tabular { font-variant-numeric: tabular-nums; font-feature-settings: 'tnum'; }
       `}</style>
 
-      {/* Top Bar */}
-      <Header theme={theme} dark={dark} setDark={setDark} streak={streak} date={date} setDate={setDate} />
+      <Header
+        theme={theme} dark={dark} setDark={setDark} streak={streak}
+        date={date} setDate={setDate}
+      />
 
-      {/* Main content */}
       <main style={{ maxWidth: '480px', margin: '0 auto', padding: '0 20px' }}>
         <AnimatePresence mode="wait">
           {tab === 'today' && (
@@ -234,34 +332,36 @@ export default function FoodTracker() {
               <MeView
                 theme={theme} goals={goals} setGoals={setGoals} streak={streak}
                 dark={dark} setDark={setDark} logs={logs}
+                onEditGoals={() => setShowGoals(true)}
               />
             </motion.div>
           )}
         </AnimatePresence>
       </main>
 
-      {/* FAB */}
       {tab === 'today' && (
         <motion.button
           onClick={() => setShowSearch(true)}
-          whileTap={{ scale: 0.92 }}
-          whileHover={{ scale: 1.05 }}
+          whileTap={{ scale: 0.9 }}
+          whileHover={{ scale: 1.05, rotate: 90 }}
+          transition={{ type: 'spring', stiffness: 400, damping: 15 }}
           style={{
-            position: 'fixed', bottom: '92px', right: '20px', zIndex: 50,
+            position: 'fixed', bottom: '100px', right: '20px', zIndex: 50,
             width: '60px', height: '60px', borderRadius: '20px',
-            background: theme.accent, color: '#fff',
+            background: `linear-gradient(135deg, ${theme.accent}, ${theme.accentDeep})`,
+            color: '#fff',
             display: 'flex', alignItems: 'center', justifyContent: 'center',
-            boxShadow: dark ? '0 10px 30px rgba(10, 132, 255, 0.4)' : '0 10px 30px rgba(0, 122, 255, 0.35)',
+            boxShadow: dark
+              ? `0 10px 30px rgba(52, 211, 153, 0.35), 0 2px 6px rgba(0,0,0,0.3)`
+              : `0 10px 30px rgba(16, 185, 129, 0.35), 0 2px 6px rgba(0,0,0,0.05)`,
           }}
         >
           <Plus size={28} strokeWidth={2.5} />
         </motion.button>
       )}
 
-      {/* Bottom Tab Bar */}
       <TabBar theme={theme} tab={tab} setTab={setTab} />
 
-      {/* Search Modal */}
       <AnimatePresence>
         {showSearch && (
           <SearchModal
@@ -272,7 +372,6 @@ export default function FoodTracker() {
         )}
       </AnimatePresence>
 
-      {/* Edit Entry Modal */}
       <AnimatePresence>
         {editEntry && (
           <EditModal
@@ -283,23 +382,22 @@ export default function FoodTracker() {
         )}
       </AnimatePresence>
 
-      {/* Goals Modal */}
       <AnimatePresence>
         {showGoals && (
           <GoalsModal theme={theme} goals={goals} setGoals={setGoals} onClose={() => setShowGoals(false)} />
         )}
       </AnimatePresence>
 
-      {/* Toast */}
       <AnimatePresence>
         {toast && (
           <motion.div
             key={toast.id}
-            initial={{ y: 80, opacity: 0 }}
-            animate={{ y: 0, opacity: 1 }}
-            exit={{ y: 80, opacity: 0 }}
+            initial={{ y: 80, opacity: 0, scale: 0.9 }}
+            animate={{ y: 0, opacity: 1, scale: 1 }}
+            exit={{ y: 80, opacity: 0, scale: 0.9 }}
+            transition={{ type: 'spring', damping: 20 }}
             style={{
-              position: 'fixed', bottom: '170px', left: '50%', transform: 'translateX(-50%)',
+              position: 'fixed', bottom: '180px', left: '50%', transform: 'translateX(-50%)',
               background: theme.toast, color: theme.toastText,
               padding: '12px 20px', borderRadius: '100px',
               display: 'flex', alignItems: 'center', gap: '10px',
@@ -316,45 +414,6 @@ export default function FoodTracker() {
   );
 }
 
-// ============ THEMES ============
-const lightTheme = {
-  bg: '#F5F5F7',
-  surface: '#FFFFFF',
-  surfaceAlt: '#FAFAFC',
-  text: '#1D1D1F',
-  textSub: '#6E6E73',
-  textMuted: '#A1A1A6',
-  border: '#E8E8ED',
-  accent: '#007AFF',
-  accentSoft: 'rgba(0, 122, 255, 0.1)',
-  green: '#34C759',
-  orange: '#FF9500',
-  red: '#FF3B30',
-  purple: '#AF52DE',
-  pink: '#FF2D55',
-  toast: '#1D1D1F',
-  toastText: '#fff',
-};
-
-const darkTheme = {
-  bg: '#000000',
-  surface: '#1C1C1E',
-  surfaceAlt: '#2C2C2E',
-  text: '#FFFFFF',
-  textSub: '#98989D',
-  textMuted: '#6D6D72',
-  border: '#2C2C2E',
-  accent: '#0A84FF',
-  accentSoft: 'rgba(10, 132, 255, 0.15)',
-  green: '#30D158',
-  orange: '#FF9F0A',
-  red: '#FF453A',
-  purple: '#BF5AF2',
-  pink: '#FF375F',
-  toast: '#FFFFFF',
-  toastText: '#000',
-};
-
 // ============ HEADER ============
 function Header({ theme, dark, setDark, streak, date, setDate }) {
   const isToday = date === todayKey();
@@ -366,57 +425,92 @@ function Header({ theme, dark, setDark, streak, date, setDate }) {
 
   return (
     <header style={{
-      maxWidth: '480px', margin: '0 auto', padding: '20px 20px 12px',
-      display: 'flex', alignItems: 'center', justifyContent: 'space-between',
+      maxWidth: '480px', margin: '0 auto', padding: '16px 20px 8px',
     }}>
-      <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+      {/* Top strip: logo, streak, dark toggle */}
+      <div style={{
+        display: 'flex', alignItems: 'center', justifyContent: 'space-between',
+        marginBottom: '16px',
+      }}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+          <FitoraLogo size={34} color={theme.accent} accent={theme.accentLeaf} />
+          <FitoraWordmark theme={theme} size={22} />
+        </div>
+        <div style={{ display: 'flex', gap: '8px', alignItems: 'center' }}>
+          {streak > 0 && (
+            <motion.div
+              initial={{ scale: 0.8, opacity: 0 }}
+              animate={{ scale: 1, opacity: 1 }}
+              style={{
+                display: 'flex', alignItems: 'center', gap: '5px',
+                padding: '7px 12px', borderRadius: '100px',
+                background: 'linear-gradient(135deg, #FF6B35, #F59E0B)',
+                color: '#fff', fontSize: '13px', fontWeight: 700,
+                boxShadow: '0 4px 12px rgba(245, 158, 11, 0.3)',
+              }}
+            >
+              <span style={{ fontSize: '14px' }}>🔥</span> {streak}
+            </motion.div>
+          )}
+          <motion.button
+            whileTap={{ scale: 0.9 }}
+            onClick={() => setDark(!dark)}
+            style={{
+              width: '38px', height: '38px', borderRadius: '12px',
+              background: theme.surface, display: 'grid', placeItems: 'center',
+              border: `1px solid ${theme.border}`,
+            }}
+          >
+            <AnimatePresence mode="wait">
+              <motion.div
+                key={dark ? 'sun' : 'moon'}
+                initial={{ rotate: -90, opacity: 0 }}
+                animate={{ rotate: 0, opacity: 1 }}
+                exit={{ rotate: 90, opacity: 0 }}
+                transition={{ duration: 0.2 }}
+              >
+                {dark ? <Sun size={16} /> : <Moon size={16} />}
+              </motion.div>
+            </AnimatePresence>
+          </motion.button>
+        </div>
+      </div>
+
+      {/* Date selector */}
+      <div style={{
+        display: 'flex', alignItems: 'center', justifyContent: 'space-between',
+        background: theme.surface, borderRadius: '14px',
+        padding: '6px', border: `1px solid ${theme.border}`,
+      }}>
         <button
           onClick={() => changeDate(-1)}
           style={{
-            width: '34px', height: '34px', borderRadius: '10px',
-            background: theme.surface, display: 'grid', placeItems: 'center',
-            border: `1px solid ${theme.border}`,
-          }}>
+            width: '36px', height: '36px', borderRadius: '10px',
+            display: 'grid', placeItems: 'center',
+          }}
+        >
           <ChevronLeft size={16} />
         </button>
-        <div style={{ textAlign: 'center', minWidth: '140px' }}>
-          <div style={{ fontSize: '11px', color: theme.textMuted, textTransform: 'uppercase', letterSpacing: '0.08em', fontWeight: 600 }}>
-            {isToday ? 'Today' : fmtDate(date)}
+        <div style={{ textAlign: 'center' }}>
+          <div style={{ fontSize: '11px', color: theme.textMuted, fontWeight: 600, letterSpacing: '0.05em', textTransform: 'uppercase' }}>
+            {isToday ? `${greeting()}` : fmtDate(date)}
           </div>
-          <div className="serif" style={{ fontSize: '22px', lineHeight: 1.1, marginTop: '2px' }}>
-            {new Date(date + 'T00:00:00').toLocaleDateString(undefined, { month: 'long', day: 'numeric' })}
+          <div style={{ fontSize: '15px', fontWeight: 600, marginTop: '1px' }}>
+            {isToday
+              ? new Date().toLocaleDateString(undefined, { weekday: 'long', month: 'long', day: 'numeric' })
+              : new Date(date + 'T00:00:00').toLocaleDateString(undefined, { month: 'long', day: 'numeric' })}
           </div>
         </div>
         <button
           onClick={() => changeDate(1)}
           disabled={isToday}
           style={{
-            width: '34px', height: '34px', borderRadius: '10px',
-            background: theme.surface, display: 'grid', placeItems: 'center',
-            border: `1px solid ${theme.border}`,
+            width: '36px', height: '36px', borderRadius: '10px',
+            display: 'grid', placeItems: 'center',
             opacity: isToday ? 0.3 : 1,
-          }}>
+          }}
+        >
           <ChevronRight size={16} />
-        </button>
-      </div>
-
-      <div style={{ display: 'flex', gap: '8px', alignItems: 'center' }}>
-        {streak > 0 && (
-          <div style={{
-            display: 'flex', alignItems: 'center', gap: '4px',
-            padding: '6px 10px', borderRadius: '100px',
-            background: 'linear-gradient(135deg, #FF6B35, #FF9500)',
-            color: '#fff', fontSize: '13px', fontWeight: 700,
-          }}>
-            🔥 {streak}
-          </div>
-        )}
-        <button onClick={() => setDark(!dark)} style={{
-          width: '38px', height: '38px', borderRadius: '12px',
-          background: theme.surface, display: 'grid', placeItems: 'center',
-          border: `1px solid ${theme.border}`,
-        }}>
-          {dark ? <Sun size={16} /> : <Moon size={16} />}
         </button>
       </div>
     </header>
@@ -427,8 +521,8 @@ function Header({ theme, dark, setDark, streak, date, setDate }) {
 function TodayView({ theme, totals, goals, dayLog, date, onOpenSearch, onEditEntry, onEditGoals, onRemove }) {
   const pct = Math.min(100, (totals.kcal / goals.kcal) * 100);
   const remaining = Math.max(0, goals.kcal - totals.kcal);
+  const over = totals.kcal > goals.kcal;
 
-  // Group by meal
   const meals = useMemo(() => {
     const m = { breakfast: [], lunch: [], dinner: [], snack: [] };
     dayLog.forEach(e => { (m[e.meal] || m.snack).push(e); });
@@ -436,76 +530,103 @@ function TodayView({ theme, totals, goals, dayLog, date, onOpenSearch, onEditEnt
   }, [dayLog]);
 
   const mealInfo = [
-    { key: 'breakfast', label: 'Breakfast', emoji: '🌅', time: '7–10am' },
-    { key: 'lunch', label: 'Lunch', emoji: '☀️', time: '12–2pm' },
-    { key: 'dinner', label: 'Dinner', emoji: '🌙', time: '6–9pm' },
+    { key: 'breakfast', label: 'Breakfast', emoji: '🌅', time: '7 – 10 am' },
+    { key: 'lunch', label: 'Lunch', emoji: '☀️', time: '12 – 2 pm' },
+    { key: 'dinner', label: 'Dinner', emoji: '🌙', time: '6 – 9 pm' },
     { key: 'snack', label: 'Snacks', emoji: '🍎', time: 'Anytime' },
   ];
 
-  // Coaching feedback
   const coaching = useMemo(() => getCoaching(totals, goals, dayLog), [totals, goals, dayLog]);
 
   return (
-    <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
-      {/* Calorie Ring */}
+    <div style={{ display: 'flex', flexDirection: 'column', gap: '14px', paddingTop: '6px' }}>
+      {/* Hero: Calorie ring */}
       <motion.div
-        initial={{ scale: 0.95, opacity: 0 }}
+        initial={{ scale: 0.96, opacity: 0 }}
         animate={{ scale: 1, opacity: 1 }}
+        transition={{ duration: 0.3, ease: 'easeOut' }}
         onClick={onEditGoals}
         style={{
-          background: theme.surface, borderRadius: '28px', padding: '28px 24px',
+          position: 'relative',
+          background: theme.surface,
+          borderRadius: '28px', padding: '28px 24px',
           border: `1px solid ${theme.border}`, cursor: 'pointer',
-          display: 'flex', gap: '24px', alignItems: 'center',
-        }}>
-        <CalorieRing theme={theme} pct={pct} totals={totals} goals={goals} />
-        <div style={{ flex: 1 }}>
-          <div style={{ fontSize: '11px', color: theme.textMuted, textTransform: 'uppercase', letterSpacing: '0.08em', fontWeight: 600 }}>
-            Remaining
-          </div>
-          <div className="tabular serif" style={{ fontSize: '42px', lineHeight: 1, marginTop: '4px' }}>
-            {remaining.toLocaleString()}
-          </div>
-          <div style={{ fontSize: '13px', color: theme.textSub, marginTop: '4px' }}>
-            of {goals.kcal.toLocaleString()} kcal
-          </div>
-          <div style={{ marginTop: '14px', display: 'flex', gap: '6px', alignItems: 'center', fontSize: '12px', color: theme.textSub }}>
-            <Target size={12} /> {goals.type === 'loss' ? 'Fat loss' : goals.type === 'gain' ? 'Muscle gain' : 'Maintenance'}
+          overflow: 'hidden',
+        }}
+      >
+        {/* Decorative gradient background */}
+        <div style={{
+          position: 'absolute', top: '-40%', right: '-20%',
+          width: '300px', height: '300px',
+          background: `radial-gradient(circle, ${theme.accentSoft}, transparent 70%)`,
+          pointerEvents: 'none',
+        }} />
+
+        <div style={{ display: 'flex', gap: '24px', alignItems: 'center', position: 'relative' }}>
+          <CalorieRing theme={theme} pct={pct} totals={totals} goals={goals} />
+          <div style={{ flex: 1 }}>
+            <div style={{ fontSize: '11px', color: theme.textMuted, textTransform: 'uppercase', letterSpacing: '0.08em', fontWeight: 700 }}>
+              {over ? 'Over by' : 'Remaining'}
+            </div>
+            <div className="tabular serif" style={{ fontSize: '44px', lineHeight: 1, marginTop: '4px', color: over ? theme.red : theme.text }}>
+              {over ? totals.kcal - goals.kcal : remaining}
+            </div>
+            <div style={{ fontSize: '13px', color: theme.textSub, marginTop: '6px' }}>
+              of {goals.kcal.toLocaleString()} kcal
+            </div>
+            <div style={{
+              marginTop: '14px',
+              display: 'inline-flex', alignItems: 'center', gap: '5px',
+              padding: '4px 10px', borderRadius: '100px',
+              background: theme.accentSoft, color: theme.accent,
+              fontSize: '11px', fontWeight: 700,
+            }}>
+              <Target size={11} strokeWidth={2.5} />
+              {goals.type === 'loss' ? 'Fat loss' : goals.type === 'gain' ? 'Muscle gain' : 'Maintenance'}
+            </div>
           </div>
         </div>
       </motion.div>
 
-      {/* Macros */}
+      {/* Macros card */}
       <div style={{
         background: theme.surface, borderRadius: '24px', padding: '20px',
         border: `1px solid ${theme.border}`,
         display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: '16px',
       }}>
-        <MacroBar theme={theme} label="Protein" value={totals.p} goal={goals.p} color={theme.red} icon={<Drumstick size={13} />} />
-        <MacroBar theme={theme} label="Carbs" value={totals.c} goal={goals.c} color={theme.orange} icon={<Wheat size={13} />} />
-        <MacroBar theme={theme} label="Fat" value={totals.f} goal={goals.f} color={theme.purple} icon={<Droplet size={13} />} />
+        <MacroBar theme={theme} label="Protein" value={totals.p} goal={goals.p} color={theme.red} icon={<Drumstick size={13} strokeWidth={2.3} />} />
+        <MacroBar theme={theme} label="Carbs" value={totals.c} goal={goals.c} color={theme.orange} icon={<Wheat size={13} strokeWidth={2.3} />} />
+        <MacroBar theme={theme} label="Fat" value={totals.f} goal={goals.f} color={theme.purple} icon={<Droplet size={13} strokeWidth={2.3} />} />
       </div>
 
-      {/* Coaching card */}
+      {/* Coach card */}
       {dayLog.length > 0 && (
         <motion.div
           initial={{ opacity: 0, y: 8 }}
           animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.1 }}
           style={{
-            background: `linear-gradient(135deg, ${theme.accentSoft}, transparent)`,
-            border: `1px solid ${theme.accentSoft}`,
+            position: 'relative', overflow: 'hidden',
+            background: `linear-gradient(135deg, ${theme.accentSoft}, ${theme.surface})`,
+            border: `1px solid ${theme.accent}33`,
             borderRadius: '20px', padding: '16px',
             display: 'flex', gap: '12px', alignItems: 'flex-start',
-          }}>
+          }}
+        >
           <div style={{
-            width: '32px', height: '32px', borderRadius: '10px',
-            background: theme.accent, display: 'grid', placeItems: 'center',
+            width: '36px', height: '36px', borderRadius: '12px',
+            background: `linear-gradient(135deg, ${theme.accent}, ${theme.accentDeep})`,
+            display: 'grid', placeItems: 'center',
             flexShrink: 0, color: '#fff',
+            boxShadow: `0 4px 12px ${theme.accent}40`,
           }}>
-            <Sparkles size={16} />
+            <Sparkles size={17} strokeWidth={2.3} />
           </div>
           <div style={{ flex: 1, minWidth: 0 }}>
-            <div style={{ fontSize: '13px', fontWeight: 700, marginBottom: '2px' }}>Coach</div>
-            <div style={{ fontSize: '13px', color: theme.textSub, lineHeight: 1.45 }}>{coaching}</div>
+            <div style={{ fontSize: '11px', fontWeight: 700, color: theme.accent, letterSpacing: '0.05em', textTransform: 'uppercase', marginBottom: '3px' }}>
+              Coach
+            </div>
+            <div style={{ fontSize: '13.5px', color: theme.text, lineHeight: 1.5, fontWeight: 500 }}>{coaching}</div>
           </div>
         </motion.div>
       )}
@@ -515,34 +636,49 @@ function TodayView({ theme, totals, goals, dayLog, date, onOpenSearch, onEditEnt
         background: theme.surface, borderRadius: '24px', padding: '18px 16px',
         border: `1px solid ${theme.border}`,
       }}>
-        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '12px', padding: '0 4px' }}>
+        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '14px', padding: '0 4px' }}>
           <div style={{ fontSize: '11px', color: theme.textMuted, textTransform: 'uppercase', letterSpacing: '0.08em', fontWeight: 700 }}>
-            Quick Log
+            Quick log
+          </div>
+          <div style={{ fontSize: '11px', color: theme.textMuted, fontWeight: 600 }}>
+            Log in seconds
           </div>
         </div>
         <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: '10px' }}>
-          <QuickBtn theme={theme} icon={<Search size={18} />} label="Search" onClick={onOpenSearch} />
-          <QuickBtn theme={theme} icon={<Barcode size={18} />} label="Scan" onClick={onOpenSearch} />
-          <QuickBtn theme={theme} icon={<Mic size={18} />} label="Voice" onClick={onOpenSearch} />
+          <QuickBtn theme={theme} icon={<Search size={18} strokeWidth={2.3} />} label="Search" onClick={onOpenSearch} />
+          <QuickBtn theme={theme} icon={<Barcode size={18} strokeWidth={2.3} />} label="Scan" onClick={onOpenSearch} />
+          <QuickBtn theme={theme} icon={<Mic size={18} strokeWidth={2.3} />} label="Voice" onClick={onOpenSearch} />
         </div>
       </div>
 
       {/* Meals */}
-      {mealInfo.map(m => (
-        <MealSection
-          key={m.key} theme={theme} info={m} entries={meals[m.key] || []}
-          onAdd={onOpenSearch} onEdit={onEditEntry} onRemove={onRemove}
-        />
+      {mealInfo.map((m, i) => (
+        <motion.div
+          key={m.key}
+          initial={{ opacity: 0, y: 10 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.05 * i, duration: 0.3 }}
+        >
+          <MealSection
+            theme={theme} info={m} entries={meals[m.key] || []}
+            onAdd={onOpenSearch} onEdit={onEditEntry} onRemove={onRemove}
+          />
+        </motion.div>
       ))}
 
       {dayLog.length === 0 && (
-        <div style={{
-          padding: '40px 20px', textAlign: 'center', color: theme.textSub,
-        }}>
-          <div style={{ fontSize: '36px', marginBottom: '12px' }}>🍽️</div>
-          <div className="serif" style={{ fontSize: '22px', color: theme.text, marginBottom: '4px' }}>Nothing logged yet</div>
-          <div style={{ fontSize: '14px' }}>Tap the + to log your first meal in seconds.</div>
-        </div>
+        <motion.div
+          initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.2 }}
+          style={{
+            padding: '40px 20px 20px', textAlign: 'center',
+          }}
+        >
+          <div style={{ fontSize: '40px', marginBottom: '12px' }}>🍽️</div>
+          <div className="serif" style={{ fontSize: '22px', color: theme.text, marginBottom: '4px' }}>A fresh start.</div>
+          <div style={{ fontSize: '14px', color: theme.textSub }}>
+            Tap the <Plus size={12} style={{ display: 'inline', verticalAlign: 'middle', color: theme.accent }} /> to log your first meal.
+          </div>
+        </motion.div>
       )}
     </div>
   );
@@ -550,82 +686,104 @@ function TodayView({ theme, totals, goals, dayLog, date, onOpenSearch, onEditEnt
 
 // ============ CALORIE RING ============
 function CalorieRing({ theme, pct, totals, goals }) {
-  const R = 56, C = 2 * Math.PI * R;
+  const R = 58, C = 2 * Math.PI * R;
   const dash = (pct / 100) * C;
   const over = totals.kcal > goals.kcal;
 
   return (
-    <div style={{ position: 'relative', width: '140px', height: '140px', flexShrink: 0 }}>
-      <svg width="140" height="140" style={{ transform: 'rotate(-90deg)' }}>
-        <circle cx="70" cy="70" r={R} fill="none" stroke={theme.border} strokeWidth="12" />
+    <div style={{ position: 'relative', width: '146px', height: '146px', flexShrink: 0 }}>
+      <svg width="146" height="146" style={{ transform: 'rotate(-90deg)' }}>
+        <defs>
+          <linearGradient id="ringGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%" stopColor={over ? theme.red : theme.accent} />
+            <stop offset="100%" stopColor={over ? '#DC2626' : theme.accentDeep} />
+          </linearGradient>
+        </defs>
+        <circle cx="73" cy="73" r={R} fill="none" stroke={theme.border} strokeWidth="11" />
         <motion.circle
-          cx="70" cy="70" r={R} fill="none"
-          stroke={over ? theme.red : theme.accent}
-          strokeWidth="12" strokeLinecap="round"
+          cx="73" cy="73" r={R} fill="none"
+          stroke="url(#ringGrad)"
+          strokeWidth="11" strokeLinecap="round"
           strokeDasharray={C}
           initial={{ strokeDashoffset: C }}
           animate={{ strokeDashoffset: C - dash }}
-          transition={{ duration: 0.8, ease: 'easeOut' }}
+          transition={{ duration: 1, ease: 'easeOut', delay: 0.1 }}
         />
       </svg>
       <div style={{
         position: 'absolute', inset: 0,
         display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center',
       }}>
-        <div className="tabular" style={{ fontSize: '28px', fontWeight: 700, lineHeight: 1 }}>
+        <motion.div
+          className="tabular"
+          initial={{ scale: 0.5, opacity: 0 }}
+          animate={{ scale: 1, opacity: 1 }}
+          transition={{ delay: 0.3, type: 'spring', damping: 15 }}
+          style={{ fontSize: '30px', fontWeight: 700, lineHeight: 1 }}
+        >
           {totals.kcal}
-        </div>
-        <div style={{ fontSize: '10px', color: theme.textMuted, fontWeight: 600, letterSpacing: '0.08em', textTransform: 'uppercase', marginTop: '2px' }}>
+        </motion.div>
+        <div style={{ fontSize: '10px', color: theme.textMuted, fontWeight: 700, letterSpacing: '0.1em', textTransform: 'uppercase', marginTop: '4px' }}>
           kcal
+        </div>
+        <div style={{ marginTop: '6px', fontSize: '10px', color: theme.textMuted, fontWeight: 600 }}>
+          {Math.round(pct)}%
         </div>
       </div>
     </div>
   );
 }
 
-// ============ MACRO BAR ============
 function MacroBar({ theme, label, value, goal, color, icon }) {
   const pct = Math.min(100, (value / goal) * 100);
   return (
     <div>
-      <div style={{ display: 'flex', alignItems: 'center', gap: '5px', marginBottom: '6px', color: theme.textSub }}>
+      <div style={{ display: 'flex', alignItems: 'center', gap: '5px', marginBottom: '8px', color }}>
         {icon}
-        <div style={{ fontSize: '11px', fontWeight: 600, letterSpacing: '0.02em' }}>{label}</div>
+        <div style={{ fontSize: '11px', fontWeight: 700, letterSpacing: '0.03em', textTransform: 'uppercase' }}>{label}</div>
       </div>
-      <div className="tabular" style={{ fontSize: '18px', fontWeight: 700, lineHeight: 1 }}>
+      <div className="tabular" style={{ fontSize: '19px', fontWeight: 700, lineHeight: 1 }}>
         {Math.round(value)}<span style={{ fontSize: '11px', color: theme.textMuted, fontWeight: 500 }}>/{goal}g</span>
       </div>
       <div style={{ marginTop: '8px', height: '5px', background: theme.border, borderRadius: '100px', overflow: 'hidden' }}>
         <motion.div
           initial={{ width: 0 }}
           animate={{ width: `${pct}%` }}
-          transition={{ duration: 0.7, ease: 'easeOut' }}
-          style={{ height: '100%', background: color, borderRadius: '100px' }}
+          transition={{ duration: 0.8, ease: 'easeOut', delay: 0.2 }}
+          style={{
+            height: '100%',
+            background: `linear-gradient(90deg, ${color}AA, ${color})`,
+            borderRadius: '100px',
+          }}
         />
       </div>
     </div>
   );
 }
 
-// ============ QUICK BUTTON ============
 function QuickBtn({ theme, icon, label, onClick }) {
   return (
     <motion.button
-      whileTap={{ scale: 0.96 }}
+      whileTap={{ scale: 0.94 }}
+      whileHover={{ y: -2 }}
       onClick={onClick}
       style={{
-        padding: '14px 8px', borderRadius: '14px',
+        padding: '16px 8px', borderRadius: '16px',
         background: theme.surfaceAlt,
-        display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '6px',
+        display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '8px',
         color: theme.text, fontWeight: 600, fontSize: '12px',
-      }}>
+        border: `1px solid transparent`,
+        transition: 'border-color 0.2s',
+      }}
+      onMouseEnter={(e) => e.currentTarget.style.borderColor = theme.accent + '40'}
+      onMouseLeave={(e) => e.currentTarget.style.borderColor = 'transparent'}
+    >
       <div style={{ color: theme.accent }}>{icon}</div>
       {label}
     </motion.button>
   );
 }
 
-// ============ MEAL SECTION ============
 function MealSection({ theme, info, entries, onAdd, onEdit, onRemove }) {
   const sum = entries.reduce((a, e) => a + e.kcal, 0);
   const [expanded, setExpanded] = useState(true);
@@ -635,42 +793,61 @@ function MealSection({ theme, info, entries, onAdd, onEdit, onRemove }) {
       background: theme.surface, borderRadius: '24px',
       border: `1px solid ${theme.border}`, overflow: 'hidden',
     }}>
-      <div
+      <button
         onClick={() => setExpanded(!expanded)}
         style={{
+          width: '100%',
           padding: '16px 18px', display: 'flex', alignItems: 'center', gap: '12px',
-          cursor: 'pointer',
+          textAlign: 'left',
         }}>
-        <div style={{ fontSize: '22px' }}>{info.emoji}</div>
+        <div style={{
+          width: '40px', height: '40px', borderRadius: '12px',
+          background: theme.surfaceAlt,
+          display: 'grid', placeItems: 'center', fontSize: '20px',
+        }}>{info.emoji}</div>
         <div style={{ flex: 1 }}>
           <div style={{ fontSize: '15px', fontWeight: 700 }}>{info.label}</div>
-          <div style={{ fontSize: '12px', color: theme.textMuted, marginTop: '1px' }}>{info.time}</div>
+          <div style={{ fontSize: '12px', color: theme.textMuted, marginTop: '1px' }}>
+            {entries.length > 0 ? `${entries.length} item${entries.length > 1 ? 's' : ''}` : info.time}
+          </div>
         </div>
-        <div className="tabular" style={{ fontSize: '14px', color: theme.textSub, fontWeight: 600 }}>
-          {sum} kcal
-        </div>
+        {sum > 0 && (
+          <div className="tabular" style={{
+            padding: '4px 10px', borderRadius: '100px',
+            background: theme.accentSoft, color: theme.accent,
+            fontSize: '12px', fontWeight: 700,
+          }}>
+            {sum} kcal
+          </div>
+        )}
         <motion.div animate={{ rotate: expanded ? 0 : -90 }}>
           <ChevronDown size={16} color={theme.textMuted} />
         </motion.div>
-      </div>
+      </button>
       <AnimatePresence initial={false}>
         {expanded && (
           <motion.div
             initial={{ height: 0 }} animate={{ height: 'auto' }} exit={{ height: 0 }}
             style={{ overflow: 'hidden' }}
           >
-            <div style={{ padding: '0 18px 16px' }}>
-              {entries.map(e => (
-                <EntryRow key={e.id} theme={theme} entry={e} onEdit={() => onEdit(e)} onRemove={() => onRemove(e.id)} />
-              ))}
-              <button onClick={onAdd} style={{
-                width: '100%', padding: '12px', marginTop: entries.length ? '8px' : '4px',
-                border: `1.5px dashed ${theme.border}`, borderRadius: '14px',
-                color: theme.textSub, fontSize: '13px', fontWeight: 600,
-                display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '6px',
-              }}>
-                <Plus size={14} /> Add food
-              </button>
+            <div style={{ padding: '0 12px 12px' }}>
+              <AnimatePresence>
+                {entries.map(e => (
+                  <EntryRow key={e.id} theme={theme} entry={e} onEdit={() => onEdit(e)} onRemove={() => onRemove(e.id)} />
+                ))}
+              </AnimatePresence>
+              <motion.button
+                whileTap={{ scale: 0.98 }}
+                onClick={onAdd}
+                style={{
+                  width: '100%', padding: '12px', marginTop: entries.length ? '6px' : '2px',
+                  border: `1.5px dashed ${theme.border}`, borderRadius: '14px',
+                  color: theme.textSub, fontSize: '13px', fontWeight: 600,
+                  display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '6px',
+                }}
+              >
+                <Plus size={14} strokeWidth={2.3} /> Add food
+              </motion.button>
             </div>
           </motion.div>
         )}
@@ -681,19 +858,27 @@ function MealSection({ theme, info, entries, onAdd, onEdit, onRemove }) {
 
 function EntryRow({ theme, entry, onEdit, onRemove }) {
   return (
-    <motion.div
+    <motion.button
       layout
       initial={{ opacity: 0, x: -10 }}
       animate={{ opacity: 1, x: 0 }}
       exit={{ opacity: 0, x: 10 }}
-      style={{
-        padding: '10px 12px', borderRadius: '14px',
-        display: 'flex', alignItems: 'center', gap: '10px',
-        marginTop: '6px',
-      }}
+      whileTap={{ scale: 0.99 }}
       onClick={onEdit}
+      style={{
+        width: '100%', padding: '10px 12px', borderRadius: '14px',
+        display: 'flex', alignItems: 'center', gap: '12px',
+        marginTop: '4px', textAlign: 'left',
+      }}
+      onMouseEnter={(e) => e.currentTarget.style.background = theme.surfaceAlt}
+      onMouseLeave={(e) => e.currentTarget.style.background = 'transparent'}
     >
-      <div style={{ fontSize: '20px' }}>{entry.emoji}</div>
+      <div style={{
+        width: '36px', height: '36px', borderRadius: '10px',
+        background: theme.surfaceAlt,
+        display: 'grid', placeItems: 'center', fontSize: '18px',
+        flexShrink: 0,
+      }}>{entry.emoji}</div>
       <div style={{ flex: 1, minWidth: 0 }}>
         <div style={{ fontSize: '14px', fontWeight: 600, whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
           {entry.name}
@@ -703,7 +888,7 @@ function EntryRow({ theme, entry, onEdit, onRemove }) {
         </div>
       </div>
       <div className="tabular" style={{ fontSize: '14px', fontWeight: 700 }}>{entry.kcal}</div>
-    </motion.div>
+    </motion.button>
   );
 }
 
@@ -745,29 +930,27 @@ function SearchModal({ theme, onClose, favorites, recent, onToggleFav, onAdd }) 
       initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
       style={{
         position: 'fixed', inset: 0, background: 'rgba(0,0,0,0.5)',
-        backdropFilter: 'blur(8px)', zIndex: 100,
+        backdropFilter: 'blur(8px)', WebkitBackdropFilter: 'blur(8px)', zIndex: 100,
         display: 'flex', alignItems: 'flex-end', justifyContent: 'center',
       }}
       onClick={onClose}
     >
       <motion.div
         initial={{ y: '100%' }} animate={{ y: 0 }} exit={{ y: '100%' }}
-        transition={{ type: 'spring', damping: 30, stiffness: 300 }}
+        transition={{ type: 'spring', damping: 32, stiffness: 320 }}
         onClick={e => e.stopPropagation()}
         style={{
           width: '100%', maxWidth: '480px',
           background: theme.bg, borderTopLeftRadius: '28px', borderTopRightRadius: '28px',
-          height: '85vh', display: 'flex', flexDirection: 'column',
+          height: '88vh', display: 'flex', flexDirection: 'column',
         }}
       >
-        {/* Handle */}
         <div style={{ padding: '10px 0 0', display: 'flex', justifyContent: 'center' }}>
           <div style={{ width: '36px', height: '4px', background: theme.border, borderRadius: '100px' }} />
         </div>
 
         {!selected ? (
           <>
-            {/* Search header */}
             <div style={{ padding: '14px 20px' }}>
               <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '14px' }}>
                 <div className="serif" style={{ fontSize: '26px' }}>Add food</div>
@@ -788,7 +971,7 @@ function SearchModal({ theme, onClose, favorites, recent, onToggleFav, onAdd }) 
                   ref={inputRef}
                   value={q}
                   onChange={e => setQ(e.target.value)}
-                  placeholder="Search 30+ foods..."
+                  placeholder="Search foods..."
                   style={{
                     flex: 1, border: 'none', outline: 'none', background: 'transparent',
                     color: theme.text, fontSize: '15px',
@@ -798,14 +981,13 @@ function SearchModal({ theme, onClose, favorites, recent, onToggleFav, onAdd }) 
                   <button onClick={() => setQ('')}><X size={14} color={theme.textMuted} /></button>
                 )}
               </div>
-              <div style={{ display: 'flex', gap: '8px', marginTop: '10px' }}>
+              <div style={{ display: 'flex', gap: '8px', marginTop: '10px', overflowX: 'auto', paddingBottom: '2px' }}>
                 <QuickPill theme={theme} icon={<Barcode size={13} />} label="Scan barcode" />
                 <QuickPill theme={theme} icon={<Mic size={13} />} label="Voice" />
                 <QuickPill theme={theme} icon={<Camera size={13} />} label="Photo" />
               </div>
             </div>
 
-            {/* Results */}
             <div style={{ flex: 1, overflowY: 'auto', padding: '0 20px 20px' }}>
               {sectioned ? (
                 <>
@@ -826,10 +1008,17 @@ function SearchModal({ theme, onClose, favorites, recent, onToggleFav, onAdd }) 
                 </>
               ) : (
                 <div style={{ marginTop: '12px' }}>
-                  {results.length > 0 ? results.map(f => (
-                    <FoodRow key={f.id} theme={theme} food={f} onSelect={() => setSelected(f)}
-                      favored={favorites.includes(f.id)} onFav={() => onToggleFav(f.id)} />
-                  )) : (
+                  {results.length > 0 ? (
+                    <div style={{
+                      background: theme.surface, borderRadius: '16px',
+                      border: `1px solid ${theme.border}`, overflow: 'hidden',
+                    }}>
+                      {results.map(f => (
+                        <FoodRow key={f.id} theme={theme} food={f} onSelect={() => setSelected(f)}
+                          favored={favorites.includes(f.id)} onFav={() => onToggleFav(f.id)} />
+                      ))}
+                    </div>
+                  ) : (
                     <div style={{ textAlign: 'center', padding: '40px 20px', color: theme.textSub }}>
                       <div style={{ fontSize: '32px', marginBottom: '8px' }}>🔍</div>
                       <div style={{ fontSize: '14px' }}>No matches for "{q}"</div>
@@ -881,7 +1070,12 @@ function FoodRow({ theme, food, onSelect, favored, onFav }) {
         borderBottom: `1px solid ${theme.border}`, cursor: 'pointer',
       }}
     >
-      <div style={{ fontSize: '24px' }}>{food.emoji}</div>
+      <div style={{
+        width: '40px', height: '40px', borderRadius: '11px',
+        background: theme.surfaceAlt,
+        display: 'grid', placeItems: 'center', fontSize: '20px',
+        flexShrink: 0,
+      }}>{food.emoji}</div>
       <div style={{ flex: 1, minWidth: 0 }}>
         <div style={{ fontSize: '14px', fontWeight: 600 }}>{food.name}</div>
         <div className="tabular" style={{ fontSize: '12px', color: theme.textMuted, marginTop: '1px' }}>
@@ -904,6 +1098,7 @@ function QuickPill({ theme, icon, label }) {
       background: theme.surface, border: `1px solid ${theme.border}`,
       display: 'flex', alignItems: 'center', gap: '5px',
       fontSize: '12px', color: theme.textSub, fontWeight: 600,
+      flexShrink: 0,
     }}>
       {icon} {label}
     </div>
@@ -914,13 +1109,15 @@ function FoodDetail({ theme, food, amount, setAmount, meal, setMeal, onBack, onA
   const sc = scale(food, amount);
   const presets = food.unit === 'g' ? [50, 100, 150, 200, 250] :
     food.unit === 'ml' ? [100, 250, 350, 500] : [0.5, 1, 2, 3];
+  const step = food.unit === 'item' ? 0.5 : 10;
 
   return (
     <div style={{ flex: 1, display: 'flex', flexDirection: 'column', overflow: 'hidden' }}>
       <div style={{ padding: '14px 20px', display: 'flex', alignItems: 'center', gap: '12px' }}>
         <button onClick={onBack} style={{
-          width: '32px', height: '32px', borderRadius: '10px',
+          width: '36px', height: '36px', borderRadius: '11px',
           background: theme.surface, display: 'grid', placeItems: 'center',
+          border: `1px solid ${theme.border}`,
         }}>
           <ChevronLeft size={16} />
         </button>
@@ -930,14 +1127,18 @@ function FoodDetail({ theme, food, amount, setAmount, meal, setMeal, onBack, onA
           </div>
           <div style={{ fontSize: '12px', color: theme.textMuted }}>{food.brand}</div>
         </div>
-        <div style={{ fontSize: '32px' }}>{food.emoji}</div>
+        <div style={{
+          width: '44px', height: '44px', borderRadius: '12px',
+          background: theme.surfaceAlt, display: 'grid', placeItems: 'center',
+          fontSize: '26px',
+        }}>{food.emoji}</div>
       </div>
 
       <div style={{ flex: 1, overflowY: 'auto', padding: '8px 20px' }}>
-        {/* Preview totals */}
         <div style={{
-          background: theme.surface, borderRadius: '20px', padding: '20px',
-          border: `1px solid ${theme.border}`,
+          background: `linear-gradient(135deg, ${theme.accentSoft}, ${theme.surface})`,
+          borderRadius: '20px', padding: '20px',
+          border: `1px solid ${theme.accent}33`,
           display: 'grid', gridTemplateColumns: '1fr 1fr 1fr 1fr', gap: '12px', textAlign: 'center',
         }}>
           <Stat theme={theme} label="kcal" value={sc.kcal} color={theme.accent} />
@@ -946,7 +1147,6 @@ function FoodDetail({ theme, food, amount, setAmount, meal, setMeal, onBack, onA
           <Stat theme={theme} label="F" value={sc.f + 'g'} color={theme.purple} />
         </div>
 
-        {/* Amount */}
         <div style={{ marginTop: '16px' }}>
           <div style={{ fontSize: '11px', fontWeight: 700, color: theme.textMuted, textTransform: 'uppercase', letterSpacing: '0.1em', marginBottom: '10px' }}>
             Amount
@@ -956,39 +1156,43 @@ function FoodDetail({ theme, food, amount, setAmount, meal, setMeal, onBack, onA
             border: `1px solid ${theme.border}`,
             display: 'flex', alignItems: 'center', gap: '16px',
           }}>
-            <button onClick={() => setAmount(Math.max(1, amount - (food.unit === 'item' ? 0.5 : 10)))} style={{
-              width: '36px', height: '36px', borderRadius: '12px',
+            <motion.button whileTap={{ scale: 0.9 }} onClick={() => setAmount(Math.max(1, amount - step))} style={{
+              width: '40px', height: '40px', borderRadius: '12px',
               background: theme.surfaceAlt, display: 'grid', placeItems: 'center',
             }}>
               <Minus size={16} />
-            </button>
+            </motion.button>
             <div style={{ flex: 1, textAlign: 'center' }}>
-              <div className="tabular serif" style={{ fontSize: '30px', lineHeight: 1 }}>{amount}</div>
-              <div style={{ fontSize: '12px', color: theme.textMuted, marginTop: '2px' }}>{food.unit}</div>
+              <div className="tabular serif" style={{ fontSize: '32px', lineHeight: 1 }}>{amount}</div>
+              <div style={{ fontSize: '12px', color: theme.textMuted, marginTop: '4px' }}>{food.unit}</div>
             </div>
-            <button onClick={() => setAmount(amount + (food.unit === 'item' ? 0.5 : 10))} style={{
-              width: '36px', height: '36px', borderRadius: '12px',
+            <motion.button whileTap={{ scale: 0.9 }} onClick={() => setAmount(amount + step)} style={{
+              width: '40px', height: '40px', borderRadius: '12px',
               background: theme.surfaceAlt, display: 'grid', placeItems: 'center',
             }}>
               <Plus size={16} />
-            </button>
+            </motion.button>
           </div>
           <div style={{ display: 'flex', gap: '8px', marginTop: '10px', overflowX: 'auto', paddingBottom: '4px' }}>
             {presets.map(p => (
-              <button key={p} onClick={() => setAmount(p)} style={{
-                padding: '7px 14px', borderRadius: '100px',
-                background: amount === p ? theme.accent : theme.surface,
-                color: amount === p ? '#fff' : theme.text,
-                border: `1px solid ${amount === p ? theme.accent : theme.border}`,
-                fontSize: '13px', fontWeight: 600, flexShrink: 0,
-              }}>
+              <motion.button
+                key={p}
+                whileTap={{ scale: 0.94 }}
+                onClick={() => setAmount(p)}
+                style={{
+                  padding: '8px 14px', borderRadius: '100px',
+                  background: amount === p ? theme.accent : theme.surface,
+                  color: amount === p ? '#fff' : theme.text,
+                  border: `1px solid ${amount === p ? theme.accent : theme.border}`,
+                  fontSize: '13px', fontWeight: 600, flexShrink: 0,
+                }}
+              >
                 {p}{food.unit}
-              </button>
+              </motion.button>
             ))}
           </div>
         </div>
 
-        {/* Meal */}
         <div style={{ marginTop: '18px' }}>
           <div style={{ fontSize: '11px', fontWeight: 700, color: theme.textMuted, textTransform: 'uppercase', letterSpacing: '0.1em', marginBottom: '10px' }}>
             Meal
@@ -1000,22 +1204,25 @@ function FoodDetail({ theme, food, amount, setAmount, meal, setMeal, onBack, onA
               { k: 'dinner', l: 'Dinner', e: '🌙' },
               { k: 'snack', l: 'Snack', e: '🍎' },
             ].map(m => (
-              <button key={m.k} onClick={() => setMeal(m.k)} style={{
-                padding: '10px 4px', borderRadius: '14px',
-                background: meal === m.k ? theme.accentSoft : theme.surface,
-                border: `1px solid ${meal === m.k ? theme.accent : theme.border}`,
-                color: meal === m.k ? theme.accent : theme.text,
-                fontSize: '11px', fontWeight: 600,
-                display: 'flex', flexDirection: 'column', gap: '4px', alignItems: 'center',
-              }}>
+              <motion.button
+                key={m.k} whileTap={{ scale: 0.96 }}
+                onClick={() => setMeal(m.k)}
+                style={{
+                  padding: '12px 4px', borderRadius: '14px',
+                  background: meal === m.k ? theme.accentSoft : theme.surface,
+                  border: `1px solid ${meal === m.k ? theme.accent : theme.border}`,
+                  color: meal === m.k ? theme.accent : theme.text,
+                  fontSize: '11px', fontWeight: 600,
+                  display: 'flex', flexDirection: 'column', gap: '4px', alignItems: 'center',
+                }}
+              >
                 <span style={{ fontSize: '18px' }}>{m.e}</span>
                 {m.l}
-              </button>
+              </motion.button>
             ))}
           </div>
         </div>
 
-        {/* Extra nutrients */}
         <div style={{
           marginTop: '18px', padding: '14px 16px',
           background: theme.surface, borderRadius: '16px',
@@ -1038,11 +1245,14 @@ function FoodDetail({ theme, food, amount, setAmount, meal, setMeal, onBack, onA
           onClick={onAdd}
           style={{
             width: '100%', padding: '16px', borderRadius: '16px',
-            background: theme.accent, color: '#fff',
+            background: `linear-gradient(135deg, ${theme.accent}, ${theme.accentDeep})`,
+            color: '#fff',
             fontSize: '15px', fontWeight: 700,
             display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '8px',
-          }}>
-          <Check size={18} /> Log {sc.kcal} kcal
+            boxShadow: `0 4px 14px ${theme.accent}50`,
+          }}
+        >
+          <Check size={18} strokeWidth={3} /> Log {sc.kcal} kcal
         </motion.button>
       </div>
     </div>
@@ -1053,7 +1263,7 @@ function Stat({ theme, label, value, color }) {
   return (
     <div>
       <div className="tabular" style={{ fontSize: '20px', fontWeight: 700, color }}>{value}</div>
-      <div style={{ fontSize: '10px', fontWeight: 600, color: theme.textMuted, textTransform: 'uppercase', letterSpacing: '0.08em', marginTop: '2px' }}>{label}</div>
+      <div style={{ fontSize: '10px', fontWeight: 700, color: theme.textMuted, textTransform: 'uppercase', letterSpacing: '0.08em', marginTop: '2px' }}>{label}</div>
     </div>
   );
 }
@@ -1072,27 +1282,34 @@ function EditModal({ theme, entry, onClose, onUpdate, onRemove }) {
   const [amount, setAmount] = useState(entry.amount);
   const food = FOOD_DB.find(f => f.id === entry.foodId);
   const sc = food ? scale(food, amount) : entry;
+  const step = entry.unit === 'item' ? 0.5 : 10;
 
   return (
     <motion.div
       initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
       style={{
         position: 'fixed', inset: 0, background: 'rgba(0,0,0,0.5)',
-        backdropFilter: 'blur(8px)', zIndex: 100,
+        backdropFilter: 'blur(8px)', WebkitBackdropFilter: 'blur(8px)', zIndex: 100,
         display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '20px',
       }}
       onClick={onClose}
     >
       <motion.div
         initial={{ scale: 0.9, opacity: 0 }} animate={{ scale: 1, opacity: 1 }} exit={{ scale: 0.9, opacity: 0 }}
+        transition={{ type: 'spring', damping: 25 }}
         onClick={e => e.stopPropagation()}
         style={{
           background: theme.surface, borderRadius: '24px', padding: '24px',
           width: '100%', maxWidth: '360px',
+          border: `1px solid ${theme.border}`,
         }}
       >
         <div style={{ display: 'flex', alignItems: 'center', gap: '12px', marginBottom: '18px' }}>
-          <div style={{ fontSize: '30px' }}>{entry.emoji}</div>
+          <div style={{
+            width: '48px', height: '48px', borderRadius: '14px',
+            background: theme.surfaceAlt, display: 'grid', placeItems: 'center',
+            fontSize: '26px',
+          }}>{entry.emoji}</div>
           <div style={{ flex: 1, minWidth: 0 }}>
             <div style={{ fontSize: '15px', fontWeight: 700 }}>{entry.name}</div>
             <div style={{ fontSize: '12px', color: theme.textMuted }}>{entry.brand}</div>
@@ -1114,38 +1331,38 @@ function EditModal({ theme, entry, onClose, onUpdate, onRemove }) {
           display: 'flex', alignItems: 'center', gap: '12px', padding: '14px',
           background: theme.surfaceAlt, borderRadius: '16px', marginBottom: '16px',
         }}>
-          <button onClick={() => setAmount(Math.max(1, amount - 10))} style={{
-            width: '36px', height: '36px', borderRadius: '12px',
+          <motion.button whileTap={{ scale: 0.9 }} onClick={() => setAmount(Math.max(1, amount - step))} style={{
+            width: '40px', height: '40px', borderRadius: '12px',
             background: theme.surface, display: 'grid', placeItems: 'center',
           }}>
             <Minus size={16} />
-          </button>
+          </motion.button>
           <div style={{ flex: 1, textAlign: 'center' }}>
             <div className="tabular serif" style={{ fontSize: '28px' }}>{amount}{entry.unit}</div>
           </div>
-          <button onClick={() => setAmount(amount + 10)} style={{
-            width: '36px', height: '36px', borderRadius: '12px',
+          <motion.button whileTap={{ scale: 0.9 }} onClick={() => setAmount(amount + step)} style={{
+            width: '40px', height: '40px', borderRadius: '12px',
             background: theme.surface, display: 'grid', placeItems: 'center',
           }}>
             <Plus size={16} />
-          </button>
+          </motion.button>
         </div>
 
         <div style={{ display: 'flex', gap: '8px' }}>
-          <button onClick={onRemove} style={{
-            flex: 1, padding: '13px', borderRadius: '14px',
-            background: 'rgba(255, 59, 48, 0.1)', color: theme.red,
+          <motion.button whileTap={{ scale: 0.96 }} onClick={onRemove} style={{
+            flex: 1, padding: '14px', borderRadius: '14px',
+            background: theme.red + '1a', color: theme.red,
             fontWeight: 700, fontSize: '14px', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '6px',
           }}>
             <Trash2 size={14} /> Remove
-          </button>
-          <button onClick={() => onUpdate(amount)} style={{
-            flex: 2, padding: '13px', borderRadius: '14px',
-            background: theme.accent, color: '#fff',
-            fontWeight: 700, fontSize: '14px',
+          </motion.button>
+          <motion.button whileTap={{ scale: 0.96 }} onClick={() => onUpdate(amount)} style={{
+            flex: 2, padding: '14px', borderRadius: '14px',
+            background: `linear-gradient(135deg, ${theme.accent}, ${theme.accentDeep})`,
+            color: '#fff', fontWeight: 700, fontSize: '14px',
           }}>
             Save
-          </button>
+          </motion.button>
         </div>
       </motion.div>
     </motion.div>
@@ -1170,14 +1387,14 @@ function GoalsModal({ theme, goals, setGoals, onClose }) {
       initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
       style={{
         position: 'fixed', inset: 0, background: 'rgba(0,0,0,0.5)',
-        backdropFilter: 'blur(8px)', zIndex: 100,
+        backdropFilter: 'blur(8px)', WebkitBackdropFilter: 'blur(8px)', zIndex: 100,
         display: 'flex', alignItems: 'flex-end', justifyContent: 'center',
       }}
       onClick={onClose}
     >
       <motion.div
         initial={{ y: '100%' }} animate={{ y: 0 }} exit={{ y: '100%' }}
-        transition={{ type: 'spring', damping: 30, stiffness: 300 }}
+        transition={{ type: 'spring', damping: 32, stiffness: 320 }}
         onClick={e => e.stopPropagation()}
         style={{
           background: theme.bg, borderTopLeftRadius: '28px', borderTopRightRadius: '28px',
@@ -1188,7 +1405,7 @@ function GoalsModal({ theme, goals, setGoals, onClose }) {
           <div style={{ width: '36px', height: '4px', background: theme.border, borderRadius: '100px' }} />
         </div>
         <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '18px' }}>
-          <div className="serif" style={{ fontSize: '26px' }}>Goals</div>
+          <div className="serif" style={{ fontSize: '26px' }}>Your goals</div>
           <button onClick={onClose} style={{
             width: '32px', height: '32px', borderRadius: '10px',
             background: theme.surface, display: 'grid', placeItems: 'center',
@@ -1206,17 +1423,21 @@ function GoalsModal({ theme, goals, setGoals, onClose }) {
             { k: 'maintenance', l: 'Maintain', e: '⚖️' },
             { k: 'gain', l: 'Muscle', e: '💪' },
           ].map(p => (
-            <button key={p.k} onClick={() => applyPreset(p.k)} style={{
-              padding: '14px 8px', borderRadius: '14px',
-              background: g.type === p.k ? theme.accentSoft : theme.surface,
-              border: `1px solid ${g.type === p.k ? theme.accent : theme.border}`,
-              color: g.type === p.k ? theme.accent : theme.text,
-              fontSize: '13px', fontWeight: 600,
-              display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '4px',
-            }}>
+            <motion.button
+              key={p.k} whileTap={{ scale: 0.95 }}
+              onClick={() => applyPreset(p.k)}
+              style={{
+                padding: '14px 8px', borderRadius: '14px',
+                background: g.type === p.k ? theme.accentSoft : theme.surface,
+                border: `1px solid ${g.type === p.k ? theme.accent : theme.border}`,
+                color: g.type === p.k ? theme.accent : theme.text,
+                fontSize: '13px', fontWeight: 600,
+                display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '4px',
+              }}
+            >
               <span style={{ fontSize: '20px' }}>{p.e}</span>
               {p.l}
-            </button>
+            </motion.button>
           ))}
         </div>
 
@@ -1230,12 +1451,18 @@ function GoalsModal({ theme, goals, setGoals, onClose }) {
           <GoalRow theme={theme} label="Fat" unit="g" value={g.f} onChange={v => setG({ ...g, f: v })} step={5} color={theme.purple} last />
         </div>
 
-        <button onClick={() => { setGoals(g); onClose(); }} style={{
-          width: '100%', marginTop: '18px', padding: '16px', borderRadius: '16px',
-          background: theme.accent, color: '#fff', fontSize: '15px', fontWeight: 700,
-        }}>
+        <motion.button
+          whileTap={{ scale: 0.98 }}
+          onClick={() => { setGoals(g); onClose(); }}
+          style={{
+            width: '100%', marginTop: '18px', padding: '16px', borderRadius: '16px',
+            background: `linear-gradient(135deg, ${theme.accent}, ${theme.accentDeep})`,
+            color: '#fff', fontSize: '15px', fontWeight: 700,
+            boxShadow: `0 4px 14px ${theme.accent}50`,
+          }}
+        >
           Save goals
-        </button>
+        </motion.button>
       </motion.div>
     </motion.div>
   );
@@ -1252,27 +1479,24 @@ function GoalRow({ theme, label, unit, value, onChange, step, color, last }) {
         <div style={{ fontSize: '14px', fontWeight: 600, color: color || theme.text }}>{label}</div>
         <div className="tabular" style={{ fontSize: '12px', color: theme.textMuted }}>{value} {unit}</div>
       </div>
-      <button onClick={() => onChange(Math.max(0, value - step))} style={{
-        width: '32px', height: '32px', borderRadius: '10px',
+      <motion.button whileTap={{ scale: 0.9 }} onClick={() => onChange(Math.max(0, value - step))} style={{
+        width: '34px', height: '34px', borderRadius: '11px',
         background: theme.surfaceAlt, display: 'grid', placeItems: 'center',
       }}>
         <Minus size={14} />
-      </button>
-      <button onClick={() => onChange(value + step)} style={{
-        width: '32px', height: '32px', borderRadius: '10px',
+      </motion.button>
+      <motion.button whileTap={{ scale: 0.9 }} onClick={() => onChange(value + step)} style={{
+        width: '34px', height: '34px', borderRadius: '11px',
         background: theme.surfaceAlt, display: 'grid', placeItems: 'center',
       }}>
         <Plus size={14} />
-      </button>
+      </motion.button>
     </div>
   );
 }
 
 // ============ PROGRESS VIEW ============
 function ProgressView({ theme, logs, weight, setWeight, goals, streak }) {
-  const [view, setView] = useState('calories'); // calories | weight | macros
-
-  // Last 7 days data
   const days = useMemo(() => {
     const arr = [];
     const d = new Date();
@@ -1298,20 +1522,18 @@ function ProgressView({ theme, logs, weight, setWeight, goals, streak }) {
     };
   }, [days]);
 
-  const maxKcal = Math.max(...days.map(d => d.kcal), goals.kcal);
+  const maxKcal = Math.max(...days.map(d => d.kcal), goals.kcal * 1.15);
   const latestWeight = weight[weight.length - 1]?.kg || 75;
-
   const [showWeight, setShowWeight] = useState(false);
 
   return (
-    <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
+    <div style={{ display: 'flex', flexDirection: 'column', gap: '14px', paddingTop: '6px' }}>
       <div className="serif" style={{ fontSize: '28px', padding: '4px 4px 0' }}>Progress</div>
 
-      {/* Summary cards */}
       <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '12px' }}>
         <SummaryCard theme={theme} icon="🔥" label="Streak" value={streak} unit="days" color={theme.orange} />
         <SummaryCard theme={theme} icon="📊" label="Avg kcal" value={avg.kcal || '—'} unit="/ day" color={theme.accent} />
-        <SummaryCard theme={theme} icon="⚖️" label="Weight" value={latestWeight} unit="kg" color={theme.green}
+        <SummaryCard theme={theme} icon="⚖️" label="Weight" value={latestWeight} unit="kg" color={theme.blue}
           onClick={() => setShowWeight(true)} />
         <SummaryCard theme={theme} icon="💪" label="Avg protein" value={avg.p || '—'} unit="g / day" color={theme.red} />
       </div>
@@ -1321,7 +1543,7 @@ function ProgressView({ theme, logs, weight, setWeight, goals, streak }) {
         background: theme.surface, borderRadius: '24px', padding: '20px',
         border: `1px solid ${theme.border}`,
       }}>
-        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '16px' }}>
+        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '18px' }}>
           <div>
             <div style={{ fontSize: '11px', fontWeight: 700, color: theme.textMuted, textTransform: 'uppercase', letterSpacing: '0.08em' }}>
               Last 7 days
@@ -1329,47 +1551,78 @@ function ProgressView({ theme, logs, weight, setWeight, goals, streak }) {
             <div className="serif" style={{ fontSize: '22px', marginTop: '2px' }}>Daily calories</div>
           </div>
           <div style={{ textAlign: 'right' }}>
-            <div className="tabular" style={{ fontSize: '20px', fontWeight: 700 }}>{avg.kcal || 0}</div>
+            <div className="tabular" style={{ fontSize: '22px', fontWeight: 700 }}>{avg.kcal || 0}</div>
             <div style={{ fontSize: '11px', color: theme.textMuted }}>avg kcal</div>
           </div>
         </div>
 
-        <div style={{ display: 'flex', alignItems: 'flex-end', justifyContent: 'space-between', height: '160px', gap: '8px', padding: '4px 0' }}>
-          {days.map((d, i) => {
-            const h = d.kcal > 0 ? Math.max(4, (d.kcal / maxKcal) * 140) : 4;
-            const goalPct = goals.kcal / maxKcal * 100;
+        <div style={{ position: 'relative', height: '170px', marginBottom: '8px' }}>
+          {/* Goal line */}
+          <div style={{
+            position: 'absolute', left: 0, right: 0,
+            top: `${100 - (goals.kcal / maxKcal) * 100}%`,
+            borderTop: `1.5px dashed ${theme.accent}88`,
+            zIndex: 1,
+          }}>
+            <div style={{
+              position: 'absolute', right: 0, top: '-9px',
+              padding: '2px 6px', borderRadius: '6px',
+              background: theme.accentSoft, color: theme.accent,
+              fontSize: '9px', fontWeight: 700,
+            }}>
+              GOAL
+            </div>
+          </div>
+          <div style={{ display: 'flex', alignItems: 'flex-end', justifyContent: 'space-between', height: '100%', gap: '8px', position: 'relative', zIndex: 2 }}>
+            {days.map((d, i) => {
+              const h = d.kcal > 0 ? Math.max(4, (d.kcal / maxKcal) * 100) : 2;
+              const isToday = d.key === todayKey();
+              const onTarget = d.kcal > 0 && Math.abs(d.kcal - goals.kcal) < goals.kcal * 0.12;
+              return (
+                <div key={d.key} style={{ flex: 1, display: 'flex', flexDirection: 'column', alignItems: 'center', height: '100%' }}>
+                  <div style={{ flex: 1, width: '100%', display: 'flex', alignItems: 'flex-end', position: 'relative' }}>
+                    <motion.div
+                      initial={{ height: 0 }}
+                      animate={{ height: `${h}%` }}
+                      transition={{ delay: i * 0.06, duration: 0.6, ease: 'easeOut' }}
+                      style={{
+                        width: '100%', borderRadius: '8px 8px 4px 4px',
+                        background: isToday
+                          ? `linear-gradient(180deg, ${theme.accent}, ${theme.accentDeep})`
+                          : onTarget
+                          ? theme.accent + 'cc'
+                          : d.kcal > goals.kcal * 1.1
+                          ? theme.red + 'cc'
+                          : d.kcal > 0
+                          ? theme.border
+                          : theme.border,
+                        minHeight: '4px',
+                        boxShadow: isToday ? `0 4px 12px ${theme.accent}40` : 'none',
+                      }}
+                    />
+                  </div>
+                </div>
+              );
+            })}
+          </div>
+        </div>
+        <div style={{ display: 'flex', justifyContent: 'space-between', padding: '8px 2px 0' }}>
+          {days.map(d => {
             const isToday = d.key === todayKey();
             return (
-              <div key={d.key} style={{ flex: 1, display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '8px', position: 'relative' }}>
-                <div style={{ flex: 1, width: '100%', display: 'flex', alignItems: 'flex-end', position: 'relative' }}>
-                  <motion.div
-                    initial={{ height: 0 }}
-                    animate={{ height: `${h}px` }}
-                    transition={{ delay: i * 0.05, duration: 0.5, ease: 'easeOut' }}
-                    style={{
-                      width: '100%', borderRadius: '8px',
-                      background: isToday ? theme.accent :
-                        d.kcal > goals.kcal * 1.1 ? theme.red :
-                        d.kcal > goals.kcal * 0.8 ? theme.green :
-                        d.kcal > 0 ? theme.accentSoft :
-                        theme.border,
-                      minHeight: '4px',
-                    }}
-                  />
-                </div>
-                <div style={{ fontSize: '11px', color: isToday ? theme.accent : theme.textMuted, fontWeight: 600 }}>
-                  {d.label}
-                </div>
+              <div key={d.key} style={{ flex: 1, textAlign: 'center', fontSize: '11px', color: isToday ? theme.accent : theme.textMuted, fontWeight: isToday ? 700 : 600 }}>
+                {d.label}
               </div>
             );
           })}
         </div>
 
-        {/* Goal line */}
-        <div style={{ marginTop: '12px', paddingTop: '12px', borderTop: `1px solid ${theme.border}`, display: 'flex', justifyContent: 'space-between', fontSize: '11px' }}>
-          <span style={{ color: theme.textMuted }}>Goal: {goals.kcal} kcal</span>
+        <div style={{ marginTop: '14px', paddingTop: '14px', borderTop: `1px solid ${theme.border}`, display: 'flex', justifyContent: 'space-between', fontSize: '12px' }}>
+          <span style={{ color: theme.textMuted }}>Goal: <span className="tabular" style={{ color: theme.text, fontWeight: 600 }}>{goals.kcal}</span> kcal</span>
           <span style={{ color: theme.textMuted }}>
-            {days.filter(d => d.kcal > 0 && Math.abs(d.kcal - goals.kcal) < goals.kcal * 0.15).length}/7 on target
+            <span className="tabular" style={{ color: theme.accent, fontWeight: 700 }}>
+              {days.filter(d => d.kcal > 0 && Math.abs(d.kcal - goals.kcal) < goals.kcal * 0.15).length}/7
+            </span> on target
           </span>
         </div>
       </div>
@@ -1380,9 +1633,9 @@ function ProgressView({ theme, logs, weight, setWeight, goals, streak }) {
         border: `1px solid ${theme.border}`,
       }}>
         <div style={{ fontSize: '11px', fontWeight: 700, color: theme.textMuted, textTransform: 'uppercase', letterSpacing: '0.08em', marginBottom: '4px' }}>
-          Achievements
+          Milestones
         </div>
-        <div className="serif" style={{ fontSize: '22px', marginBottom: '16px' }}>Milestones</div>
+        <div className="serif" style={{ fontSize: '22px', marginBottom: '16px' }}>Achievements</div>
         <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: '10px' }}>
           <Achievement theme={theme} emoji="🔥" label="3-day streak" unlocked={streak >= 3} />
           <Achievement theme={theme} emoji="🎯" label="Hit goal" unlocked={days.some(d => Math.abs(d.kcal - goals.kcal) < 100)} />
@@ -1408,16 +1661,21 @@ function SummaryCard({ theme, icon, label, value, unit, color, onClick }) {
       whileTap={onClick ? { scale: 0.97 } : {}}
       onClick={onClick}
       style={{
-        background: theme.surface, borderRadius: '20px', padding: '16px',
+        background: theme.surface, borderRadius: '20px', padding: '18px',
         border: `1px solid ${theme.border}`,
         cursor: onClick ? 'pointer' : 'default',
+        position: 'relative', overflow: 'hidden',
       }}>
-      <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '8px' }}>
+      <div style={{
+        position: 'absolute', top: '-20px', right: '-20px',
+        fontSize: '60px', opacity: 0.08,
+      }}>{icon}</div>
+      <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '10px', position: 'relative' }}>
         <div style={{ fontSize: '18px' }}>{icon}</div>
-        <div style={{ fontSize: '11px', fontWeight: 600, color: theme.textMuted, textTransform: 'uppercase', letterSpacing: '0.05em' }}>{label}</div>
+        <div style={{ fontSize: '11px', fontWeight: 700, color: theme.textMuted, textTransform: 'uppercase', letterSpacing: '0.05em' }}>{label}</div>
       </div>
-      <div style={{ display: 'flex', alignItems: 'baseline', gap: '4px' }}>
-        <div className="tabular" style={{ fontSize: '24px', fontWeight: 700, color }}>{value}</div>
+      <div style={{ display: 'flex', alignItems: 'baseline', gap: '4px', position: 'relative' }}>
+        <div className="tabular" style={{ fontSize: '26px', fontWeight: 700, color }}>{value}</div>
         <div style={{ fontSize: '11px', color: theme.textMuted, fontWeight: 500 }}>{unit}</div>
       </div>
     </motion.div>
@@ -1426,16 +1684,18 @@ function SummaryCard({ theme, icon, label, value, unit, color, onClick }) {
 
 function Achievement({ theme, emoji, label, unlocked }) {
   return (
-    <div style={{
-      padding: '14px 6px', borderRadius: '14px',
-      background: unlocked ? theme.accentSoft : theme.surfaceAlt,
-      border: `1px solid ${unlocked ? theme.accent : theme.border}`,
-      textAlign: 'center',
-      opacity: unlocked ? 1 : 0.5,
-    }}>
-      <div style={{ fontSize: '24px', marginBottom: '4px', filter: unlocked ? 'none' : 'grayscale(1)' }}>{emoji}</div>
+    <motion.div
+      whileHover={unlocked ? { y: -2 } : {}}
+      style={{
+        padding: '14px 6px', borderRadius: '14px',
+        background: unlocked ? theme.accentSoft : theme.surfaceAlt,
+        border: `1px solid ${unlocked ? theme.accent + '44' : theme.border}`,
+        textAlign: 'center',
+        opacity: unlocked ? 1 : 0.5,
+      }}>
+      <div style={{ fontSize: '26px', marginBottom: '4px', filter: unlocked ? 'none' : 'grayscale(1)' }}>{emoji}</div>
       <div style={{ fontSize: '10px', fontWeight: 600, lineHeight: 1.2 }}>{label}</div>
-    </div>
+    </motion.div>
   );
 }
 
@@ -1454,20 +1714,22 @@ function WeightModal({ theme, weight, setWeight, onClose }) {
       initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
       style={{
         position: 'fixed', inset: 0, background: 'rgba(0,0,0,0.5)',
-        backdropFilter: 'blur(8px)', zIndex: 100,
+        backdropFilter: 'blur(8px)', WebkitBackdropFilter: 'blur(8px)', zIndex: 100,
         display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '20px',
       }}
       onClick={onClose}
     >
       <motion.div
-        initial={{ scale: 0.9 }} animate={{ scale: 1 }} exit={{ scale: 0.9 }}
+        initial={{ scale: 0.9, opacity: 0 }} animate={{ scale: 1, opacity: 1 }} exit={{ scale: 0.9, opacity: 0 }}
+        transition={{ type: 'spring', damping: 25 }}
         onClick={e => e.stopPropagation()}
         style={{
           background: theme.surface, borderRadius: '24px', padding: '24px',
           width: '100%', maxWidth: '340px',
+          border: `1px solid ${theme.border}`,
         }}
       >
-        <div className="serif" style={{ fontSize: '24px', marginBottom: '8px' }}>Log weight</div>
+        <div className="serif" style={{ fontSize: '24px', marginBottom: '4px' }}>Log weight</div>
         <div style={{ fontSize: '13px', color: theme.textSub, marginBottom: '20px' }}>
           {fmtDate(todayKey())}
         </div>
@@ -1476,44 +1738,45 @@ function WeightModal({ theme, weight, setWeight, onClose }) {
           display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '16px',
           marginBottom: '16px',
         }}>
-          <button onClick={() => setKg((+kg - 0.1).toFixed(1))} style={{
-            width: '36px', height: '36px', borderRadius: '12px',
+          <motion.button whileTap={{ scale: 0.9 }} onClick={() => setKg((+kg - 0.1).toFixed(1))} style={{
+            width: '40px', height: '40px', borderRadius: '12px',
             background: theme.surface, display: 'grid', placeItems: 'center',
           }}>
             <Minus size={16} />
-          </button>
+          </motion.button>
           <div style={{ textAlign: 'center', minWidth: '120px' }}>
             <input
               type="number" step="0.1" value={kg}
               onChange={e => setKg(e.target.value)}
               style={{
                 width: '100%', border: 'none', outline: 'none', background: 'transparent',
-                textAlign: 'center', fontSize: '40px', fontWeight: 700, color: theme.text,
-                fontFamily: 'Instrument Serif, serif',
+                textAlign: 'center', fontSize: '40px', fontWeight: 500, color: theme.text,
+                fontFamily: 'Fraunces, serif', letterSpacing: '-0.02em',
               }}
             />
-            <div style={{ fontSize: '12px', color: theme.textMuted, marginTop: '-4px' }}>kg</div>
+            <div style={{ fontSize: '12px', color: theme.textMuted, marginTop: '-2px' }}>kg</div>
           </div>
-          <button onClick={() => setKg((+kg + 0.1).toFixed(1))} style={{
-            width: '36px', height: '36px', borderRadius: '12px',
+          <motion.button whileTap={{ scale: 0.9 }} onClick={() => setKg((+kg + 0.1).toFixed(1))} style={{
+            width: '40px', height: '40px', borderRadius: '12px',
             background: theme.surface, display: 'grid', placeItems: 'center',
           }}>
             <Plus size={16} />
-          </button>
+          </motion.button>
         </div>
         <div style={{ display: 'flex', gap: '8px' }}>
           <button onClick={onClose} style={{
-            flex: 1, padding: '13px', borderRadius: '14px',
+            flex: 1, padding: '14px', borderRadius: '14px',
             background: theme.surfaceAlt, fontWeight: 700, fontSize: '14px',
           }}>
             Cancel
           </button>
-          <button onClick={save} style={{
-            flex: 2, padding: '13px', borderRadius: '14px',
-            background: theme.accent, color: '#fff', fontWeight: 700, fontSize: '14px',
+          <motion.button whileTap={{ scale: 0.97 }} onClick={save} style={{
+            flex: 2, padding: '14px', borderRadius: '14px',
+            background: `linear-gradient(135deg, ${theme.accent}, ${theme.accentDeep})`,
+            color: '#fff', fontWeight: 700, fontSize: '14px',
           }}>
             Save weight
-          </button>
+          </motion.button>
         </div>
       </motion.div>
     </motion.div>
@@ -1523,17 +1786,20 @@ function WeightModal({ theme, weight, setWeight, onClose }) {
 // ============ PLANS VIEW ============
 function PlansView({ theme, onPick }) {
   return (
-    <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
+    <div style={{ display: 'flex', flexDirection: 'column', gap: '14px', paddingTop: '6px' }}>
       <div>
         <div className="serif" style={{ fontSize: '28px', padding: '4px 4px 0' }}>Meal Plans</div>
         <div style={{ fontSize: '14px', color: theme.textSub, padding: '2px 4px 0' }}>
           Curated plans matched to your goal.
         </div>
       </div>
-      {MEAL_PLANS.map(p => (
+      {MEAL_PLANS.map((p, i) => (
         <motion.div
           key={p.id}
-          whileTap={{ scale: 0.98 }}
+          initial={{ opacity: 0, y: 10 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: i * 0.08 }}
+          whileTap={{ scale: 0.99 }}
           onClick={() => onPick(p)}
           style={{
             background: theme.surface, borderRadius: '24px', padding: '20px',
@@ -1541,9 +1807,11 @@ function PlansView({ theme, onPick }) {
           }}>
           <div style={{ display: 'flex', alignItems: 'center', gap: '14px', marginBottom: '14px' }}>
             <div style={{
-              width: '54px', height: '54px', borderRadius: '16px',
-              background: theme.accentSoft, display: 'grid', placeItems: 'center',
-              fontSize: '28px',
+              width: '56px', height: '56px', borderRadius: '16px',
+              background: `linear-gradient(135deg, ${theme.accentSoft}, ${theme.accent}20)`,
+              display: 'grid', placeItems: 'center',
+              fontSize: '30px',
+              border: `1px solid ${theme.accent}33`,
             }}>
               {p.emoji}
             </div>
@@ -1554,7 +1822,7 @@ function PlansView({ theme, onPick }) {
               <div className="serif" style={{ fontSize: '22px', lineHeight: 1.2, marginTop: '2px' }}>{p.name}</div>
             </div>
             <div style={{ textAlign: 'right' }}>
-              <div className="tabular" style={{ fontSize: '18px', fontWeight: 700 }}>{p.kcal}</div>
+              <div className="tabular" style={{ fontSize: '20px', fontWeight: 700 }}>{p.kcal}</div>
               <div style={{ fontSize: '11px', color: theme.textMuted }}>kcal</div>
             </div>
           </div>
@@ -1565,21 +1833,21 @@ function PlansView({ theme, onPick }) {
             {p.meals.map((m, i) => (
               <div key={i} style={{
                 display: 'flex', justifyContent: 'space-between', alignItems: 'center',
-                padding: '8px 12px', background: theme.surfaceAlt, borderRadius: '10px',
+                padding: '10px 12px', background: theme.surfaceAlt, borderRadius: '10px',
                 fontSize: '13px',
               }}>
-                <span>{m.name}</span>
+                <span style={{ fontWeight: 500 }}>{m.name}</span>
                 <span className="tabular" style={{ color: theme.textMuted, fontWeight: 600 }}>{m.kcal} kcal</span>
               </div>
             ))}
           </div>
-          <button style={{
+          <motion.button whileTap={{ scale: 0.98 }} style={{
             width: '100%', marginTop: '14px', padding: '12px', borderRadius: '14px',
             background: theme.accentSoft, color: theme.accent,
             fontWeight: 700, fontSize: '13px',
           }}>
             Activate plan →
-          </button>
+          </motion.button>
         </motion.div>
       ))}
     </div>
@@ -1587,7 +1855,7 @@ function PlansView({ theme, onPick }) {
 }
 
 // ============ ME VIEW ============
-function MeView({ theme, goals, setGoals, streak, dark, setDark, logs }) {
+function MeView({ theme, goals, setGoals, streak, dark, setDark, logs, onEditGoals }) {
   const totalLogs = Object.values(logs).flat().length;
   const activeDays = Object.values(logs).filter(a => a.length > 0).length;
 
@@ -1596,47 +1864,60 @@ function MeView({ theme, goals, setGoals, streak, dark, setDark, logs }) {
     const blob = new Blob([data], { type: 'application/json' });
     const url = URL.createObjectURL(blob);
     const a = document.createElement('a');
-    a.href = url; a.download = 'food-tracker-export.json';
+    a.href = url; a.download = 'fitora-export.json';
     a.click();
     URL.revokeObjectURL(url);
   };
 
   return (
-    <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
+    <div style={{ display: 'flex', flexDirection: 'column', gap: '14px', paddingTop: '6px' }}>
       {/* Profile header */}
-      <div style={{
-        background: `linear-gradient(135deg, ${theme.accent}, #AF52DE)`,
-        borderRadius: '28px', padding: '24px', color: '#fff',
-      }}>
-        <div style={{ display: 'flex', alignItems: 'center', gap: '14px', marginBottom: '18px' }}>
-          <div style={{
-            width: '60px', height: '60px', borderRadius: '50%',
-            background: 'rgba(255,255,255,0.2)', backdropFilter: 'blur(10px)',
-            display: 'grid', placeItems: 'center', fontSize: '28px',
-          }}>
-            👋
-          </div>
-          <div>
-            <div style={{ fontSize: '12px', opacity: 0.8, fontWeight: 600, letterSpacing: '0.05em', textTransform: 'uppercase' }}>
-              Welcome back
+      <motion.div
+        initial={{ opacity: 0, y: 10 }}
+        animate={{ opacity: 1, y: 0 }}
+        style={{
+          background: `linear-gradient(135deg, ${theme.accent}, ${theme.accentDeep})`,
+          borderRadius: '28px', padding: '24px', color: '#fff',
+          position: 'relative', overflow: 'hidden',
+        }}>
+        {/* Decorative leaf background */}
+        <div style={{
+          position: 'absolute', top: '-30px', right: '-30px',
+          opacity: 0.15,
+        }}>
+          <FitoraLogo size={180} color="transparent" accent="#fff" />
+        </div>
+        <div style={{ position: 'relative' }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '14px', marginBottom: '20px' }}>
+            <div style={{
+              width: '60px', height: '60px', borderRadius: '18px',
+              background: 'rgba(255,255,255,0.2)', backdropFilter: 'blur(10px)',
+              display: 'grid', placeItems: 'center', fontSize: '28px',
+              border: '1px solid rgba(255,255,255,0.3)',
+            }}>
+              👋
             </div>
-            <div className="serif" style={{ fontSize: '26px', lineHeight: 1.1 }}>You</div>
+            <div>
+              <div style={{ fontSize: '12px', opacity: 0.85, fontWeight: 600, letterSpacing: '0.05em', textTransform: 'uppercase' }}>
+                Welcome back
+              </div>
+              <div className="serif" style={{ fontSize: '26px', lineHeight: 1.1, marginTop: '2px' }}>You</div>
+            </div>
+          </div>
+          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: '12px' }}>
+            <ProfileStat label="Streak" value={streak} />
+            <ProfileStat label="Days logged" value={activeDays} />
+            <ProfileStat label="Meals" value={totalLogs} />
           </div>
         </div>
-        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: '12px' }}>
-          <ProfileStat label="Streak" value={streak} />
-          <ProfileStat label="Days logged" value={activeDays} />
-          <ProfileStat label="Meals" value={totalLogs} />
-        </div>
-      </div>
+      </motion.div>
 
-      {/* Settings sections */}
       <SettingsGroup theme={theme} title="Goals">
         <SettingRow theme={theme} icon={<Target size={16} />} label="Daily targets"
-          hint={`${goals.kcal} kcal · ${goals.type}`} onClick={() => {}} />
+          hint={`${goals.kcal} kcal · ${goals.type}`} onClick={onEditGoals} />
         <SettingRow theme={theme} icon={<Flag size={16} />} label="Goal type"
           hint={goals.type === 'loss' ? 'Fat loss' : goals.type === 'gain' ? 'Muscle gain' : 'Maintenance'}
-          onClick={() => {}} last />
+          onClick={onEditGoals} last />
       </SettingsGroup>
 
       <SettingsGroup theme={theme} title="Integrations">
@@ -1662,8 +1943,12 @@ function MeView({ theme, goals, setGoals, streak, dark, setDark, logs }) {
           }} last />
       </SettingsGroup>
 
-      <div style={{ textAlign: 'center', padding: '20px 0', fontSize: '12px', color: theme.textMuted }}>
-        Private by design · Offline-first · No signup required
+      <div style={{ textAlign: 'center', padding: '20px 0 8px', fontSize: '12px', color: theme.textMuted }}>
+        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '6px', marginBottom: '6px' }}>
+          <FitoraLogo size={16} color={theme.accent} accent={theme.accentLeaf} />
+          <span className="serif" style={{ fontSize: '15px', color: theme.text }}>Fitora</span>
+        </div>
+        Private by design · Offline-first
       </div>
     </div>
   );
@@ -1672,8 +1957,8 @@ function MeView({ theme, goals, setGoals, streak, dark, setDark, logs }) {
 function ProfileStat({ label, value }) {
   return (
     <div style={{ textAlign: 'center' }}>
-      <div className="tabular serif" style={{ fontSize: '28px', lineHeight: 1 }}>{value}</div>
-      <div style={{ fontSize: '11px', opacity: 0.8, fontWeight: 600, letterSpacing: '0.05em', textTransform: 'uppercase', marginTop: '2px' }}>
+      <div className="tabular serif" style={{ fontSize: '28px', lineHeight: 1, color: '#fff' }}>{value}</div>
+      <div style={{ fontSize: '11px', opacity: 0.85, fontWeight: 600, letterSpacing: '0.05em', textTransform: 'uppercase', marginTop: '4px' }}>
         {label}
       </div>
     </div>
@@ -1705,8 +1990,8 @@ function SettingRow({ theme, icon, label, hint, onClick, last, right, danger }) 
       textAlign: 'left', color: danger ? theme.red : theme.text,
     }}>
       <div style={{
-        width: '32px', height: '32px', borderRadius: '10px',
-        background: danger ? 'rgba(255, 59, 48, 0.1)' : theme.surfaceAlt,
+        width: '34px', height: '34px', borderRadius: '11px',
+        background: danger ? theme.red + '1a' : theme.surfaceAlt,
         display: 'grid', placeItems: 'center', color: danger ? theme.red : theme.textSub,
       }}>
         {icon}
@@ -1724,7 +2009,7 @@ function Toggle({ on, theme }) {
   return (
     <div style={{
       width: '48px', height: '28px', borderRadius: '100px',
-      background: on ? theme.green : theme.border,
+      background: on ? theme.accent : theme.border,
       position: 'relative', transition: 'background 0.2s',
     }}>
       <motion.div
@@ -1733,7 +2018,7 @@ function Toggle({ on, theme }) {
         style={{
           width: '24px', height: '24px', borderRadius: '50%',
           background: '#fff', position: 'absolute', top: '2px',
-          boxShadow: '0 2px 6px rgba(0,0,0,0.2)',
+          boxShadow: '0 2px 6px rgba(0,0,0,0.25)',
         }}
       />
     </div>
@@ -1759,7 +2044,7 @@ function TabBar({ theme, tab, setTab }) {
       <div style={{
         display: 'flex', justifyContent: 'space-around',
         width: '100%', maxWidth: '400px',
-        background: theme.surface, backdropFilter: 'blur(20px)',
+        background: theme.surface, backdropFilter: 'blur(20px)', WebkitBackdropFilter: 'blur(20px)',
         borderRadius: '22px', padding: '6px',
         border: `1px solid ${theme.border}`,
         boxShadow: '0 10px 30px rgba(0,0,0,0.08)',
@@ -1770,13 +2055,13 @@ function TabBar({ theme, tab, setTab }) {
           return (
             <motion.button
               key={t.key}
-              whileTap={{ scale: 0.95 }}
+              whileTap={{ scale: 0.92 }}
               onClick={() => setTab(t.key)}
               style={{
                 flex: 1, padding: '10px 4px', borderRadius: '16px',
                 background: active ? theme.accentSoft : 'transparent',
                 color: active ? theme.accent : theme.textMuted,
-                display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '3px',
+                display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '4px',
                 transition: 'all 0.2s',
               }}
             >
@@ -1792,35 +2077,35 @@ function TabBar({ theme, tab, setTab }) {
 
 // ============ COACHING LOGIC ============
 function getCoaching(totals, goals, log) {
-  const msgs = [];
   const kcalPct = (totals.kcal / goals.kcal) * 100;
   const pPct = (totals.p / goals.p) * 100;
-
-  const now = new Date();
-  const h = now.getHours();
+  const h = new Date().getHours();
 
   if (log.length === 0) return "Log your first meal to get started.";
 
-  if (kcalPct > 100) {
+  if (kcalPct > 110) {
     const over = totals.kcal - goals.kcal;
-    msgs.push(`You're ${over} kcal over goal. Tomorrow's a fresh start.`);
-  } else if (h > 19 && kcalPct < 60) {
-    msgs.push(`You've only hit ${Math.round(kcalPct)}% of calories. A solid dinner would help.`);
-  } else if (pPct < 50 && h > 14) {
-    msgs.push(`Protein's low today (${Math.round(totals.p)}g). Try adding Greek yogurt or a protein shake.`);
-  } else if (totals.sugar > 50) {
-    msgs.push(`Sugar is tracking high (${Math.round(totals.sugar)}g). Consider swapping dessert for fruit.`);
-  } else if (totals.sodium > 2300) {
-    msgs.push(`Sodium is over 2,300mg. Drink extra water today.`);
-  } else if (pPct >= 80 && kcalPct >= 60 && kcalPct <= 100) {
-    msgs.push(`Great balance today. ${Math.round(totals.p)}g protein in, macros on target.`);
-  } else if (kcalPct < 50 && h > 12) {
-    msgs.push(`You're running light on calories. Make sure to eat enough to support your goal.`);
-  } else {
-    msgs.push(`On track. ${goals.kcal - totals.kcal} kcal left for today.`);
+    return `${over} kcal over goal. Tomorrow's a fresh start — no stress.`;
   }
-
-  return msgs[0];
+  if (h > 19 && kcalPct < 60) {
+    return `You've only hit ${Math.round(kcalPct)}% of calories. A solid dinner would help.`;
+  }
+  if (pPct < 50 && h > 14) {
+    return `Protein's low today (${Math.round(totals.p)}g). Try adding Greek yogurt or a protein shake.`;
+  }
+  if (totals.sugar > 50) {
+    return `Sugar is tracking high (${Math.round(totals.sugar)}g). Consider swapping dessert for fruit.`;
+  }
+  if (totals.sodium > 2300) {
+    return `Sodium is over 2,300mg. Drink extra water today.`;
+  }
+  if (pPct >= 80 && kcalPct >= 60 && kcalPct <= 100) {
+    return `Great balance today. ${Math.round(totals.p)}g protein in, macros on target.`;
+  }
+  if (kcalPct < 50 && h > 12) {
+    return `You're running light on calories. Make sure to eat enough to support your goal.`;
+  }
+  return `On track. ${goals.kcal - totals.kcal} kcal left for today.`;
 }
 
 function guessMeal() {
