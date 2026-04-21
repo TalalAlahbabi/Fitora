@@ -1,9 +1,9 @@
 {
-  "name": "food-tracker",
+  "name": "fitora",
   "private": true,
   "version": "0.1.0",
   "type": "module",
-  "description": "A fast, minimal, Apple-style food tracking web app.",
+  "description": "Fitora — nutrition, simplified. A fast, minimal food tracking web app.",
   "scripts": {
     "dev": "vite",
     "build": "vite build",
