@@ -57,7 +57,146 @@ function FitoraWordmark({ theme, size = 22 }) {
   );
 }
 
-// ============ FOOD DATABASE ============
+// ============ USDA FOODDATA CENTRAL API ============
+// Sign up for a free API key at https://fdc.nal.usda.gov/api-key-signup
+// Set VITE_USDA_API_KEY in your .env.local file (locally) or Vercel env vars (production).
+// Falls back to DEMO_KEY which has stricter limits but works out of the box.
+const USDA_API_KEY = import.meta.env?.VITE_USDA_API_KEY || 'DEMO_KEY';
+const USDA_BASE = 'https://api.nal.usda.gov/fdc/v1';
+
+// USDA nutrient IDs we care about
+const NUTRIENT_IDS = {
+  kcal: [1008, 2047, 2048], // Energy (Atwater or general)
+  p: [1003],   // Protein
+  c: [1005],   // Carbohydrate, by difference
+  f: [1004],   // Total lipid (fat)
+  fiber: [1079], // Fiber, total dietary
+  sugar: [2000, 1063], // Sugars, total
+  sodium: [1093], // Sodium, Na
+};
+
+// Small emoji lookup to decorate USDA results
+const EMOJI_MAP = [
+  { match: /chicken|poultry|turkey/i, e: '🍗' },
+  { match: /beef|steak|ground beef/i, e: '🥩' },
+  { match: /pork|bacon|ham|sausage/i, e: '🥓' },
+  { match: /salmon|tuna|cod|fish|tilapia|halibut|shrimp|lobster|crab/i, e: '🐟' },
+  { match: /egg/i, e: '🥚' },
+  { match: /cheese/i, e: '🧀' },
+  { match: /milk|yogurt|cream/i, e: '🥛' },
+  { match: /butter/i, e: '🧈' },
+  { match: /rice/i, e: '🍚' },
+  { match: /bread|toast|bagel|roll/i, e: '🍞' },
+  { match: /pasta|spaghetti|macaroni|noodle|ramen/i, e: '🍝' },
+  { match: /pizza/i, e: '🍕' },
+  { match: /burger|cheeseburger/i, e: '🍔' },
+  { match: /fries|french fry/i, e: '🍟' },
+  { match: /hot dog|hotdog/i, e: '🌭' },
+  { match: /sushi|sashimi/i, e: '🍣' },
+  { match: /taco|burrito|quesadilla/i, e: '🌮' },
+  { match: /sandwich|sub/i, e: '🥪' },
+  { match: /salad|lettuce|spinach|kale|arugula/i, e: '🥗' },
+  { match: /oat|oatmeal|cereal|granola/i, e: '🥣' },
+  { match: /soup|broth|stew/i, e: '🥣' },
+  { match: /apple/i, e: '🍎' },
+  { match: /banana/i, e: '🍌' },
+  { match: /orange|tangerine/i, e: '🍊' },
+  { match: /grape/i, e: '🍇' },
+  { match: /strawberr/i, e: '🍓' },
+  { match: /blueberr|raspberr|blackberr/i, e: '🫐' },
+  { match: /watermelon/i, e: '🍉' },
+  { match: /pineapple/i, e: '🍍' },
+  { match: /mango/i, e: '🥭' },
+  { match: /peach/i, e: '🍑' },
+  { match: /pear/i, e: '🍐' },
+  { match: /lemon|lime/i, e: '🍋' },
+  { match: /avocado|guacamole/i, e: '🥑' },
+  { match: /tomato/i, e: '🍅' },
+  { match: /broccoli/i, e: '🥦' },
+  { match: /carrot/i, e: '🥕' },
+  { match: /corn/i, e: '🌽' },
+  { match: /pepper|jalapeno/i, e: '🌶️' },
+  { match: /cucumber|pickle/i, e: '🥒' },
+  { match: /potato/i, e: '🥔' },
+  { match: /sweet potato|yam/i, e: '🍠' },
+  { match: /onion/i, e: '🧅' },
+  { match: /garlic/i, e: '🧄' },
+  { match: /mushroom/i, e: '🍄' },
+  { match: /bean|lentil|chickpea/i, e: '🫘' },
+  { match: /peanut|almond|cashew|walnut|pistachio|nut/i, e: '🌰' },
+  { match: /chocolate|cocoa/i, e: '🍫' },
+  { match: /candy|sweet|gummy/i, e: '🍬' },
+  { match: /ice cream/i, e: '🍦' },
+  { match: /cake|cupcake|muffin/i, e: '🧁' },
+  { match: /cookie|biscuit/i, e: '🍪' },
+  { match: /donut|doughnut/i, e: '🍩' },
+  { match: /pie/i, e: '🥧' },
+  { match: /honey/i, e: '🍯' },
+  { match: /coffee|latte|espresso|cappuccino/i, e: '☕' },
+  { match: /tea|matcha/i, e: '🍵' },
+  { match: /juice/i, e: '🧃' },
+  { match: /soda|cola|pepsi|coke/i, e: '🥤' },
+  { match: /water/i, e: '💧' },
+  { match: /beer|ale|lager/i, e: '🍺' },
+  { match: /wine/i, e: '🍷' },
+  { match: /oil|olive/i, e: '🫒' },
+  { match: /tofu|soy/i, e: '🟫' },
+  { match: /protein powder|whey/i, e: '🥤' },
+];
+function guessEmoji(name) {
+  for (const { match, e } of EMOJI_MAP) if (match.test(name)) return e;
+  return '🍽️';
+}
+
+// Pull a nutrient value by trying multiple possible nutrient IDs
+function getNutrient(food, ids) {
+  if (!food.foodNutrients) return 0;
+  for (const id of ids) {
+    const n = food.foodNutrients.find(x => x.nutrientId === id || x.nutrient?.id === id);
+    if (n) return n.value ?? n.amount ?? 0;
+  }
+  return 0;
+}
+
+// Normalize a USDA food into our app's shape
+function normalizeUSDA(food) {
+  const name = food.description || food.lowercaseDescription || 'Unknown food';
+  const brand = food.brandOwner || food.brandName || food.dataType || 'USDA';
+  // USDA data is per 100g for Foundation/SR, per-serving for Branded (but we'll standardize to 100g)
+  const kcal = Math.round(getNutrient(food, NUTRIENT_IDS.kcal));
+  return {
+    id: `usda_${food.fdcId}`,
+    fdcId: food.fdcId,
+    name: name.length > 60 ? name.slice(0, 57) + '…' : name,
+    brand: brand.length > 30 ? brand.slice(0, 27) + '…' : brand,
+    per: 100,
+    unit: 'g',
+    kcal,
+    p: +(getNutrient(food, NUTRIENT_IDS.p)).toFixed(1),
+    c: +(getNutrient(food, NUTRIENT_IDS.c)).toFixed(1),
+    f: +(getNutrient(food, NUTRIENT_IDS.f)).toFixed(1),
+    fiber: +(getNutrient(food, NUTRIENT_IDS.fiber)).toFixed(1),
+    sugar: +(getNutrient(food, NUTRIENT_IDS.sugar)).toFixed(1),
+    sodium: Math.round(getNutrient(food, NUTRIENT_IDS.sodium)),
+    emoji: guessEmoji(name),
+    source: 'usda',
+  };
+}
+
+// Search USDA. Returns array of normalized foods. Throws on network error.
+async function searchUSDA(query, signal) {
+  const url = `${USDA_BASE}/foods/search?api_key=${USDA_API_KEY}&query=${encodeURIComponent(query)}&pageSize=25&dataType=Foundation,SR%20Legacy,Branded`;
+  const res = await fetch(url, { signal });
+  if (!res.ok) throw new Error(`USDA API error: ${res.status}`);
+  const data = await res.json();
+  return (data.foods || [])
+    .map(normalizeUSDA)
+    // Filter out foods with no useful macro data
+    .filter(f => f.kcal > 0 || f.p > 0 || f.c > 0 || f.f > 0);
+}
+
+// ============ BUILT-IN STARTER FOODS ============
+// These load instantly and cover the basics — shown as "Common" and seed the Favorites/Recent lists.
 const FOOD_DB = [
   // Proteins
   { id: 1, name: 'Chicken Breast', brand: 'Generic', per: 100, unit: 'g', kcal: 165, p: 31, c: 0, f: 3.6, fiber: 0, sugar: 0, sodium: 74, emoji: '🍗' },
@@ -251,10 +390,17 @@ export default function Fitora() {
       amount,
       unit: food.unit,
       meal: meal || guessMeal(),
+      // Snapshot the per-unit values so we can rescale without needing the original food object
+      _per: food.per,
+      _kcal: food.kcal, _p: food.p, _c: food.c, _f: food.f,
+      _fiber: food.fiber, _sugar: food.sugar, _sodium: food.sodium,
       ...sc,
     };
     setLogs({ ...logs, [date]: [...(logs[date] || []), entry] });
-    setRecent([food.id, ...recent.filter(id => id !== food.id)].slice(0, 10));
+    // Only seed Recent with numeric IDs (built-in foods) — USDA foods have string IDs
+    if (typeof food.id === 'number') {
+      setRecent([food.id, ...recent.filter(id => id !== food.id)].slice(0, 10));
+    }
     showToast(`${food.name} logged`, food.emoji);
   };
 
@@ -265,9 +411,15 @@ export default function Fitora() {
   const updateEntry = (id, newAmount) => {
     const entry = dayLog.find(e => e.id === id);
     if (!entry) return;
-    const food = FOOD_DB.find(f => f.id === entry.foodId);
-    if (!food) return;
-    const sc = scale(food, newAmount);
+    // Rescale from the stored per-unit values (works for both built-in and USDA foods)
+    const basis = {
+      per: entry._per || 100,
+      kcal: entry._kcal ?? entry.kcal,
+      p: entry._p ?? entry.p, c: entry._c ?? entry.c, f: entry._f ?? entry.f,
+      fiber: entry._fiber ?? entry.fiber, sugar: entry._sugar ?? entry.sugar,
+      sodium: entry._sodium ?? entry.sodium,
+    };
+    const sc = scale(basis, newAmount);
     setLogs({
       ...logs,
       [date]: dayLog.map(e => e.id === id ? { ...e, amount: newAmount, ...sc } : e)
@@ -898,6 +1050,9 @@ function SearchModal({ theme, onClose, favorites, recent, onToggleFav, onAdd }) 
   const [selected, setSelected] = useState(null);
   const [meal, setMeal] = useState(guessMeal());
   const [amount, setAmount] = useState(0);
+  const [remoteResults, setRemoteResults] = useState([]);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(null);
   const inputRef = useRef(null);
 
   useEffect(() => {
@@ -908,13 +1063,45 @@ function SearchModal({ theme, onClose, favorites, recent, onToggleFav, onAdd }) 
     if (selected) setAmount(selected.per);
   }, [selected]);
 
-  const results = useMemo(() => {
+  // Local (built-in) matches — shown instantly
+  const localResults = useMemo(() => {
     if (!q.trim()) return [];
     const ql = q.toLowerCase();
     return FOOD_DB.filter(f =>
       f.name.toLowerCase().includes(ql) || f.brand.toLowerCase().includes(ql)
-    ).slice(0, 12);
+    ).slice(0, 6);
   }, [q]);
+
+  // USDA search — debounced, 280ms after last keystroke
+  useEffect(() => {
+    if (!q.trim() || q.trim().length < 2) {
+      setRemoteResults([]);
+      setLoading(false);
+      setError(null);
+      return;
+    }
+    const controller = new AbortController();
+    setLoading(true);
+    setError(null);
+    const timer = setTimeout(async () => {
+      try {
+        const results = await searchUSDA(q.trim(), controller.signal);
+        // Dedupe anything already shown in local
+        const localNames = new Set(localResults.map(f => f.name.toLowerCase()));
+        setRemoteResults(results.filter(f => !localNames.has(f.name.toLowerCase())));
+        setLoading(false);
+      } catch (e) {
+        if (e.name !== 'AbortError') {
+          setError(e.message || 'Could not reach USDA');
+          setLoading(false);
+        }
+      }
+    }, 280);
+    return () => {
+      clearTimeout(timer);
+      controller.abort();
+    };
+  }, [q, localResults]);
 
   const sectioned = !q.trim();
   const favFoods = FOOD_DB.filter(f => favorites.includes(f.id));
@@ -1008,20 +1195,66 @@ function SearchModal({ theme, onClose, favorites, recent, onToggleFav, onAdd }) 
                 </>
               ) : (
                 <div style={{ marginTop: '12px' }}>
-                  {results.length > 0 ? (
-                    <div style={{
-                      background: theme.surface, borderRadius: '16px',
-                      border: `1px solid ${theme.border}`, overflow: 'hidden',
-                    }}>
-                      {results.map(f => (
+                  {/* Local (built-in) common foods */}
+                  {localResults.length > 0 && (
+                    <Section theme={theme} title="Common" icon="⚡">
+                      {localResults.map(f => (
                         <FoodRow key={f.id} theme={theme} food={f} onSelect={() => setSelected(f)}
                           favored={favorites.includes(f.id)} onFav={() => onToggleFav(f.id)} />
                       ))}
+                    </Section>
+                  )}
+
+                  {/* USDA remote results */}
+                  {loading && (
+                    <div style={{
+                      marginTop: '18px',
+                      display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '10px',
+                      padding: '24px', color: theme.textSub, fontSize: '13px',
+                    }}>
+                      <motion.div
+                        animate={{ rotate: 360 }}
+                        transition={{ duration: 1, repeat: Infinity, ease: 'linear' }}
+                        style={{
+                          width: '16px', height: '16px', borderRadius: '50%',
+                          border: `2px solid ${theme.border}`,
+                          borderTopColor: theme.accent,
+                        }}
+                      />
+                      Searching USDA database…
                     </div>
-                  ) : (
+                  )}
+
+                  {!loading && error && (
+                    <div style={{
+                      marginTop: '18px', padding: '16px',
+                      background: theme.red + '10', borderRadius: '14px',
+                      border: `1px solid ${theme.red}33`,
+                      color: theme.red, fontSize: '13px', textAlign: 'center',
+                    }}>
+                      Couldn't reach USDA. Check your connection.
+                    </div>
+                  )}
+
+                  {!loading && !error && remoteResults.length > 0 && (
+                    <Section theme={theme} title="USDA Database" icon="🌐">
+                      {remoteResults.map(f => (
+                        <FoodRow key={f.id} theme={theme} food={f} onSelect={() => setSelected(f)}
+                          favored={favorites.includes(f.id)} onFav={() => onToggleFav(f.id)} />
+                      ))}
+                    </Section>
+                  )}
+
+                  {!loading && !error && localResults.length === 0 && remoteResults.length === 0 && q.trim().length >= 2 && (
                     <div style={{ textAlign: 'center', padding: '40px 20px', color: theme.textSub }}>
                       <div style={{ fontSize: '32px', marginBottom: '8px' }}>🔍</div>
                       <div style={{ fontSize: '14px' }}>No matches for "{q}"</div>
+                    </div>
+                  )}
+
+                  {q.trim().length === 1 && (
+                    <div style={{ textAlign: 'center', padding: '40px 20px', color: theme.textMuted, fontSize: '13px' }}>
+                      Keep typing…
                     </div>
                   )}
                 </div>
@@ -1280,8 +1513,15 @@ function MiniStat({ theme, label, val }) {
 // ============ EDIT MODAL ============
 function EditModal({ theme, entry, onClose, onUpdate, onRemove }) {
   const [amount, setAmount] = useState(entry.amount);
-  const food = FOOD_DB.find(f => f.id === entry.foodId);
-  const sc = food ? scale(food, amount) : entry;
+  // Use stored per-unit values (works for both built-in and USDA foods)
+  const basis = {
+    per: entry._per || 100,
+    kcal: entry._kcal ?? entry.kcal,
+    p: entry._p ?? entry.p, c: entry._c ?? entry.c, f: entry._f ?? entry.f,
+    fiber: entry._fiber ?? entry.fiber, sugar: entry._sugar ?? entry.sugar,
+    sodium: entry._sodium ?? entry.sodium,
+  };
+  const sc = scale(basis, amount);
   const step = entry.unit === 'item' ? 0.5 : 10;
 
   return (
