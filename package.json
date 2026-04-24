@@ -1,9 +1,9 @@
 {
   "name": "fitora",
   "private": true,
-  "version": "0.1.0",
+  "version": "0.2.0",
   "type": "module",
-  "description": "Fitora — nutrition, simplified. A fast, minimal food tracking web app.",
+  "description": "Fitora — nutrition, simplified. A fast, installable food tracking web app powered by USDA data.",
   "scripts": {
     "dev": "vite",
     "build": "vite build",
@@ -20,6 +20,7 @@
     "@types/react": "^18.3.12",
     "@types/react-dom": "^18.3.1",
     "@vitejs/plugin-react": "^4.3.3",
-    "vite": "^5.4.11"
+    "vite": "^5.4.11",
+    "vite-plugin-pwa": "^0.20.5"
   }
 }

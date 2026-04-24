@@ -2,16 +2,36 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" />
-    <meta name="theme-color" content="#F6F7F5" media="(prefers-color-scheme: light)" />
-    <meta name="theme-color" content="#0B0F0C" media="(prefers-color-scheme: dark)" />
+
+    <!-- Favicons -->
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32.png" />
+    <link rel="icon" type="image/png" sizes="64x64" href="/favicon-64.png" />
+
+    <!-- iOS: home-screen icon (iOS ignores the manifest's icons, so we need this) -->
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+
+    <!-- iOS: make it behave like a native app when added to home screen -->
     <meta name="apple-mobile-web-app-capable" content="yes" />
-    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="default" />
     <meta name="apple-mobile-web-app-title" content="Fitora" />
-    <meta name="description" content="Fitora — nutrition, simplified. Log meals in seconds and get clear feedback daily." />
+
+    <!-- Theme colors: browser chrome + Android splash -->
+    <meta name="theme-color" content="#10B981" media="(prefers-color-scheme: light)" />
+    <meta name="theme-color" content="#0B0F0C" media="(prefers-color-scheme: dark)" />
+
+    <!-- Android / Chrome -->
+    <meta name="mobile-web-app-capable" content="yes" />
+    <meta name="application-name" content="Fitora" />
+
+    <!-- SEO / sharing -->
+    <meta name="description" content="Fitora — nutrition, simplified. Track food, fuel better, feel your best. Powered by the USDA food database." />
     <meta property="og:title" content="Fitora — Nutrition, simplified" />
-    <meta property="og:description" content="The fastest, simplest food tracker. Log meals in seconds." />
+    <meta property="og:description" content="Track food. Fuel better. Feel your best." />
+    <meta property="og:image" content="/icon-512.png" />
+    <meta property="og:type" content="website" />
+    <meta name="twitter:card" content="summary_large_image" />
+
     <title>Fitora — Nutrition, simplified</title>
   </head>
   <body>

@@ -14,31 +14,23 @@ const BRAND = {
   tagline: 'Nutrition, simplified.',
 };
 
-// Logo: stylized F with an integrated leaf
-function FitoraLogo({ size = 32, color = '#10B981', accent = '#34D399' }) {
+// Logo: uses the /public/logo-mark.png image
+// Accepts the same props as before for backward compatibility, but only `size` is used now.
+function FitoraLogo({ size = 32, color, accent, style }) {
   return (
-    <svg width={size} height={size} viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
-      {/* Rounded square background */}
-      <rect width="64" height="64" rx="16" fill={color} />
-      {/* The F */}
-      <path
-        d="M20 16 H44 V23 H27 V31 H40 V38 H27 V48 H20 Z"
-        fill="white"
-      />
-      {/* Leaf on top of the F's horizontal stroke — organic curve */}
-      <path
-        d="M44 13 Q52 13 52 21 Q52 28 45 28 Q38 28 38 21 Q38 17 41 14.5 Q42.5 13.5 44 13 Z"
-        fill={accent}
-      />
-      {/* Leaf vein */}
-      <path
-        d="M42 26 Q44 22 48 18"
-        stroke="white"
-        strokeWidth="1.2"
-        strokeLinecap="round"
-        fill="none"
-      />
-    </svg>
+    <img
+      src="/logo-mark.png"
+      alt="Fitora"
+      width={size}
+      height={size}
+      style={{
+        width: `${size}px`,
+        height: `${size}px`,
+        objectFit: 'contain',
+        display: 'block',
+        ...style,
+      }}
+    />
   );
 }
 
@@ -351,6 +343,31 @@ export default function Fitora() {
   const [editEntry, setEditEntry] = useState(null);
   const [showGoals, setShowGoals] = useState(false);
   const [toast, setToast] = useState(null);
+  const [installPrompt, setInstallPrompt] = useState(null);
+  const [installDismissed, setInstallDismissed] = useStorage('fitora_install_dismissed', false);
+  const [showIOSInstall, setShowIOSInstall] = useStorage('fitora_ios_install_shown', false);
+
+  // Listen for the install-prompt event (Android/Chrome/Edge)
+  useEffect(() => {
+    const handler = (e) => {
+      e.preventDefault();
+      setInstallPrompt(e);
+    };
+    window.addEventListener('beforeinstallprompt', handler);
+    return () => window.removeEventListener('beforeinstallprompt', handler);
+  }, []);
+
+  // Detect iOS Safari (no beforeinstallprompt support, needs manual instructions)
+  const isIOS = useMemo(() => {
+    if (typeof window === 'undefined') return false;
+    return /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
+  }, []);
+  const isInStandaloneMode = useMemo(() => {
+    if (typeof window === 'undefined') return false;
+    return window.matchMedia('(display-mode: standalone)').matches ||
+           window.navigator.standalone === true;
+  }, []);
+  const [showIOSHelp, setShowIOSHelp] = useState(false);
 
   const dayLog = logs[date] || [];
 
@@ -562,6 +579,151 @@ export default function Fitora() {
           </motion.div>
         )}
       </AnimatePresence>
+
+      {/* Install banner: shown when installable and not already installed/dismissed */}
+      <AnimatePresence>
+        {!isInStandaloneMode && !installDismissed && (installPrompt || (isIOS && !showIOSInstall)) && (
+          <motion.div
+            initial={{ y: 100, opacity: 0 }}
+            animate={{ y: 0, opacity: 1 }}
+            exit={{ y: 100, opacity: 0 }}
+            transition={{ type: 'spring', damping: 26, delay: 2 }}
+            style={{
+              position: 'fixed', bottom: '100px', left: '16px', right: '16px',
+              maxWidth: '448px', margin: '0 auto',
+              background: theme.surface,
+              border: `1px solid ${theme.accent}33`,
+              borderRadius: '20px', padding: '14px',
+              display: 'flex', alignItems: 'center', gap: '12px',
+              boxShadow: '0 10px 40px rgba(0,0,0,0.12)',
+              zIndex: 45,
+            }}
+          >
+            <img src="/logo-mark.png" alt="" width={40} height={40} style={{ borderRadius: '10px', flexShrink: 0 }} />
+            <div style={{ flex: 1, minWidth: 0 }}>
+              <div style={{ fontSize: '13px', fontWeight: 700, lineHeight: 1.2 }}>Install Fitora</div>
+              <div style={{ fontSize: '12px', color: theme.textSub, marginTop: '2px', lineHeight: 1.3 }}>
+                Add to your home screen · works offline
+              </div>
+            </div>
+            <motion.button
+              whileTap={{ scale: 0.94 }}
+              onClick={async () => {
+                if (installPrompt) {
+                  installPrompt.prompt();
+                  const { outcome } = await installPrompt.userChoice;
+                  if (outcome === 'accepted') setInstallPrompt(null);
+                } else if (isIOS) {
+                  setShowIOSHelp(true);
+                  setShowIOSInstall(true);
+                }
+              }}
+              style={{
+                padding: '9px 16px', borderRadius: '100px',
+                background: `linear-gradient(135deg, ${theme.accent}, ${theme.accentDeep})`,
+                color: '#fff', fontSize: '13px', fontWeight: 700,
+                whiteSpace: 'nowrap',
+              }}
+            >
+              Install
+            </motion.button>
+            <button
+              onClick={() => setInstallDismissed(true)}
+              style={{
+                width: '28px', height: '28px', display: 'grid', placeItems: 'center',
+                color: theme.textMuted,
+              }}
+            >
+              <X size={14} />
+            </button>
+          </motion.div>
+        )}
+      </AnimatePresence>
+
+      {/* iOS install instructions sheet */}
+      <AnimatePresence>
+        {showIOSHelp && (
+          <IOSInstallSheet theme={theme} onClose={() => setShowIOSHelp(false)} />
+        )}
+      </AnimatePresence>
+    </div>
+  );
+}
+
+// ============ iOS INSTALL SHEET ============
+function IOSInstallSheet({ theme, onClose }) {
+  return (
+    <motion.div
+      initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
+      onClick={onClose}
+      style={{
+        position: 'fixed', inset: 0, background: 'rgba(0,0,0,0.5)',
+        backdropFilter: 'blur(8px)', WebkitBackdropFilter: 'blur(8px)',
+        zIndex: 110,
+        display: 'flex', alignItems: 'flex-end', justifyContent: 'center',
+      }}
+    >
+      <motion.div
+        initial={{ y: '100%' }} animate={{ y: 0 }} exit={{ y: '100%' }}
+        transition={{ type: 'spring', damping: 32, stiffness: 320 }}
+        onClick={e => e.stopPropagation()}
+        style={{
+          width: '100%', maxWidth: '480px',
+          background: theme.bg, borderTopLeftRadius: '28px', borderTopRightRadius: '28px',
+          padding: '14px 24px 32px',
+        }}
+      >
+        <div style={{ display: 'flex', justifyContent: 'center', marginBottom: '14px' }}>
+          <div style={{ width: '36px', height: '4px', background: theme.border, borderRadius: '100px' }} />
+        </div>
+        <div style={{ display: 'flex', justifyContent: 'center', marginBottom: '10px' }}>
+          <img src="/logo-mark.png" alt="" width={60} height={60} style={{ borderRadius: '16px' }} />
+        </div>
+        <div className="serif" style={{ fontSize: '26px', textAlign: 'center', marginBottom: '6px' }}>
+          Install Fitora
+        </div>
+        <div style={{ fontSize: '13px', color: theme.textSub, textAlign: 'center', marginBottom: '22px', lineHeight: 1.5 }}>
+          Add Fitora to your home screen — works offline, no browser bar.
+        </div>
+
+        <IOSStep theme={theme} num="1" text={<>Tap the <b>Share</b> button <span style={{ display: 'inline-block', verticalAlign: 'middle', padding: '2px 6px', background: theme.surfaceAlt, borderRadius: '6px', fontSize: '11px', fontWeight: 700 }}>⬆︎</span> at the bottom of Safari.</>} />
+        <IOSStep theme={theme} num="2" text={<>Scroll and tap <b>Add to Home Screen</b>.</>} />
+        <IOSStep theme={theme} num="3" text={<>Tap <b>Add</b> in the top right. The Fitora icon will appear on your home screen.</>} last />
+
+        <motion.button
+          whileTap={{ scale: 0.97 }}
+          onClick={onClose}
+          style={{
+            width: '100%', marginTop: '20px', padding: '14px', borderRadius: '14px',
+            background: `linear-gradient(135deg, ${theme.accent}, ${theme.accentDeep})`,
+            color: '#fff', fontWeight: 700, fontSize: '14px',
+          }}
+        >
+          Got it
+        </motion.button>
+      </motion.div>
+    </motion.div>
+  );
+}
+
+function IOSStep({ theme, num, text, last }) {
+  return (
+    <div style={{
+      display: 'flex', gap: '14px', alignItems: 'flex-start',
+      padding: '12px 0',
+      borderBottom: last ? 'none' : `1px solid ${theme.border}`,
+    }}>
+      <div style={{
+        width: '28px', height: '28px', borderRadius: '50%',
+        background: theme.accentSoft, color: theme.accent,
+        display: 'grid', placeItems: 'center',
+        fontSize: '13px', fontWeight: 700, flexShrink: 0,
+      }}>
+        {num}
+      </div>
+      <div style={{ fontSize: '14px', lineHeight: 1.5, flex: 1, paddingTop: '3px' }}>
+        {text}
+      </div>
     </div>
   );
 }
@@ -2123,9 +2285,9 @@ function MeView({ theme, goals, setGoals, streak, dark, setDark, logs, onEditGoa
         {/* Decorative leaf background */}
         <div style={{
           position: 'absolute', top: '-30px', right: '-30px',
-          opacity: 0.15,
+          opacity: 0.12,
         }}>
-          <FitoraLogo size={180} color="transparent" accent="#fff" />
+          <FitoraLogo size={180} style={{ filter: 'brightness(0) invert(1)' }} />
         </div>
         <div style={{ position: 'relative' }}>
           <div style={{ display: 'flex', alignItems: 'center', gap: '14px', marginBottom: '20px' }}>
