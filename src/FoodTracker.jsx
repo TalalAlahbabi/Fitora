@@ -348,6 +348,279 @@ const FOOD_DB = [
   { id: 182, name: 'Fresh Lemon Mint', brand: 'Juice', per: 300, unit: 'ml', kcal: 120, p: 0.5, c: 30, f: 0, fiber: 1, sugar: 26, sodium: 10, emoji: '🍋' },
   { id: 183, name: 'Jallab', brand: 'Date molasses drink', per: 300, unit: 'ml', kcal: 190, p: 1, c: 47, f: 0, fiber: 1, sugar: 42, sodium: 20, emoji: '🥤' },
   { id: 184, name: 'Tamr Hindi', brand: 'Tamarind drink', per: 300, unit: 'ml', kcal: 140, p: 0.5, c: 34, f: 0, fiber: 1, sugar: 30, sodium: 15, emoji: '🥤' },
+
+  // ============ EXTRA PROTEINS & MEATS ============
+  { id: 200, name: 'Chicken Thigh', brand: 'Skinless', per: 100, unit: 'g', kcal: 209, p: 26, c: 0, f: 11, fiber: 0, sugar: 0, sodium: 86, emoji: '🍗' },
+  { id: 201, name: 'Chicken Wings', brand: 'Grilled', per: 100, unit: 'g', kcal: 203, p: 30, c: 0, f: 8, fiber: 0, sugar: 0, sodium: 90, emoji: '🍗' },
+  { id: 202, name: 'Turkey Breast', brand: 'Roasted', per: 100, unit: 'g', kcal: 135, p: 30, c: 0, f: 1, fiber: 0, sugar: 0, sodium: 1040, emoji: '🦃' },
+  { id: 203, name: 'Ribeye Steak', brand: 'Grilled', per: 100, unit: 'g', kcal: 291, p: 24, c: 0, f: 22, fiber: 0, sugar: 0, sodium: 54, emoji: '🥩' },
+  { id: 204, name: 'Sirloin Steak', brand: 'Lean', per: 100, unit: 'g', kcal: 183, p: 30, c: 0, f: 6, fiber: 0, sugar: 0, sodium: 58, emoji: '🥩' },
+  { id: 205, name: 'Lamb Chops', brand: 'Grilled', per: 100, unit: 'g', kcal: 294, p: 25, c: 0, f: 21, fiber: 0, sugar: 0, sodium: 72, emoji: '🍖' },
+  { id: 206, name: 'Pork Chop', brand: 'Lean', per: 100, unit: 'g', kcal: 231, p: 26, c: 0, f: 14, fiber: 0, sugar: 0, sodium: 62, emoji: '🥩' },
+  { id: 207, name: 'Bacon', brand: 'Strip', per: 10, unit: 'g', kcal: 42, p: 3, c: 0.1, f: 3.3, fiber: 0, sugar: 0, sodium: 190, emoji: '🥓' },
+  { id: 208, name: 'Ham', brand: 'Sliced deli', per: 28, unit: 'g', kcal: 31, p: 5, c: 0.5, f: 1, fiber: 0, sugar: 0.5, sodium: 340, emoji: '🥩' },
+  { id: 209, name: 'Cod Fillet', brand: 'Baked', per: 100, unit: 'g', kcal: 105, p: 23, c: 0, f: 0.9, fiber: 0, sugar: 0, sodium: 78, emoji: '🐟' },
+  { id: 210, name: 'Shrimp', brand: 'Cooked', per: 100, unit: 'g', kcal: 99, p: 24, c: 0.2, f: 0.3, fiber: 0, sugar: 0, sodium: 111, emoji: '🦐' },
+  { id: 211, name: 'Tilapia', brand: 'Baked', per: 100, unit: 'g', kcal: 129, p: 26, c: 0, f: 3, fiber: 0, sugar: 0, sodium: 56, emoji: '🐟' },
+  { id: 212, name: 'Sardines', brand: 'Canned in oil', per: 100, unit: 'g', kcal: 208, p: 25, c: 0, f: 11, fiber: 0, sugar: 0, sodium: 307, emoji: '🐟' },
+  { id: 213, name: 'Cottage Cheese', brand: 'Low-fat 2%', per: 100, unit: 'g', kcal: 84, p: 11, c: 3.4, f: 2.3, fiber: 0, sugar: 2.7, sodium: 321, emoji: '🥛' },
+  { id: 214, name: 'Egg White', brand: 'Large', per: 33, unit: 'g', kcal: 17, p: 3.6, c: 0.2, f: 0, fiber: 0, sugar: 0.2, sodium: 55, emoji: '🥚' },
+  { id: 215, name: 'Tempeh', brand: 'Soy', per: 100, unit: 'g', kcal: 193, p: 19, c: 9, f: 11, fiber: 0, sugar: 0, sodium: 9, emoji: '🟫' },
+  { id: 216, name: 'Seitan', brand: 'Wheat protein', per: 100, unit: 'g', kcal: 143, p: 25, c: 14, f: 2, fiber: 1, sugar: 2, sodium: 190, emoji: '🟫' },
+  { id: 217, name: 'Casein Protein', brand: 'Scoop', per: 30, unit: 'g', kcal: 110, p: 24, c: 3, f: 0.5, fiber: 0.5, sugar: 1, sodium: 150, emoji: '🥤' },
+  { id: 218, name: 'Pea Protein', brand: 'Scoop', per: 30, unit: 'g', kcal: 115, p: 22, c: 2, f: 2, fiber: 1, sugar: 0, sodium: 330, emoji: '🥤' },
+
+  // ============ DAIRY & EGGS ============
+  { id: 230, name: 'Whole Milk', brand: '3.25% fat', per: 240, unit: 'ml', kcal: 149, p: 8, c: 12, f: 8, fiber: 0, sugar: 12, sodium: 105, emoji: '🥛' },
+  { id: 231, name: 'Skim Milk', brand: 'Non-fat', per: 240, unit: 'ml', kcal: 83, p: 8, c: 12, f: 0.2, fiber: 0, sugar: 12, sodium: 103, emoji: '🥛' },
+  { id: 232, name: 'Almond Milk', brand: 'Unsweetened', per: 240, unit: 'ml', kcal: 30, p: 1, c: 1, f: 2.5, fiber: 0.5, sugar: 0, sodium: 170, emoji: '🥛' },
+  { id: 233, name: 'Oat Milk', brand: 'Unsweetened', per: 240, unit: 'ml', kcal: 80, p: 2, c: 14, f: 1.5, fiber: 2, sugar: 4, sodium: 100, emoji: '🥛' },
+  { id: 234, name: 'Soy Milk', brand: 'Unsweetened', per: 240, unit: 'ml', kcal: 80, p: 7, c: 4, f: 4, fiber: 1, sugar: 1, sodium: 90, emoji: '🥛' },
+  { id: 235, name: 'Cheddar Cheese', brand: 'Sliced', per: 28, unit: 'g', kcal: 113, p: 7, c: 0.4, f: 9, fiber: 0, sugar: 0.1, sodium: 174, emoji: '🧀' },
+  { id: 236, name: 'Mozzarella', brand: 'Fresh', per: 28, unit: 'g', kcal: 84, p: 6, c: 0.6, f: 6, fiber: 0, sugar: 0.3, sodium: 175, emoji: '🧀' },
+  { id: 237, name: 'Parmesan', brand: 'Grated', per: 5, unit: 'g', kcal: 21, p: 2, c: 0.1, f: 1.4, fiber: 0, sugar: 0, sodium: 75, emoji: '🧀' },
+  { id: 238, name: 'Feta Cheese', brand: 'Crumbled', per: 28, unit: 'g', kcal: 74, p: 4, c: 1.2, f: 6, fiber: 0, sugar: 1.2, sodium: 260, emoji: '🧀' },
+  { id: 239, name: 'Cream Cheese', brand: 'Full-fat', per: 30, unit: 'g', kcal: 102, p: 2, c: 1.2, f: 10, fiber: 0, sugar: 1, sodium: 91, emoji: '🧀' },
+  { id: 240, name: 'Butter', brand: 'Salted', per: 14, unit: 'g', kcal: 102, p: 0.1, c: 0, f: 11.5, fiber: 0, sugar: 0, sodium: 91, emoji: '🧈' },
+
+  // ============ GRAINS & CARBS ============
+  { id: 260, name: 'Quinoa Cooked', brand: 'Generic', per: 100, unit: 'g', kcal: 120, p: 4.4, c: 21, f: 1.9, fiber: 2.8, sugar: 0.9, sodium: 7, emoji: '🌾' },
+  { id: 261, name: 'Couscous Cooked', brand: 'Generic', per: 100, unit: 'g', kcal: 112, p: 3.8, c: 23, f: 0.2, fiber: 1.4, sugar: 0.1, sodium: 5, emoji: '🌾' },
+  { id: 262, name: 'Bulgur Cooked', brand: 'Generic', per: 100, unit: 'g', kcal: 83, p: 3, c: 19, f: 0.2, fiber: 4.5, sugar: 0.1, sodium: 5, emoji: '🌾' },
+  { id: 263, name: 'Barley Cooked', brand: 'Pearled', per: 100, unit: 'g', kcal: 123, p: 2.3, c: 28, f: 0.4, fiber: 3.8, sugar: 0.3, sodium: 3, emoji: '🌾' },
+  { id: 264, name: 'Buckwheat Cooked', brand: 'Generic', per: 100, unit: 'g', kcal: 92, p: 3.4, c: 20, f: 0.6, fiber: 2.7, sugar: 0.9, sodium: 4, emoji: '🌾' },
+  { id: 265, name: 'Whole Wheat Bread', brand: 'Slice', per: 43, unit: 'g', kcal: 110, p: 4, c: 20, f: 1.5, fiber: 3, sugar: 3, sodium: 210, emoji: '🍞' },
+  { id: 266, name: 'White Bread', brand: 'Slice', per: 28, unit: 'g', kcal: 75, p: 2.5, c: 14, f: 1, fiber: 0.7, sugar: 1.5, sodium: 150, emoji: '🍞' },
+  { id: 267, name: 'Bagel', brand: 'Plain', per: 95, unit: 'g', kcal: 245, p: 10, c: 48, f: 1.5, fiber: 2, sugar: 6, sodium: 430, emoji: '🥯' },
+  { id: 268, name: 'English Muffin', brand: 'Plain', per: 57, unit: 'g', kcal: 134, p: 4.4, c: 26, f: 1, fiber: 2, sugar: 2, sodium: 264, emoji: '🍞' },
+  { id: 269, name: 'Tortilla Flour', brand: '8 inch', per: 49, unit: 'g', kcal: 147, p: 4, c: 24, f: 3.5, fiber: 1.5, sugar: 0.5, sodium: 371, emoji: '🫓' },
+  { id: 270, name: 'Tortilla Corn', brand: '6 inch', per: 26, unit: 'g', kcal: 52, p: 1.4, c: 11, f: 0.7, fiber: 1.5, sugar: 0.2, sodium: 11, emoji: '🫓' },
+  { id: 271, name: 'Croissant', brand: 'Butter', per: 57, unit: 'g', kcal: 231, p: 5, c: 26, f: 12, fiber: 1.5, sugar: 5, sodium: 266, emoji: '🥐' },
+  { id: 272, name: 'Cornflakes', brand: 'Kellogg\'s', per: 30, unit: 'g', kcal: 110, p: 2, c: 25, f: 0, fiber: 1, sugar: 3, sodium: 200, emoji: '🥣' },
+  { id: 273, name: 'Granola', brand: 'Generic', per: 50, unit: 'g', kcal: 220, p: 5, c: 37, f: 7, fiber: 4, sugar: 14, sodium: 30, emoji: '🥣' },
+  { id: 274, name: 'Weet-Bix', brand: 'Biscuits (2)', per: 30, unit: 'g', kcal: 107, p: 4, c: 20, f: 0.6, fiber: 3.5, sugar: 1, sodium: 77, emoji: '🥣' },
+
+  // ============ LEGUMES & PULSES ============
+  { id: 290, name: 'Lentils Cooked', brand: 'Brown', per: 100, unit: 'g', kcal: 116, p: 9, c: 20, f: 0.4, fiber: 8, sugar: 1.8, sodium: 2, emoji: '🫘' },
+  { id: 291, name: 'Chickpeas Cooked', brand: 'Generic', per: 100, unit: 'g', kcal: 164, p: 9, c: 27, f: 2.6, fiber: 7.6, sugar: 4.8, sodium: 7, emoji: '🫘' },
+  { id: 292, name: 'Black Beans', brand: 'Cooked', per: 100, unit: 'g', kcal: 132, p: 9, c: 24, f: 0.5, fiber: 8.7, sugar: 0.3, sodium: 1, emoji: '🫘' },
+  { id: 293, name: 'Kidney Beans', brand: 'Cooked', per: 100, unit: 'g', kcal: 127, p: 9, c: 23, f: 0.5, fiber: 6.4, sugar: 0.3, sodium: 1, emoji: '🫘' },
+  { id: 294, name: 'Edamame', brand: 'Shelled, cooked', per: 100, unit: 'g', kcal: 121, p: 12, c: 9, f: 5, fiber: 5, sugar: 2, sodium: 6, emoji: '🫛' },
+  { id: 295, name: 'Green Peas', brand: 'Frozen', per: 100, unit: 'g', kcal: 81, p: 5, c: 14, f: 0.4, fiber: 5, sugar: 5.7, sodium: 5, emoji: '🫛' },
+
+  // ============ VEGETABLES ============
+  { id: 310, name: 'Carrot', brand: 'Raw', per: 100, unit: 'g', kcal: 41, p: 0.9, c: 10, f: 0.2, fiber: 2.8, sugar: 4.7, sodium: 69, emoji: '🥕' },
+  { id: 311, name: 'Bell Pepper Red', brand: 'Raw', per: 100, unit: 'g', kcal: 31, p: 1, c: 6, f: 0.3, fiber: 2.1, sugar: 4.2, sodium: 4, emoji: '🫑' },
+  { id: 312, name: 'Cucumber', brand: 'Raw', per: 100, unit: 'g', kcal: 15, p: 0.7, c: 3.6, f: 0.1, fiber: 0.5, sugar: 1.7, sodium: 2, emoji: '🥒' },
+  { id: 313, name: 'Tomato', brand: 'Raw', per: 100, unit: 'g', kcal: 18, p: 0.9, c: 3.9, f: 0.2, fiber: 1.2, sugar: 2.6, sodium: 5, emoji: '🍅' },
+  { id: 314, name: 'Onion', brand: 'Raw', per: 100, unit: 'g', kcal: 40, p: 1.1, c: 9.3, f: 0.1, fiber: 1.7, sugar: 4.2, sodium: 4, emoji: '🧅' },
+  { id: 315, name: 'Garlic Clove', brand: 'Raw', per: 3, unit: 'g', kcal: 4, p: 0.2, c: 1, f: 0, fiber: 0.1, sugar: 0, sodium: 1, emoji: '🧄' },
+  { id: 316, name: 'Zucchini', brand: 'Raw', per: 100, unit: 'g', kcal: 17, p: 1.2, c: 3.1, f: 0.3, fiber: 1, sugar: 2.5, sodium: 8, emoji: '🥒' },
+  { id: 317, name: 'Eggplant', brand: 'Raw', per: 100, unit: 'g', kcal: 25, p: 1, c: 6, f: 0.2, fiber: 3, sugar: 3.5, sodium: 2, emoji: '🍆' },
+  { id: 318, name: 'Mushrooms', brand: 'White, raw', per: 100, unit: 'g', kcal: 22, p: 3.1, c: 3.3, f: 0.3, fiber: 1, sugar: 2, sodium: 5, emoji: '🍄' },
+  { id: 319, name: 'Kale', brand: 'Raw', per: 100, unit: 'g', kcal: 49, p: 4.3, c: 8.8, f: 0.9, fiber: 3.6, sugar: 2.3, sodium: 38, emoji: '🥬' },
+  { id: 320, name: 'Cauliflower', brand: 'Raw', per: 100, unit: 'g', kcal: 25, p: 1.9, c: 5, f: 0.3, fiber: 2, sugar: 1.9, sodium: 30, emoji: '🥦' },
+  { id: 321, name: 'Asparagus', brand: 'Raw', per: 100, unit: 'g', kcal: 20, p: 2.2, c: 3.9, f: 0.1, fiber: 2.1, sugar: 1.9, sodium: 2, emoji: '🥬' },
+  { id: 322, name: 'Brussels Sprouts', brand: 'Cooked', per: 100, unit: 'g', kcal: 36, p: 2.6, c: 7, f: 0.5, fiber: 2.6, sugar: 1.7, sodium: 21, emoji: '🥬' },
+  { id: 323, name: 'Corn', brand: 'Cooked', per: 100, unit: 'g', kcal: 96, p: 3.4, c: 21, f: 1.5, fiber: 2.4, sugar: 4.5, sodium: 15, emoji: '🌽' },
+  { id: 324, name: 'Green Beans', brand: 'Cooked', per: 100, unit: 'g', kcal: 35, p: 1.9, c: 7.9, f: 0.3, fiber: 3.4, sugar: 3.3, sodium: 6, emoji: '🫛' },
+
+  // ============ FRUITS ============
+  { id: 340, name: 'Orange', brand: 'Medium', per: 131, unit: 'g', kcal: 62, p: 1.2, c: 15, f: 0.2, fiber: 3.1, sugar: 12, sodium: 0, emoji: '🍊' },
+  { id: 341, name: 'Strawberries', brand: 'Fresh', per: 100, unit: 'g', kcal: 32, p: 0.7, c: 7.7, f: 0.3, fiber: 2, sugar: 4.9, sodium: 1, emoji: '🍓' },
+  { id: 342, name: 'Grapes', brand: 'Red/green', per: 100, unit: 'g', kcal: 69, p: 0.7, c: 18, f: 0.2, fiber: 0.9, sugar: 16, sodium: 2, emoji: '🍇' },
+  { id: 343, name: 'Watermelon', brand: 'Cubed', per: 100, unit: 'g', kcal: 30, p: 0.6, c: 7.6, f: 0.2, fiber: 0.4, sugar: 6.2, sodium: 1, emoji: '🍉' },
+  { id: 344, name: 'Pineapple', brand: 'Fresh', per: 100, unit: 'g', kcal: 50, p: 0.5, c: 13, f: 0.1, fiber: 1.4, sugar: 9.9, sodium: 1, emoji: '🍍' },
+  { id: 345, name: 'Mango', brand: 'Medium', per: 200, unit: 'g', kcal: 120, p: 1.7, c: 30, f: 0.8, fiber: 3.2, sugar: 27, sodium: 2, emoji: '🥭' },
+  { id: 346, name: 'Peach', brand: 'Medium', per: 150, unit: 'g', kcal: 58, p: 1.4, c: 14, f: 0.4, fiber: 2.3, sugar: 13, sodium: 0, emoji: '🍑' },
+  { id: 347, name: 'Pear', brand: 'Medium', per: 178, unit: 'g', kcal: 101, p: 0.6, c: 27, f: 0.3, fiber: 5.5, sugar: 17, sodium: 2, emoji: '🍐' },
+  { id: 348, name: 'Kiwi', brand: 'Medium', per: 69, unit: 'g', kcal: 42, p: 0.8, c: 10, f: 0.4, fiber: 2.1, sugar: 6.2, sodium: 2, emoji: '🥝' },
+  { id: 349, name: 'Cherries', brand: 'Sweet, fresh', per: 100, unit: 'g', kcal: 63, p: 1.1, c: 16, f: 0.2, fiber: 2.1, sugar: 13, sodium: 0, emoji: '🍒' },
+  { id: 350, name: 'Raspberries', brand: 'Fresh', per: 100, unit: 'g', kcal: 52, p: 1.2, c: 12, f: 0.7, fiber: 6.5, sugar: 4.4, sodium: 1, emoji: '🫐' },
+  { id: 351, name: 'Pomegranate Seeds', brand: 'Fresh', per: 100, unit: 'g', kcal: 83, p: 1.7, c: 19, f: 1.2, fiber: 4, sugar: 14, sodium: 3, emoji: '🫐' },
+  { id: 352, name: 'Raisins', brand: 'Dried', per: 40, unit: 'g', kcal: 120, p: 1.2, c: 32, f: 0.2, fiber: 1.6, sugar: 24, sodium: 4, emoji: '🍇' },
+
+  // ============ FATS, NUTS, SEEDS ============
+  { id: 370, name: 'Walnuts', brand: 'Raw', per: 28, unit: 'g', kcal: 185, p: 4.3, c: 3.9, f: 18, fiber: 1.9, sugar: 0.7, sodium: 1, emoji: '🌰' },
+  { id: 371, name: 'Cashews', brand: 'Raw', per: 28, unit: 'g', kcal: 157, p: 5.2, c: 8.6, f: 12, fiber: 0.9, sugar: 1.7, sodium: 3, emoji: '🌰' },
+  { id: 372, name: 'Pistachios', brand: 'Shelled', per: 28, unit: 'g', kcal: 159, p: 5.7, c: 7.7, f: 13, fiber: 2.9, sugar: 2.2, sodium: 0, emoji: '🌰' },
+  { id: 373, name: 'Pecans', brand: 'Raw', per: 28, unit: 'g', kcal: 196, p: 2.6, c: 3.9, f: 20, fiber: 2.7, sugar: 1.1, sodium: 0, emoji: '🌰' },
+  { id: 374, name: 'Hazelnuts', brand: 'Raw', per: 28, unit: 'g', kcal: 178, p: 4.2, c: 4.7, f: 17, fiber: 2.7, sugar: 1.2, sodium: 0, emoji: '🌰' },
+  { id: 375, name: 'Chia Seeds', brand: 'Dried', per: 15, unit: 'g', kcal: 73, p: 2.5, c: 6.3, f: 4.6, fiber: 5.2, sugar: 0, sodium: 2, emoji: '⚫' },
+  { id: 376, name: 'Flax Seeds', brand: 'Ground', per: 15, unit: 'g', kcal: 80, p: 2.8, c: 4.3, f: 6.3, fiber: 4.1, sugar: 0.2, sodium: 5, emoji: '⚫' },
+  { id: 377, name: 'Pumpkin Seeds', brand: 'Roasted', per: 28, unit: 'g', kcal: 151, p: 7, c: 5, f: 13, fiber: 1.7, sugar: 0.4, sodium: 5, emoji: '🎃' },
+  { id: 378, name: 'Sunflower Seeds', brand: 'Roasted', per: 28, unit: 'g', kcal: 165, p: 5.5, c: 7, f: 14, fiber: 3.1, sugar: 0.8, sodium: 1, emoji: '🌻' },
+  { id: 379, name: 'Tahini', brand: 'Sesame paste', per: 15, unit: 'g', kcal: 89, p: 2.6, c: 3.2, f: 8, fiber: 1.4, sugar: 0.1, sodium: 17, emoji: '🥣' },
+  { id: 380, name: 'Almond Butter', brand: 'Natural', per: 16, unit: 'g', kcal: 98, p: 3.4, c: 3, f: 9, fiber: 1.7, sugar: 1, sodium: 1, emoji: '🥜' },
+  { id: 381, name: 'Coconut Oil', brand: 'Virgin', per: 14, unit: 'g', kcal: 121, p: 0, c: 0, f: 14, fiber: 0, sugar: 0, sodium: 0, emoji: '🥥' },
+  { id: 382, name: 'Avocado Oil', brand: 'Extra virgin', per: 14, unit: 'g', kcal: 124, p: 0, c: 0, f: 14, fiber: 0, sugar: 0, sodium: 0, emoji: '🥑' },
+  { id: 383, name: 'Ghee', brand: 'Clarified butter', per: 14, unit: 'g', kcal: 123, p: 0, c: 0, f: 14, fiber: 0, sugar: 0, sodium: 0, emoji: '🧈' },
+
+  // ============ INDIAN & SOUTH ASIAN ============
+  { id: 400, name: 'Butter Chicken', brand: 'Indian', per: 300, unit: 'g', kcal: 490, p: 28, c: 22, f: 32, fiber: 2, sugar: 9, sodium: 820, emoji: '🍛' },
+  { id: 401, name: 'Chicken Tikka Masala', brand: 'Indian', per: 300, unit: 'g', kcal: 440, p: 30, c: 20, f: 26, fiber: 2, sugar: 8, sodium: 780, emoji: '🍛' },
+  { id: 402, name: 'Palak Paneer', brand: 'Indian', per: 250, unit: 'g', kcal: 310, p: 14, c: 14, f: 22, fiber: 4, sugar: 3, sodium: 620, emoji: '🥬' },
+  { id: 403, name: 'Dal (Lentil Curry)', brand: 'Indian', per: 250, unit: 'g', kcal: 220, p: 12, c: 32, f: 5, fiber: 9, sugar: 3, sodium: 580, emoji: '🍲' },
+  { id: 404, name: 'Chana Masala', brand: 'Indian', per: 250, unit: 'g', kcal: 280, p: 11, c: 38, f: 9, fiber: 10, sugar: 8, sodium: 620, emoji: '🍲' },
+  { id: 405, name: 'Aloo Gobi', brand: 'Indian', per: 250, unit: 'g', kcal: 195, p: 5, c: 26, f: 8, fiber: 5, sugar: 5, sodium: 480, emoji: '🥦' },
+  { id: 406, name: 'Naan', brand: 'Plain', per: 90, unit: 'g', kcal: 262, p: 9, c: 45, f: 5, fiber: 2, sugar: 3, sodium: 427, emoji: '🫓' },
+  { id: 407, name: 'Garlic Naan', brand: 'Indian', per: 100, unit: 'g', kcal: 310, p: 10, c: 48, f: 8, fiber: 2, sugar: 3, sodium: 490, emoji: '🫓' },
+  { id: 408, name: 'Samosa', brand: 'Vegetable', per: 60, unit: 'g', kcal: 180, p: 3, c: 20, f: 10, fiber: 2, sugar: 2, sodium: 320, emoji: '🔺' },
+  { id: 409, name: 'Pakora', brand: 'Vegetable', per: 100, unit: 'g', kcal: 315, p: 7, c: 35, f: 16, fiber: 4, sugar: 3, sodium: 520, emoji: '🟤' },
+  { id: 410, name: 'Tandoori Chicken', brand: 'Indian', per: 200, unit: 'g', kcal: 310, p: 42, c: 4, f: 14, fiber: 1, sugar: 2, sodium: 560, emoji: '🍗' },
+  { id: 411, name: 'Paneer', brand: 'Indian cheese', per: 100, unit: 'g', kcal: 265, p: 18, c: 1.2, f: 21, fiber: 0, sugar: 1, sodium: 22, emoji: '🧀' },
+  { id: 412, name: 'Dosa', brand: 'South Indian', per: 100, unit: 'g', kcal: 168, p: 4, c: 28, f: 4, fiber: 1.5, sugar: 0.5, sodium: 210, emoji: '🫓' },
+  { id: 413, name: 'Idli', brand: 'Per piece', per: 40, unit: 'g', kcal: 58, p: 1.6, c: 12, f: 0.4, fiber: 0.6, sugar: 0.2, sodium: 110, emoji: '⚪' },
+  { id: 414, name: 'Gulab Jamun', brand: 'Per piece', per: 40, unit: 'g', kcal: 150, p: 2, c: 21, f: 7, fiber: 0.3, sugar: 16, sodium: 25, emoji: '🟤' },
+  { id: 415, name: 'Mango Lassi', brand: 'Indian drink', per: 250, unit: 'ml', kcal: 220, p: 6, c: 42, f: 3, fiber: 1, sugar: 38, sodium: 80, emoji: '🥭' },
+  { id: 416, name: 'Raita', brand: 'Yogurt side', per: 100, unit: 'g', kcal: 60, p: 3, c: 5, f: 3, fiber: 0.5, sugar: 4, sodium: 220, emoji: '🥛' },
+
+  // ============ LEVANTINE, EGYPTIAN, NORTH AFRICAN ============
+  { id: 430, name: 'Koshari', brand: 'Egyptian', per: 400, unit: 'g', kcal: 550, p: 18, c: 100, f: 10, fiber: 12, sugar: 6, sodium: 780, emoji: '🍝' },
+  { id: 431, name: 'Molokhia', brand: 'Egyptian stew', per: 300, unit: 'g', kcal: 280, p: 18, c: 14, f: 16, fiber: 6, sugar: 3, sodium: 620, emoji: '🥬' },
+  { id: 432, name: 'Ful Mudammas', brand: 'Egyptian beans', per: 200, unit: 'g', kcal: 240, p: 14, c: 32, f: 7, fiber: 10, sugar: 2, sodium: 480, emoji: '🫘' },
+  { id: 433, name: 'Taameya (Falafel)', brand: 'Egyptian', per: 20, unit: 'g', kcal: 60, p: 2.5, c: 6, f: 3, fiber: 2, sugar: 0.5, sodium: 95, emoji: '🟤' },
+  { id: 434, name: 'Mahshi', brand: 'Stuffed vegetables', per: 250, unit: 'g', kcal: 340, p: 10, c: 48, f: 12, fiber: 5, sugar: 8, sodium: 620, emoji: '🫑' },
+  { id: 435, name: 'Manakish Zaatar', brand: 'Levantine', per: 120, unit: 'g', kcal: 360, p: 8, c: 46, f: 16, fiber: 3, sugar: 2, sodium: 520, emoji: '🫓' },
+  { id: 436, name: 'Kibbeh', brand: 'Per piece', per: 60, unit: 'g', kcal: 160, p: 7, c: 14, f: 8, fiber: 1.5, sugar: 0.5, sodium: 280, emoji: '🟤' },
+  { id: 437, name: 'Sfiha', brand: 'Lebanese meat pie', per: 80, unit: 'g', kcal: 220, p: 10, c: 22, f: 10, fiber: 1.5, sugar: 1, sodium: 380, emoji: '🥟' },
+  { id: 438, name: 'Fatteh', brand: 'Levantine', per: 300, unit: 'g', kcal: 420, p: 18, c: 44, f: 18, fiber: 6, sugar: 4, sodium: 680, emoji: '🥣' },
+  { id: 439, name: 'Moroccan Tagine', brand: 'Chicken', per: 350, unit: 'g', kcal: 420, p: 32, c: 32, f: 18, fiber: 5, sugar: 14, sodium: 680, emoji: '🍲' },
+  { id: 440, name: 'Couscous Royal', brand: 'Moroccan', per: 400, unit: 'g', kcal: 580, p: 28, c: 72, f: 18, fiber: 7, sugar: 8, sodium: 820, emoji: '🌾' },
+  { id: 441, name: 'Harira Soup', brand: 'Moroccan', per: 300, unit: 'g', kcal: 210, p: 12, c: 30, f: 4, fiber: 6, sugar: 4, sodium: 680, emoji: '🥣' },
+  { id: 442, name: 'Shakshuka', brand: 'Eggs in tomato', per: 300, unit: 'g', kcal: 280, p: 16, c: 14, f: 18, fiber: 3, sugar: 9, sodium: 620, emoji: '🍳' },
+  { id: 443, name: 'Halloumi Grilled', brand: 'Cypriot', per: 80, unit: 'g', kcal: 250, p: 16, c: 1.6, f: 20, fiber: 0, sugar: 1.6, sodium: 900, emoji: '🧀' },
+
+  // ============ ITALIAN & MEDITERRANEAN ============
+  { id: 460, name: 'Spaghetti Bolognese', brand: 'Italian', per: 400, unit: 'g', kcal: 560, p: 28, c: 72, f: 18, fiber: 6, sugar: 10, sodium: 820, emoji: '🍝' },
+  { id: 461, name: 'Penne Arrabbiata', brand: 'Italian', per: 350, unit: 'g', kcal: 430, p: 12, c: 72, f: 11, fiber: 6, sugar: 8, sodium: 620, emoji: '🍝' },
+  { id: 462, name: 'Carbonara', brand: 'Italian', per: 350, unit: 'g', kcal: 650, p: 26, c: 68, f: 28, fiber: 3, sugar: 3, sodium: 940, emoji: '🍝' },
+  { id: 463, name: 'Lasagna', brand: 'Meat', per: 300, unit: 'g', kcal: 460, p: 25, c: 35, f: 22, fiber: 3, sugar: 7, sodium: 820, emoji: '🍝' },
+  { id: 464, name: 'Pizza Pepperoni', brand: 'Slice', per: 107, unit: 'slice', kcal: 298, p: 13, c: 34, f: 12, fiber: 2, sugar: 4, sodium: 683, emoji: '🍕' },
+  { id: 465, name: 'Risotto', brand: 'Mushroom', per: 300, unit: 'g', kcal: 420, p: 10, c: 64, f: 12, fiber: 2, sugar: 2, sodium: 720, emoji: '🍚' },
+  { id: 466, name: 'Caprese Salad', brand: 'Italian', per: 200, unit: 'g', kcal: 280, p: 14, c: 6, f: 22, fiber: 1.5, sugar: 5, sodium: 380, emoji: '🍅' },
+  { id: 467, name: 'Greek Salad', brand: 'Traditional', per: 250, unit: 'g', kcal: 220, p: 7, c: 12, f: 16, fiber: 4, sugar: 8, sodium: 680, emoji: '🥗' },
+  { id: 468, name: 'Gyro', brand: 'Greek wrap', per: 280, unit: 'g', kcal: 560, p: 28, c: 46, f: 28, fiber: 3, sugar: 5, sodium: 980, emoji: '🌯' },
+  { id: 469, name: 'Spanakopita', brand: 'Greek', per: 100, unit: 'g', kcal: 230, p: 6, c: 20, f: 14, fiber: 2, sugar: 2, sodium: 480, emoji: '🥟' },
+  { id: 470, name: 'Paella', brand: 'Spanish', per: 350, unit: 'g', kcal: 520, p: 24, c: 62, f: 18, fiber: 3, sugar: 4, sodium: 780, emoji: '🥘' },
+
+  // ============ EAST & SOUTHEAST ASIAN ============
+  { id: 490, name: 'Pad Thai', brand: 'Chicken', per: 350, unit: 'g', kcal: 560, p: 24, c: 70, f: 18, fiber: 4, sugar: 18, sodium: 1040, emoji: '🍜' },
+  { id: 491, name: 'Green Curry', brand: 'Thai', per: 300, unit: 'g', kcal: 420, p: 22, c: 26, f: 24, fiber: 3, sugar: 8, sodium: 780, emoji: '🍲' },
+  { id: 492, name: 'Tom Yum Soup', brand: 'Thai', per: 300, unit: 'g', kcal: 180, p: 16, c: 14, f: 7, fiber: 2, sugar: 5, sodium: 920, emoji: '🥣' },
+  { id: 493, name: 'Massaman Curry', brand: 'Thai', per: 300, unit: 'g', kcal: 460, p: 22, c: 32, f: 26, fiber: 4, sugar: 9, sodium: 720, emoji: '🍲' },
+  { id: 494, name: 'Kung Pao Chicken', brand: 'Chinese', per: 300, unit: 'g', kcal: 440, p: 28, c: 28, f: 22, fiber: 3, sugar: 10, sodium: 980, emoji: '🥡' },
+  { id: 495, name: 'Sweet and Sour Chicken', brand: 'Chinese', per: 300, unit: 'g', kcal: 520, p: 22, c: 54, f: 22, fiber: 2, sugar: 30, sodium: 720, emoji: '🥡' },
+  { id: 496, name: 'Beef and Broccoli', brand: 'Chinese', per: 300, unit: 'g', kcal: 380, p: 28, c: 20, f: 20, fiber: 4, sugar: 8, sodium: 1020, emoji: '🥦' },
+  { id: 497, name: 'Fried Rice', brand: 'Chinese', per: 300, unit: 'g', kcal: 480, p: 14, c: 66, f: 16, fiber: 3, sugar: 3, sodium: 820, emoji: '🍚' },
+  { id: 498, name: 'Spring Rolls', brand: 'Per piece', per: 50, unit: 'g', kcal: 100, p: 2, c: 12, f: 5, fiber: 1, sugar: 1, sodium: 180, emoji: '🥟' },
+  { id: 499, name: 'Dumplings', brand: 'Steamed pork', per: 30, unit: 'g', kcal: 60, p: 3, c: 6, f: 2.5, fiber: 0.5, sugar: 0.3, sodium: 140, emoji: '🥟' },
+  { id: 500, name: 'Ramen', brand: 'Tonkotsu', per: 500, unit: 'g', kcal: 580, p: 22, c: 78, f: 20, fiber: 4, sugar: 5, sodium: 1720, emoji: '🍜' },
+  { id: 501, name: 'Miso Soup', brand: 'Japanese', per: 250, unit: 'ml', kcal: 40, p: 3, c: 4, f: 1, fiber: 1, sugar: 1, sodium: 720, emoji: '🥣' },
+  { id: 502, name: 'Teriyaki Chicken', brand: 'Japanese', per: 200, unit: 'g', kcal: 360, p: 32, c: 16, f: 18, fiber: 0.5, sugar: 12, sodium: 920, emoji: '🍗' },
+  { id: 503, name: 'Sushi Salmon Nigiri', brand: 'Per piece', per: 28, unit: 'g', kcal: 48, p: 3, c: 7, f: 1, fiber: 0.2, sugar: 0.6, sodium: 90, emoji: '🍣' },
+  { id: 504, name: 'California Roll', brand: '8 pieces', per: 1, unit: 'roll', kcal: 255, p: 9, c: 38, f: 7, fiber: 6, sugar: 7, sodium: 430, emoji: '🍣' },
+  { id: 505, name: 'Edamame Side', brand: 'Japanese', per: 100, unit: 'g', kcal: 120, p: 11, c: 9, f: 5, fiber: 5, sugar: 2, sodium: 55, emoji: '🫛' },
+  { id: 506, name: 'Bibimbap', brand: 'Korean', per: 400, unit: 'g', kcal: 560, p: 24, c: 72, f: 18, fiber: 6, sugar: 8, sodium: 1020, emoji: '🥘' },
+  { id: 507, name: 'Kimchi', brand: 'Korean', per: 50, unit: 'g', kcal: 11, p: 1, c: 2.4, f: 0.2, fiber: 0.8, sugar: 1, sodium: 498, emoji: '🌶️' },
+  { id: 508, name: 'Korean BBQ Bulgogi', brand: 'Beef', per: 200, unit: 'g', kcal: 410, p: 32, c: 12, f: 26, fiber: 1, sugar: 10, sodium: 820, emoji: '🥩' },
+  { id: 509, name: 'Pho', brand: 'Vietnamese beef', per: 500, unit: 'g', kcal: 350, p: 22, c: 50, f: 6, fiber: 3, sugar: 3, sodium: 1320, emoji: '🍜' },
+  { id: 510, name: 'Banh Mi', brand: 'Vietnamese', per: 250, unit: 'g', kcal: 480, p: 22, c: 58, f: 18, fiber: 3, sugar: 6, sodium: 980, emoji: '🥖' },
+  { id: 511, name: 'Adobo Chicken', brand: 'Filipino', per: 250, unit: 'g', kcal: 380, p: 32, c: 10, f: 22, fiber: 1, sugar: 4, sodium: 1020, emoji: '🍗' },
+
+  // ============ LATIN AMERICAN & MEXICAN ============
+  { id: 530, name: 'Tacos al Pastor', brand: 'Per taco', per: 100, unit: 'g', kcal: 220, p: 12, c: 20, f: 10, fiber: 2, sugar: 2, sodium: 420, emoji: '🌮' },
+  { id: 531, name: 'Burrito Chicken', brand: 'Large', per: 400, unit: 'g', kcal: 780, p: 38, c: 88, f: 28, fiber: 8, sugar: 6, sodium: 1480, emoji: '🌯' },
+  { id: 532, name: 'Quesadilla Cheese', brand: 'Mexican', per: 200, unit: 'g', kcal: 520, p: 22, c: 42, f: 28, fiber: 3, sugar: 3, sodium: 980, emoji: '🫓' },
+  { id: 533, name: 'Enchiladas', brand: 'Chicken', per: 300, unit: 'g', kcal: 480, p: 24, c: 44, f: 22, fiber: 4, sugar: 6, sodium: 920, emoji: '🫔' },
+  { id: 534, name: 'Guacamole', brand: 'Mexican', per: 100, unit: 'g', kcal: 150, p: 2, c: 9, f: 13, fiber: 7, sugar: 1, sodium: 170, emoji: '🥑' },
+  { id: 535, name: 'Salsa', brand: 'Tomato', per: 30, unit: 'g', kcal: 8, p: 0.3, c: 2, f: 0, fiber: 0.5, sugar: 1, sodium: 128, emoji: '🍅' },
+  { id: 536, name: 'Nachos', brand: 'Cheese', per: 200, unit: 'g', kcal: 640, p: 14, c: 66, f: 36, fiber: 6, sugar: 3, sodium: 1120, emoji: '🧀' },
+  { id: 537, name: 'Churros', brand: 'Per piece', per: 50, unit: 'g', kcal: 185, p: 2, c: 22, f: 10, fiber: 1, sugar: 8, sodium: 150, emoji: '🥖' },
+  { id: 538, name: 'Black Beans & Rice', brand: 'Latin', per: 300, unit: 'g', kcal: 400, p: 14, c: 74, f: 3, fiber: 12, sugar: 2, sodium: 580, emoji: '🍚' },
+  { id: 539, name: 'Ceviche', brand: 'Peruvian', per: 200, unit: 'g', kcal: 220, p: 28, c: 12, f: 5, fiber: 2, sugar: 4, sodium: 380, emoji: '🐟' },
+  { id: 540, name: 'Empanada', brand: 'Beef', per: 100, unit: 'g', kcal: 280, p: 10, c: 26, f: 16, fiber: 1.5, sugar: 1, sodium: 420, emoji: '🥟' },
+
+  // ============ FAST FOOD & CHAINS ============
+  { id: 560, name: 'Big Mac', brand: "McDonald's", per: 1, unit: 'item', kcal: 563, p: 26, c: 45, f: 33, fiber: 3, sugar: 9, sodium: 1010, emoji: '🍔' },
+  { id: 561, name: 'Quarter Pounder', brand: "McDonald's", per: 1, unit: 'item', kcal: 520, p: 30, c: 42, f: 26, fiber: 3, sugar: 10, sodium: 1140, emoji: '🍔' },
+  { id: 562, name: 'McChicken', brand: "McDonald's", per: 1, unit: 'item', kcal: 400, p: 14, c: 39, f: 21, fiber: 2, sugar: 5, sodium: 560, emoji: '🍔' },
+  { id: 563, name: 'McDonald\'s Fries Medium', brand: "McDonald's", per: 117, unit: 'g', kcal: 320, p: 4, c: 43, f: 15, fiber: 4, sugar: 0, sodium: 260, emoji: '🍟' },
+  { id: 564, name: 'McNuggets (6)', brand: "McDonald's", per: 96, unit: 'g', kcal: 270, p: 15, c: 16, f: 16, fiber: 1, sugar: 0, sodium: 520, emoji: '🍗' },
+  { id: 565, name: 'Whopper', brand: 'Burger King', per: 1, unit: 'item', kcal: 660, p: 28, c: 49, f: 40, fiber: 2, sugar: 11, sodium: 980, emoji: '🍔' },
+  { id: 566, name: 'Chicken Sandwich', brand: 'Chick-fil-A', per: 1, unit: 'item', kcal: 440, p: 29, c: 41, f: 19, fiber: 1, sugar: 6, sodium: 1400, emoji: '🥪' },
+  { id: 567, name: 'Spicy Deluxe', brand: 'Chick-fil-A', per: 1, unit: 'item', kcal: 540, p: 30, c: 45, f: 26, fiber: 3, sugar: 7, sodium: 1720, emoji: '🥪' },
+  { id: 568, name: 'Chicken Bucket (1 pc)', brand: 'KFC original', per: 114, unit: 'g', kcal: 320, p: 26, c: 11, f: 19, fiber: 0, sugar: 0, sodium: 990, emoji: '🍗' },
+  { id: 569, name: 'Zinger', brand: 'KFC', per: 1, unit: 'item', kcal: 450, p: 22, c: 44, f: 21, fiber: 3, sugar: 5, sodium: 1120, emoji: '🍔' },
+  { id: 570, name: 'Subway 6" Turkey', brand: 'Subway', per: 1, unit: 'sub', kcal: 280, p: 18, c: 46, f: 3.5, fiber: 5, sugar: 7, sodium: 760, emoji: '🥪' },
+  { id: 571, name: 'Subway 6" Italian BMT', brand: 'Subway', per: 1, unit: 'sub', kcal: 410, p: 20, c: 46, f: 16, fiber: 5, sugar: 7, sodium: 1260, emoji: '🥪' },
+  { id: 572, name: 'Crunchwrap Supreme', brand: 'Taco Bell', per: 1, unit: 'item', kcal: 530, p: 16, c: 71, f: 21, fiber: 6, sugar: 6, sodium: 1210, emoji: '🌯' },
+  { id: 573, name: 'Beef Burrito', brand: 'Taco Bell', per: 1, unit: 'item', kcal: 440, p: 17, c: 55, f: 18, fiber: 7, sugar: 4, sodium: 1120, emoji: '🌯' },
+  { id: 574, name: 'Pepperoni Pizza 14"', brand: "Domino's", per: 1, unit: 'slice', kcal: 290, p: 12, c: 34, f: 12, fiber: 1.5, sugar: 4, sodium: 670, emoji: '🍕' },
+  { id: 575, name: 'Chipotle Bowl', brand: 'Chicken', per: 500, unit: 'g', kcal: 680, p: 48, c: 68, f: 22, fiber: 10, sugar: 5, sodium: 1560, emoji: '🥗' },
+
+  // ============ STARBUCKS & CAFE DRINKS ============
+  { id: 600, name: 'Caffè Latte Grande', brand: 'Starbucks whole milk', per: 473, unit: 'ml', kcal: 190, p: 12, c: 18, f: 7, fiber: 0, sugar: 17, sodium: 150, emoji: '☕' },
+  { id: 601, name: 'Caramel Macchiato Grande', brand: 'Starbucks', per: 473, unit: 'ml', kcal: 250, p: 10, c: 34, f: 7, fiber: 0, sugar: 33, sodium: 150, emoji: '☕' },
+  { id: 602, name: 'Vanilla Latte Grande', brand: 'Starbucks', per: 473, unit: 'ml', kcal: 250, p: 12, c: 36, f: 6, fiber: 0, sugar: 35, sodium: 170, emoji: '☕' },
+  { id: 603, name: 'Cappuccino Grande', brand: 'Starbucks whole milk', per: 473, unit: 'ml', kcal: 140, p: 8, c: 11, f: 5, fiber: 0, sugar: 10, sodium: 100, emoji: '☕' },
+  { id: 604, name: 'Americano Grande', brand: 'Starbucks', per: 473, unit: 'ml', kcal: 15, p: 1, c: 3, f: 0, fiber: 0, sugar: 0, sodium: 15, emoji: '☕' },
+  { id: 605, name: 'Frappuccino Coffee', brand: 'Starbucks grande', per: 473, unit: 'ml', kcal: 230, p: 4, c: 46, f: 3.5, fiber: 0, sugar: 45, sodium: 200, emoji: '🥤' },
+  { id: 606, name: 'Pumpkin Spice Latte', brand: 'Starbucks grande', per: 473, unit: 'ml', kcal: 390, p: 14, c: 50, f: 14, fiber: 0, sugar: 50, sodium: 240, emoji: '🎃' },
+  { id: 607, name: 'Matcha Latte Grande', brand: 'Starbucks', per: 473, unit: 'ml', kcal: 240, p: 12, c: 32, f: 7, fiber: 1, sugar: 31, sodium: 150, emoji: '🍵' },
+  { id: 608, name: 'Espresso Shot', brand: 'Single', per: 30, unit: 'ml', kcal: 5, p: 0, c: 1, f: 0, fiber: 0, sugar: 0, sodium: 0, emoji: '☕' },
+  { id: 609, name: 'Chai Latte Grande', brand: 'Starbucks', per: 473, unit: 'ml', kcal: 240, p: 8, c: 42, f: 5, fiber: 0, sugar: 42, sodium: 115, emoji: '☕' },
+
+  // ============ SNACKS, CANDY, PROTEIN BARS ============
+  { id: 630, name: 'Potato Chips', brand: 'Lay\'s classic', per: 28, unit: 'g', kcal: 160, p: 2, c: 15, f: 10, fiber: 1, sugar: 0, sodium: 170, emoji: '🍟' },
+  { id: 631, name: 'Popcorn Air-popped', brand: 'Plain', per: 30, unit: 'g', kcal: 115, p: 3.5, c: 23, f: 1.5, fiber: 4, sugar: 0, sodium: 2, emoji: '🍿' },
+  { id: 632, name: 'Pretzels', brand: 'Hard', per: 28, unit: 'g', kcal: 108, p: 3, c: 23, f: 0.8, fiber: 1, sugar: 0.5, sodium: 486, emoji: '🥨' },
+  { id: 633, name: 'Granola Bar', brand: 'Nature Valley', per: 42, unit: 'g', kcal: 190, p: 4, c: 29, f: 7, fiber: 2, sugar: 11, sodium: 160, emoji: '🍫' },
+  { id: 634, name: 'Protein Bar', brand: 'Quest Bar', per: 60, unit: 'g', kcal: 200, p: 21, c: 22, f: 8, fiber: 14, sugar: 1, sodium: 280, emoji: '💪' },
+  { id: 635, name: 'Protein Bar RXBAR', brand: 'Chocolate Sea Salt', per: 52, unit: 'g', kcal: 210, p: 12, c: 23, f: 9, fiber: 5, sugar: 13, sodium: 210, emoji: '💪' },
+  { id: 636, name: 'Snickers', brand: 'Standard bar', per: 52, unit: 'g', kcal: 250, p: 4, c: 33, f: 12, fiber: 1, sugar: 27, sodium: 120, emoji: '🍫' },
+  { id: 637, name: 'Kit Kat', brand: '4-finger', per: 42, unit: 'g', kcal: 210, p: 3, c: 27, f: 11, fiber: 1, sugar: 22, sodium: 30, emoji: '🍫' },
+  { id: 638, name: 'Oreo Cookies', brand: '3 cookies', per: 34, unit: 'g', kcal: 160, p: 2, c: 25, f: 7, fiber: 1, sugar: 14, sodium: 135, emoji: '🍪' },
+  { id: 639, name: 'Chocolate Chip Cookie', brand: 'Large', per: 50, unit: 'g', kcal: 220, p: 2.5, c: 28, f: 11, fiber: 1, sugar: 17, sodium: 160, emoji: '🍪' },
+  { id: 640, name: 'Ice Cream Vanilla', brand: 'Scoop', per: 66, unit: 'g', kcal: 137, p: 2.3, c: 16, f: 7, fiber: 0, sugar: 14, sodium: 53, emoji: '🍨' },
+  { id: 641, name: 'Froyo', brand: 'Vanilla cup', per: 150, unit: 'g', kcal: 220, p: 5, c: 42, f: 3.5, fiber: 0, sugar: 32, sodium: 120, emoji: '🍦' },
+  { id: 642, name: 'Gummy Bears', brand: 'Haribo', per: 30, unit: 'g', kcal: 96, p: 2.2, c: 22, f: 0, fiber: 0, sugar: 14, sodium: 7, emoji: '🐻' },
+  { id: 643, name: 'Trail Mix', brand: 'Generic', per: 30, unit: 'g', kcal: 140, p: 4, c: 13, f: 9, fiber: 2, sugar: 8, sodium: 5, emoji: '🥜' },
+
+  // ============ BEVERAGES ============
+  { id: 670, name: 'Coca-Cola', brand: 'Can 355ml', per: 355, unit: 'ml', kcal: 140, p: 0, c: 39, f: 0, fiber: 0, sugar: 39, sodium: 45, emoji: '🥤' },
+  { id: 671, name: 'Diet Coke', brand: 'Can 355ml', per: 355, unit: 'ml', kcal: 0, p: 0, c: 0, f: 0, fiber: 0, sugar: 0, sodium: 40, emoji: '🥤' },
+  { id: 672, name: 'Sprite', brand: 'Can 355ml', per: 355, unit: 'ml', kcal: 140, p: 0, c: 38, f: 0, fiber: 0, sugar: 38, sodium: 65, emoji: '🥤' },
+  { id: 673, name: 'Pepsi', brand: 'Can 355ml', per: 355, unit: 'ml', kcal: 150, p: 0, c: 41, f: 0, fiber: 0, sugar: 41, sodium: 30, emoji: '🥤' },
+  { id: 674, name: 'Red Bull', brand: 'Can 250ml', per: 250, unit: 'ml', kcal: 110, p: 1, c: 28, f: 0, fiber: 0, sugar: 27, sodium: 105, emoji: '🥤' },
+  { id: 675, name: 'Gatorade', brand: 'Bottle 500ml', per: 500, unit: 'ml', kcal: 130, p: 0, c: 34, f: 0, fiber: 0, sugar: 34, sodium: 270, emoji: '🥤' },
+  { id: 676, name: 'Orange Juice', brand: 'Fresh', per: 240, unit: 'ml', kcal: 112, p: 2, c: 26, f: 0.5, fiber: 0.5, sugar: 21, sodium: 2, emoji: '🧃' },
+  { id: 677, name: 'Apple Juice', brand: 'Fresh', per: 240, unit: 'ml', kcal: 114, p: 0.5, c: 28, f: 0.3, fiber: 0.5, sugar: 24, sodium: 10, emoji: '🧃' },
+  { id: 678, name: 'Coconut Water', brand: 'Plain', per: 240, unit: 'ml', kcal: 45, p: 1.7, c: 9, f: 0.5, fiber: 2.6, sugar: 6, sodium: 252, emoji: '🥥' },
+  { id: 679, name: 'Beer Lager', brand: 'Regular 355ml', per: 355, unit: 'ml', kcal: 153, p: 1.6, c: 13, f: 0, fiber: 0, sugar: 0, sodium: 14, emoji: '🍺' },
+  { id: 680, name: 'Red Wine', brand: '150ml glass', per: 150, unit: 'ml', kcal: 125, p: 0.1, c: 3.8, f: 0, fiber: 0, sugar: 0.9, sodium: 6, emoji: '🍷' },
+  { id: 681, name: 'Protein Shake', brand: 'Whey with milk', per: 400, unit: 'ml', kcal: 230, p: 32, c: 15, f: 5, fiber: 1, sugar: 13, sodium: 180, emoji: '🥤' },
+  { id: 682, name: 'Smoothie Berry', brand: 'With yogurt', per: 400, unit: 'ml', kcal: 280, p: 8, c: 58, f: 3, fiber: 6, sugar: 48, sodium: 95, emoji: '🫐' },
+  { id: 683, name: 'Green Smoothie', brand: 'Kale banana', per: 400, unit: 'ml', kcal: 220, p: 5, c: 48, f: 2.5, fiber: 7, sugar: 32, sodium: 60, emoji: '🥬' },
+  { id: 684, name: 'Matcha Green Tea', brand: 'Plain', per: 240, unit: 'ml', kcal: 5, p: 0, c: 1, f: 0, fiber: 0, sugar: 0, sodium: 2, emoji: '🍵' },
+  { id: 685, name: 'Black Tea', brand: 'Unsweetened', per: 240, unit: 'ml', kcal: 2, p: 0, c: 0.5, f: 0, fiber: 0, sugar: 0, sodium: 7, emoji: '🍵' },
+
+  // ============ CONDIMENTS & SAUCES ============
+  { id: 700, name: 'Ketchup', brand: 'Heinz', per: 17, unit: 'g', kcal: 20, p: 0.2, c: 5, f: 0, fiber: 0, sugar: 4, sodium: 170, emoji: '🍅' },
+  { id: 701, name: 'Mayonnaise', brand: 'Regular', per: 14, unit: 'g', kcal: 94, p: 0.1, c: 0.1, f: 10, fiber: 0, sugar: 0.1, sodium: 88, emoji: '🥚' },
+  { id: 702, name: 'Mustard', brand: 'Yellow', per: 5, unit: 'g', kcal: 3, p: 0.2, c: 0.3, f: 0.2, fiber: 0.1, sugar: 0.1, sodium: 57, emoji: '🟡' },
+  { id: 703, name: 'Sriracha', brand: 'Hot sauce', per: 5, unit: 'g', kcal: 5, p: 0.1, c: 1, f: 0, fiber: 0.1, sugar: 1, sodium: 75, emoji: '🌶️' },
+  { id: 704, name: 'Soy Sauce', brand: 'Regular', per: 15, unit: 'ml', kcal: 10, p: 1.6, c: 0.8, f: 0, fiber: 0.1, sugar: 0.1, sodium: 902, emoji: '🟤' },
+  { id: 705, name: 'Honey', brand: 'Raw', per: 21, unit: 'g', kcal: 64, p: 0.1, c: 17, f: 0, fiber: 0, sugar: 17, sodium: 1, emoji: '🍯' },
+  { id: 706, name: 'Maple Syrup', brand: 'Pure', per: 20, unit: 'ml', kcal: 52, p: 0, c: 13, f: 0, fiber: 0, sugar: 12, sodium: 2, emoji: '🍁' },
+  { id: 707, name: 'Balsamic Vinegar', brand: 'Regular', per: 16, unit: 'ml', kcal: 14, p: 0.1, c: 2.7, f: 0, fiber: 0, sugar: 2.4, sodium: 4, emoji: '⚫' },
+  { id: 708, name: 'Ranch Dressing', brand: 'Regular', per: 30, unit: 'ml', kcal: 145, p: 0.5, c: 2, f: 15, fiber: 0, sugar: 1.5, sodium: 270, emoji: '⚪' },
+  { id: 709, name: 'BBQ Sauce', brand: 'Regular', per: 30, unit: 'g', kcal: 50, p: 0.3, c: 12, f: 0, fiber: 0.2, sugar: 10, sodium: 340, emoji: '🟤' },
+
+  // ============ SWEETENERS & SUGAR ============
+  { id: 720, name: 'White Sugar', brand: 'Granulated', per: 4, unit: 'g', kcal: 16, p: 0, c: 4, f: 0, fiber: 0, sugar: 4, sodium: 0, emoji: '🍬' },
+  { id: 721, name: 'Brown Sugar', brand: 'Packed', per: 4, unit: 'g', kcal: 15, p: 0, c: 3.9, f: 0, fiber: 0, sugar: 3.9, sodium: 1, emoji: '🍬' },
+  { id: 722, name: 'Stevia', brand: 'Packet', per: 1, unit: 'packet', kcal: 0, p: 0, c: 1, f: 0, fiber: 0, sugar: 0, sodium: 0, emoji: '🌿' },
 ];
 
 const MEAL_PLANS = [
@@ -1351,10 +1624,28 @@ function SearchModal({ theme, onClose, favorites, recent, onToggleFav, onAdd }) 
   // Local (built-in) matches — shown instantly
   const localResults = useMemo(() => {
     if (!q.trim()) return [];
-    const ql = q.toLowerCase();
-    return FOOD_DB.filter(f =>
-      f.name.toLowerCase().includes(ql) || f.brand.toLowerCase().includes(ql)
-    ).slice(0, 6);
+    const ql = q.toLowerCase().trim();
+    const scored = [];
+    for (const f of FOOD_DB) {
+      const n = f.name.toLowerCase();
+      const b = f.brand.toLowerCase();
+      let score = 0;
+      // Exact name match wins
+      if (n === ql) score = 100;
+      // Name starts with query — very strong
+      else if (n.startsWith(ql)) score = 80;
+      // Brand starts with query
+      else if (b.startsWith(ql)) score = 60;
+      // Word in name starts with query (e.g. "chicken" matches "Grilled Chicken")
+      else if (n.split(/[\s,]+/).some(w => w.startsWith(ql))) score = 50;
+      // Name contains query
+      else if (n.includes(ql)) score = 30;
+      // Brand contains query
+      else if (b.includes(ql)) score = 10;
+      if (score > 0) scored.push({ f, score });
+    }
+    scored.sort((a, b) => b.score - a.score);
+    return scored.slice(0, 12).map(x => x.f);
   }, [q]);
 
   // USDA search — debounced, 280ms after last keystroke
