@@ -64,6 +64,18 @@ export default defineConfig({
             },
           },
           {
+            urlPattern: /^https:\/\/world\.openfoodfacts\.org\/.*/i,
+            handler: 'NetworkFirst',
+            options: {
+              cacheName: 'off-api-cache',
+              expiration: {
+                maxEntries: 200,
+                maxAgeSeconds: 60 * 60 * 24, // 24 hours
+              },
+              cacheableResponse: { statuses: [0, 200] },
+            },
+          },
+          {
             urlPattern: /^https:\/\/fonts\.googleapis\.com\/.*/i,
             handler: 'CacheFirst',
             options: {
