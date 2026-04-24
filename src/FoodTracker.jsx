@@ -187,6 +187,72 @@ async function searchUSDA(query, signal) {
     .filter(f => f.kcal > 0 || f.p > 0 || f.c > 0 || f.f > 0);
 }
 
+// ============ OPEN FOOD FACTS API (worldwide, including Gulf brands) ============
+// Free, no API key needed. Best for packaged/branded products — including Almarai,
+// Al Ain, Baladna, Mai Dubai, and other Gulf-region brands contributed by volunteers.
+const OFF_BASE = 'https://world.openfoodfacts.org';
+
+function normalizeOFF(p) {
+  const nutriments = p.nutriments || {};
+  const name = p.product_name_en || p.product_name || p.generic_name || 'Unknown product';
+  const brand = p.brands || p.stores || 'Open Food Facts';
+  const kcal = Math.round(
+    nutriments['energy-kcal_100g'] ||
+    (nutriments['energy_100g'] ? nutriments['energy_100g'] / 4.184 : 0) ||
+    0
+  );
+  return {
+    id: `off_${p.code}`,
+    name: name.length > 60 ? name.slice(0, 57) + '…' : name,
+    brand: brand.length > 30 ? brand.slice(0, 27) + '…' : brand,
+    per: 100,
+    unit: 'g',
+    kcal,
+    p: +(nutriments.proteins_100g || 0).toFixed(1),
+    c: +(nutriments.carbohydrates_100g || 0).toFixed(1),
+    f: +(nutriments.fat_100g || 0).toFixed(1),
+    fiber: +(nutriments.fiber_100g || 0).toFixed(1),
+    sugar: +(nutriments.sugars_100g || 0).toFixed(1),
+    sodium: Math.round((nutriments.sodium_100g || 0) * 1000), // OFF is in g, we want mg
+    emoji: guessEmoji(name),
+    source: 'off',
+  };
+}
+
+async function searchOFF(query, signal) {
+  // Use the CGI search endpoint — works best for general text queries
+  const url = `${OFF_BASE}/cgi/search.pl?search_terms=${encodeURIComponent(query)}&search_simple=1&action=process&json=1&page_size=20&fields=code,product_name,product_name_en,generic_name,brands,stores,nutriments`;
+  const res = await fetch(url, { signal });
+  if (!res.ok) throw new Error(`OFF API error: ${res.status}`);
+  const data = await res.json();
+  return (data.products || [])
+    .map(normalizeOFF)
+    .filter(f => f.kcal > 0 || f.p > 0 || f.c > 0 || f.f > 0);
+}
+
+// Search USDA and Open Food Facts in parallel, merging results.
+async function searchRemote(query, signal) {
+  const [usda, off] = await Promise.allSettled([
+    searchUSDA(query, signal),
+    searchOFF(query, signal),
+  ]);
+  const results = [];
+  if (usda.status === 'fulfilled') results.push(...usda.value);
+  if (off.status === 'fulfilled') results.push(...off.value);
+  // Dedupe by name+brand signature
+  const seen = new Set();
+  const deduped = [];
+  for (const r of results) {
+    const key = `${r.name.toLowerCase()}|${r.brand.toLowerCase()}`;
+    if (!seen.has(key)) { seen.add(key); deduped.push(r); }
+  }
+  // If both failed, throw the first error so UI knows
+  if (usda.status === 'rejected' && off.status === 'rejected') {
+    throw usda.reason;
+  }
+  return deduped;
+}
+
 // ============ BUILT-IN STARTER FOODS ============
 // These load instantly and cover the basics — shown as "Common" and seed the Favorites/Recent lists.
 const FOOD_DB = [
@@ -225,6 +291,63 @@ const FOOD_DB = [
   { id: 28, name: 'Sushi Roll (6 pc)', brand: 'Salmon avocado', per: 1, unit: 'roll', kcal: 304, p: 9, c: 42, f: 11, fiber: 4, sugar: 3, sodium: 430, emoji: '🍣' },
   { id: 29, name: 'Latte', brand: 'Whole milk', per: 350, unit: 'ml', kcal: 190, p: 10, c: 18, f: 9, fiber: 0, sugar: 17, sodium: 130, emoji: '☕' },
   { id: 30, name: 'Dark Chocolate 85%', brand: 'Square', per: 10, unit: 'g', kcal: 60, p: 1, c: 3, f: 4.5, fiber: 1.2, sugar: 1.5, sodium: 2, emoji: '🍫' },
+
+  // ============ GULF & MIDDLE EASTERN FOODS ============
+  // Main dishes
+  { id: 101, name: 'Machboos Chicken', brand: 'Qatari / Gulf', per: 300, unit: 'g', kcal: 485, p: 28, c: 58, f: 15, fiber: 2, sugar: 3, sodium: 780, emoji: '🍛' },
+  { id: 102, name: 'Machboos Laham', brand: 'Lamb, Gulf', per: 300, unit: 'g', kcal: 560, p: 30, c: 52, f: 23, fiber: 2, sugar: 3, sodium: 820, emoji: '🍛' },
+  { id: 103, name: 'Machboos Robyan', brand: 'Shrimp, Gulf', per: 300, unit: 'g', kcal: 410, p: 24, c: 56, f: 10, fiber: 2, sugar: 3, sodium: 920, emoji: '🍤' },
+  { id: 104, name: 'Madrouba', brand: 'Qatari porridge rice', per: 300, unit: 'g', kcal: 440, p: 22, c: 62, f: 12, fiber: 2, sugar: 2, sodium: 680, emoji: '🍚' },
+  { id: 105, name: 'Harees', brand: 'Wheat & meat', per: 250, unit: 'g', kcal: 320, p: 18, c: 38, f: 10, fiber: 4, sugar: 1, sodium: 540, emoji: '🥣' },
+  { id: 106, name: 'Thareed', brand: 'Emirati stew', per: 300, unit: 'g', kcal: 390, p: 19, c: 48, f: 14, fiber: 4, sugar: 4, sodium: 760, emoji: '🥘' },
+  { id: 107, name: 'Saloona Laham', brand: 'Meat stew, Gulf', per: 300, unit: 'g', kcal: 340, p: 22, c: 20, f: 18, fiber: 3, sugar: 6, sodium: 680, emoji: '🍲' },
+  { id: 108, name: 'Saloona Dajaj', brand: 'Chicken stew', per: 300, unit: 'g', kcal: 290, p: 24, c: 18, f: 13, fiber: 3, sugar: 5, sodium: 640, emoji: '🍲' },
+  { id: 109, name: 'Mandi Chicken', brand: 'Yemeni / Gulf', per: 300, unit: 'g', kcal: 520, p: 32, c: 55, f: 18, fiber: 2, sugar: 2, sodium: 720, emoji: '🍗' },
+  { id: 110, name: 'Mandi Lamb', brand: 'Yemeni / Gulf', per: 300, unit: 'g', kcal: 610, p: 30, c: 54, f: 28, fiber: 2, sugar: 2, sodium: 760, emoji: '🍖' },
+  { id: 111, name: 'Ghuzi', brand: 'Whole lamb rice', per: 300, unit: 'g', kcal: 640, p: 28, c: 56, f: 32, fiber: 2, sugar: 3, sodium: 820, emoji: '🍖' },
+  { id: 112, name: 'Biryani Chicken', brand: 'Indian / Gulf', per: 300, unit: 'g', kcal: 510, p: 26, c: 62, f: 16, fiber: 3, sugar: 4, sodium: 820, emoji: '🍛' },
+  { id: 113, name: 'Kabsa', brand: 'Saudi / Gulf', per: 300, unit: 'g', kcal: 495, p: 27, c: 58, f: 16, fiber: 2, sugar: 3, sodium: 790, emoji: '🍛' },
+  { id: 114, name: 'Mansaf', brand: 'Jordanian', per: 300, unit: 'g', kcal: 580, p: 30, c: 55, f: 25, fiber: 2, sugar: 3, sodium: 860, emoji: '🍖' },
+  { id: 115, name: 'Kofta', brand: 'Grilled meat', per: 150, unit: 'g', kcal: 360, p: 22, c: 4, f: 28, fiber: 1, sugar: 1, sodium: 520, emoji: '🥩' },
+  { id: 116, name: 'Shish Tawook', brand: 'Grilled chicken', per: 200, unit: 'g', kcal: 380, p: 42, c: 4, f: 22, fiber: 0, sugar: 2, sodium: 620, emoji: '🍢' },
+  { id: 117, name: 'Shawarma Chicken', brand: 'Wrap', per: 1, unit: 'wrap', kcal: 520, p: 28, c: 52, f: 22, fiber: 3, sugar: 4, sodium: 980, emoji: '🌯' },
+  { id: 118, name: 'Shawarma Beef', brand: 'Wrap', per: 1, unit: 'wrap', kcal: 580, p: 26, c: 50, f: 30, fiber: 3, sugar: 4, sodium: 1050, emoji: '🌯' },
+  { id: 119, name: 'Falafel', brand: 'Per piece', per: 17, unit: 'g', kcal: 55, p: 2, c: 5, f: 3, fiber: 1.5, sugar: 0.5, sodium: 85, emoji: '🟤' },
+  { id: 120, name: 'Grilled Hamour', brand: 'Gulf fish', per: 200, unit: 'g', kcal: 230, p: 40, c: 0, f: 7, fiber: 0, sugar: 0, sodium: 220, emoji: '🐟' },
+
+  // Breads
+  { id: 130, name: 'Khubz Arabi', brand: 'Pita bread', per: 60, unit: 'g', kcal: 165, p: 5.5, c: 33, f: 1.5, fiber: 2, sugar: 1, sodium: 300, emoji: '🫓' },
+  { id: 131, name: 'Khubz Rgag', brand: 'Gulf flatbread', per: 40, unit: 'g', kcal: 110, p: 3, c: 22, f: 1, fiber: 1, sugar: 0.5, sodium: 180, emoji: '🫓' },
+  { id: 132, name: 'Chapati', brand: 'Wheat flatbread', per: 50, unit: 'g', kcal: 140, p: 4, c: 28, f: 2, fiber: 2, sugar: 1, sodium: 200, emoji: '🫓' },
+  { id: 133, name: 'Khubz Jibin', brand: 'Cheese bread', per: 100, unit: 'g', kcal: 310, p: 11, c: 40, f: 11, fiber: 2, sugar: 3, sodium: 620, emoji: '🥖' },
+
+  // Mezze / cold dishes
+  { id: 140, name: 'Hummus', brand: 'Chickpea dip', per: 100, unit: 'g', kcal: 170, p: 5, c: 14, f: 10, fiber: 4, sugar: 0.5, sodium: 380, emoji: '🫓' },
+  { id: 141, name: 'Baba Ghanoush', brand: 'Eggplant dip', per: 100, unit: 'g', kcal: 120, p: 3, c: 8, f: 9, fiber: 3, sugar: 3, sodium: 300, emoji: '🍆' },
+  { id: 142, name: 'Mutabbal', brand: 'Eggplant tahini', per: 100, unit: 'g', kcal: 140, p: 3.5, c: 7, f: 11, fiber: 3, sugar: 2, sodium: 340, emoji: '🍆' },
+  { id: 143, name: 'Tabbouleh', brand: 'Parsley salad', per: 150, unit: 'g', kcal: 130, p: 3, c: 14, f: 7, fiber: 4, sugar: 2, sodium: 280, emoji: '🥗' },
+  { id: 144, name: 'Fattoush', brand: 'Levantine salad', per: 200, unit: 'g', kcal: 180, p: 4, c: 20, f: 10, fiber: 5, sugar: 5, sodium: 340, emoji: '🥗' },
+  { id: 145, name: 'Foul Medames', brand: 'Fava beans', per: 200, unit: 'g', kcal: 230, p: 14, c: 30, f: 6, fiber: 10, sugar: 2, sodium: 420, emoji: '🫘' },
+  { id: 146, name: 'Mhammara', brand: 'Pepper walnut dip', per: 100, unit: 'g', kcal: 200, p: 4, c: 12, f: 15, fiber: 3, sugar: 4, sodium: 260, emoji: '🌶️' },
+  { id: 147, name: 'Labneh', brand: 'Strained yogurt', per: 100, unit: 'g', kcal: 140, p: 7, c: 5, f: 10, fiber: 0, sugar: 4, sodium: 50, emoji: '🥛' },
+  { id: 148, name: 'Laban', brand: 'Gulf drinking yogurt', per: 250, unit: 'ml', kcal: 110, p: 8, c: 12, f: 3, fiber: 0, sugar: 12, sodium: 120, emoji: '🥛' },
+
+  // Snacks & sweets
+  { id: 160, name: 'Luqaimat', brand: 'Sweet fritters', per: 100, unit: 'g', kcal: 360, p: 4, c: 58, f: 13, fiber: 1, sugar: 34, sodium: 80, emoji: '🍩' },
+  { id: 161, name: 'Basbousa', brand: 'Semolina cake', per: 100, unit: 'g', kcal: 340, p: 5, c: 52, f: 13, fiber: 1, sugar: 34, sodium: 140, emoji: '🍰' },
+  { id: 162, name: 'Kunafa', brand: 'Cheese pastry', per: 100, unit: 'g', kcal: 380, p: 8, c: 44, f: 20, fiber: 1, sugar: 26, sodium: 220, emoji: '🧀' },
+  { id: 163, name: 'Umm Ali', brand: 'Bread pudding', per: 200, unit: 'g', kcal: 480, p: 10, c: 56, f: 24, fiber: 2, sugar: 32, sodium: 180, emoji: '🍮' },
+  { id: 164, name: 'Baklava', brand: 'Per piece', per: 30, unit: 'g', kcal: 130, p: 2, c: 15, f: 7, fiber: 0.5, sugar: 11, sodium: 40, emoji: '🥮' },
+  { id: 165, name: 'Maamoul (Date)', brand: 'Per piece', per: 25, unit: 'g', kcal: 95, p: 1.5, c: 14, f: 4, fiber: 1, sugar: 8, sodium: 20, emoji: '🍪' },
+  { id: 166, name: 'Medjool Dates', brand: 'Per piece', per: 24, unit: 'g', kcal: 66, p: 0.4, c: 18, f: 0, fiber: 1.6, sugar: 16, sodium: 0, emoji: '🫐' },
+  { id: 167, name: 'Halwa', brand: 'Omani / Gulf', per: 50, unit: 'g', kcal: 220, p: 1, c: 38, f: 8, fiber: 0.5, sugar: 32, sodium: 30, emoji: '🍯' },
+
+  // Drinks
+  { id: 180, name: 'Karak Chai', brand: 'Gulf milk tea', per: 250, unit: 'ml', kcal: 160, p: 4, c: 22, f: 6, fiber: 0, sugar: 20, sodium: 70, emoji: '☕' },
+  { id: 181, name: 'Arabic Coffee', brand: 'Qahwa', per: 80, unit: 'ml', kcal: 5, p: 0, c: 1, f: 0, fiber: 0, sugar: 0, sodium: 4, emoji: '☕' },
+  { id: 182, name: 'Fresh Lemon Mint', brand: 'Juice', per: 300, unit: 'ml', kcal: 120, p: 0.5, c: 30, f: 0, fiber: 1, sugar: 26, sodium: 10, emoji: '🍋' },
+  { id: 183, name: 'Jallab', brand: 'Date molasses drink', per: 300, unit: 'ml', kcal: 190, p: 1, c: 47, f: 0, fiber: 1, sugar: 42, sodium: 20, emoji: '🥤' },
+  { id: 184, name: 'Tamr Hindi', brand: 'Tamarind drink', per: 300, unit: 'ml', kcal: 140, p: 0.5, c: 34, f: 0, fiber: 1, sugar: 30, sodium: 15, emoji: '🥤' },
 ];
 
 const MEAL_PLANS = [
@@ -1247,7 +1370,7 @@ function SearchModal({ theme, onClose, favorites, recent, onToggleFav, onAdd }) 
     setError(null);
     const timer = setTimeout(async () => {
       try {
-        const results = await searchUSDA(q.trim(), controller.signal);
+        const results = await searchRemote(q.trim(), controller.signal);
         // Dedupe anything already shown in local
         const localNames = new Set(localResults.map(f => f.name.toLowerCase()));
         setRemoteResults(results.filter(f => !localNames.has(f.name.toLowerCase())));
@@ -1383,7 +1506,7 @@ function SearchModal({ theme, onClose, favorites, recent, onToggleFav, onAdd }) 
                           borderTopColor: theme.accent,
                         }}
                       />
-                      Searching USDA database…
+                      Searching global databases…
                     </div>
                   )}
 
@@ -1394,12 +1517,12 @@ function SearchModal({ theme, onClose, favorites, recent, onToggleFav, onAdd }) 
                       border: `1px solid ${theme.red}33`,
                       color: theme.red, fontSize: '13px', textAlign: 'center',
                     }}>
-                      Couldn't reach USDA. Check your connection.
+                      Couldn't reach food databases. Check your connection.
                     </div>
                   )}
 
                   {!loading && !error && remoteResults.length > 0 && (
-                    <Section theme={theme} title="USDA Database" icon="🌐">
+                    <Section theme={theme} title="Global Database" icon="🌐">
                       {remoteResults.map(f => (
                         <FoodRow key={f.id} theme={theme} food={f} onSelect={() => setSelected(f)}
                           favored={favorites.includes(f.id)} onFav={() => onToggleFav(f.id)} />
