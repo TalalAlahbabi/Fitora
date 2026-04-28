@@ -621,6 +621,120 @@ const FOOD_DB = [
   { id: 720, name: 'White Sugar', brand: 'Granulated', per: 4, unit: 'g', kcal: 16, p: 0, c: 4, f: 0, fiber: 0, sugar: 4, sodium: 0, emoji: '🍬' },
   { id: 721, name: 'Brown Sugar', brand: 'Packed', per: 4, unit: 'g', kcal: 15, p: 0, c: 3.9, f: 0, fiber: 0, sugar: 3.9, sodium: 1, emoji: '🍬' },
   { id: 722, name: 'Stevia', brand: 'Packet', per: 1, unit: 'packet', kcal: 0, p: 0, c: 1, f: 0, fiber: 0, sugar: 0, sodium: 0, emoji: '🌿' },
+
+  // ============ QATAR & GULF PACKAGED GOODS ============
+  // Almarai dairy
+  { id: 800, name: 'Fresh Milk Full Fat', brand: 'Almarai', per: 250, unit: 'ml', kcal: 160, p: 8, c: 12, f: 9, fiber: 0, sugar: 12, sodium: 100, emoji: '🥛' },
+  { id: 801, name: 'Fresh Milk Low Fat', brand: 'Almarai', per: 250, unit: 'ml', kcal: 115, p: 8, c: 12, f: 3.5, fiber: 0, sugar: 12, sodium: 100, emoji: '🥛' },
+  { id: 802, name: 'Fresh Laban Full Fat', brand: 'Almarai', per: 250, unit: 'ml', kcal: 140, p: 8, c: 12, f: 7, fiber: 0, sugar: 12, sodium: 120, emoji: '🥛' },
+  { id: 803, name: 'Fresh Laban Low Fat', brand: 'Almarai', per: 250, unit: 'ml', kcal: 100, p: 8, c: 12, f: 2.5, fiber: 0, sugar: 12, sodium: 120, emoji: '🥛' },
+  { id: 804, name: 'Yoghurt Full Fat', brand: 'Almarai', per: 170, unit: 'g', kcal: 110, p: 6, c: 9, f: 6, fiber: 0, sugar: 9, sodium: 80, emoji: '🥛' },
+  { id: 805, name: 'Fruit Yoghurt Strawberry', brand: 'Almarai', per: 150, unit: 'g', kcal: 140, p: 4.5, c: 22, f: 3.5, fiber: 0.5, sugar: 20, sodium: 70, emoji: '🍓' },
+  { id: 806, name: 'Greek Yoghurt Plain', brand: 'Almarai', per: 150, unit: 'g', kcal: 120, p: 13, c: 6, f: 5, fiber: 0, sugar: 5, sodium: 60, emoji: '🥛' },
+  { id: 807, name: 'Labneh', brand: 'Almarai', per: 100, unit: 'g', kcal: 145, p: 8, c: 4, f: 11, fiber: 0, sugar: 4, sodium: 55, emoji: '🥛' },
+  { id: 808, name: 'Cream Cheese Spread', brand: 'Almarai', per: 30, unit: 'g', kcal: 75, p: 2.5, c: 1.5, f: 7, fiber: 0, sugar: 1.5, sodium: 150, emoji: '🧀' },
+  { id: 809, name: 'Feta Cheese', brand: 'Almarai', per: 30, unit: 'g', kcal: 75, p: 4, c: 1, f: 6, fiber: 0, sugar: 1, sodium: 310, emoji: '🧀' },
+  { id: 810, name: 'Halloumi Cheese', brand: 'Almarai', per: 40, unit: 'g', kcal: 125, p: 8, c: 1, f: 10, fiber: 0, sugar: 1, sodium: 450, emoji: '🧀' },
+  { id: 811, name: 'Long Life Milk Full Fat', brand: 'Almarai', per: 250, unit: 'ml', kcal: 160, p: 8, c: 12, f: 9, fiber: 0, sugar: 12, sodium: 100, emoji: '🥛' },
+  { id: 812, name: 'Butter Unsalted', brand: 'Almarai', per: 14, unit: 'g', kcal: 100, p: 0.1, c: 0, f: 11, fiber: 0, sugar: 0, sodium: 5, emoji: '🧈' },
+
+  // Baladna dairy (Qatar)
+  { id: 820, name: 'Fresh Milk Full Fat', brand: 'Baladna', per: 250, unit: 'ml', kcal: 160, p: 8, c: 12, f: 9, fiber: 0, sugar: 12, sodium: 100, emoji: '🥛' },
+  { id: 821, name: 'Fresh Milk Low Fat', brand: 'Baladna', per: 250, unit: 'ml', kcal: 115, p: 8, c: 12, f: 3.5, fiber: 0, sugar: 12, sodium: 100, emoji: '🥛' },
+  { id: 822, name: 'Fresh Laban', brand: 'Baladna', per: 250, unit: 'ml', kcal: 140, p: 8, c: 12, f: 7, fiber: 0, sugar: 12, sodium: 120, emoji: '🥛' },
+  { id: 823, name: 'Flavoured Milk Chocolate', brand: 'Baladna', per: 250, unit: 'ml', kcal: 200, p: 8, c: 28, f: 6, fiber: 0.5, sugar: 26, sodium: 110, emoji: '🥛' },
+  { id: 824, name: 'Yoghurt Plain', brand: 'Baladna', per: 170, unit: 'g', kcal: 115, p: 6, c: 9, f: 6, fiber: 0, sugar: 9, sodium: 80, emoji: '🥛' },
+  { id: 825, name: 'Ayran', brand: 'Baladna', per: 250, unit: 'ml', kcal: 90, p: 6, c: 7, f: 4, fiber: 0, sugar: 7, sodium: 280, emoji: '🥛' },
+  { id: 826, name: 'Fresh Juice Orange', brand: 'Baladna', per: 250, unit: 'ml', kcal: 110, p: 2, c: 25, f: 0.5, fiber: 0.5, sugar: 23, sodium: 10, emoji: '🧃' },
+
+  // KDD (Kuwait) — widely sold in Gulf
+  { id: 830, name: 'Juice Mixed Fruit', brand: 'KDD', per: 250, unit: 'ml', kcal: 120, p: 0.5, c: 29, f: 0, fiber: 0.5, sugar: 27, sodium: 15, emoji: '🧃' },
+  { id: 831, name: 'Juice Mango', brand: 'KDD', per: 250, unit: 'ml', kcal: 130, p: 0.5, c: 32, f: 0, fiber: 0.5, sugar: 30, sodium: 15, emoji: '🥭' },
+  { id: 832, name: 'Juice Apple', brand: 'KDD', per: 250, unit: 'ml', kcal: 115, p: 0.3, c: 28, f: 0, fiber: 0, sugar: 25, sodium: 10, emoji: '🍎' },
+  { id: 833, name: 'Full Cream Milk', brand: 'KDD', per: 250, unit: 'ml', kcal: 160, p: 8, c: 12, f: 9, fiber: 0, sugar: 12, sodium: 100, emoji: '🥛' },
+  { id: 834, name: 'Ice Cream Vanilla', brand: 'KDD', per: 80, unit: 'g', kcal: 170, p: 3, c: 20, f: 9, fiber: 0, sugar: 17, sodium: 60, emoji: '🍨' },
+  { id: 835, name: 'Cocktail Juice', brand: 'KDD', per: 250, unit: 'ml', kcal: 125, p: 0.5, c: 30, f: 0, fiber: 0.5, sugar: 28, sodium: 15, emoji: '🧃' },
+
+  // Rainbow & Nido (pantry milk)
+  { id: 840, name: 'Evaporated Milk', brand: 'Rainbow', per: 30, unit: 'ml', kcal: 40, p: 2, c: 3, f: 2.5, fiber: 0, sugar: 3, sodium: 25, emoji: '🥛' },
+  { id: 841, name: 'Full Cream Milk Powder', brand: 'Nido', per: 30, unit: 'g', kcal: 150, p: 7.5, c: 11, f: 8, fiber: 0, sugar: 11, sodium: 110, emoji: '🥛' },
+  { id: 842, name: 'Milk Powder', brand: 'Rainbow', per: 30, unit: 'g', kcal: 150, p: 7.5, c: 11, f: 8, fiber: 0, sugar: 11, sodium: 110, emoji: '🥛' },
+
+  // Lacnor
+  { id: 850, name: 'Juice Orange', brand: 'Lacnor', per: 250, unit: 'ml', kcal: 110, p: 1.5, c: 26, f: 0.3, fiber: 0.5, sugar: 22, sodium: 10, emoji: '🧃' },
+  { id: 851, name: 'Juice Mango', brand: 'Lacnor', per: 250, unit: 'ml', kcal: 130, p: 0.5, c: 31, f: 0, fiber: 0.5, sugar: 29, sodium: 10, emoji: '🥭' },
+  { id: 852, name: 'Essentials Milk Full Cream', brand: 'Lacnor', per: 250, unit: 'ml', kcal: 160, p: 8, c: 12, f: 9, fiber: 0, sugar: 12, sodium: 100, emoji: '🥛' },
+
+  // Waters (bottled)
+  { id: 860, name: 'Mineral Water 500ml', brand: 'Mai Dubai', per: 500, unit: 'ml', kcal: 0, p: 0, c: 0, f: 0, fiber: 0, sugar: 0, sodium: 0, emoji: '💧' },
+  { id: 861, name: 'Mineral Water 500ml', brand: 'Al Ain', per: 500, unit: 'ml', kcal: 0, p: 0, c: 0, f: 0, fiber: 0, sugar: 0, sodium: 0, emoji: '💧' },
+  { id: 862, name: 'Mineral Water 500ml', brand: 'Rayyan', per: 500, unit: 'ml', kcal: 0, p: 0, c: 0, f: 0, fiber: 0, sugar: 0, sodium: 0, emoji: '💧' },
+  { id: 863, name: 'Mineral Water 500ml', brand: 'Aquafina', per: 500, unit: 'ml', kcal: 0, p: 0, c: 0, f: 0, fiber: 0, sugar: 0, sodium: 0, emoji: '💧' },
+  { id: 864, name: 'Mineral Water 500ml', brand: 'Nestlé Pure Life', per: 500, unit: 'ml', kcal: 0, p: 0, c: 0, f: 0, fiber: 0, sugar: 0, sodium: 0, emoji: '💧' },
+
+  // Al Wadi Al Akhdar (canned staples)
+  { id: 870, name: 'Foul Medames Canned', brand: 'Al Wadi Al Akhdar', per: 130, unit: 'g', kcal: 135, p: 8, c: 22, f: 1, fiber: 8, sugar: 1, sodium: 380, emoji: '🫘' },
+  { id: 871, name: 'Chickpeas Canned', brand: 'Al Wadi Al Akhdar', per: 130, unit: 'g', kcal: 140, p: 7, c: 22, f: 2.5, fiber: 6, sugar: 3, sodium: 340, emoji: '🫘' },
+  { id: 872, name: 'Tahini', brand: 'Al Wadi Al Akhdar', per: 15, unit: 'g', kcal: 90, p: 2.5, c: 3, f: 8, fiber: 1.5, sugar: 0, sodium: 15, emoji: '🥣' },
+  { id: 873, name: 'Molasses Pomegranate', brand: 'Al Wadi Al Akhdar', per: 15, unit: 'g', kcal: 40, p: 0.2, c: 10, f: 0, fiber: 0, sugar: 9, sodium: 10, emoji: '🥫' },
+  { id: 874, name: 'Rose Water', brand: 'Al Wadi Al Akhdar', per: 15, unit: 'ml', kcal: 0, p: 0, c: 0, f: 0, fiber: 0, sugar: 0, sodium: 0, emoji: '🌹' },
+
+  // Tang & pantry drinks
+  { id: 880, name: 'Tang Orange Drink', brand: 'Tang', per: 200, unit: 'ml', kcal: 70, p: 0, c: 18, f: 0, fiber: 0, sugar: 17, sodium: 20, emoji: '🧃' },
+  { id: 881, name: 'Instant Coffee', brand: 'Nescafé Gold', per: 2, unit: 'g', kcal: 7, p: 0.5, c: 1, f: 0, fiber: 0, sugar: 0, sodium: 0, emoji: '☕' },
+  { id: 882, name: '3-in-1 Coffee', brand: 'Nescafé', per: 20, unit: 'g', kcal: 90, p: 1, c: 14, f: 3, fiber: 0, sugar: 10, sodium: 35, emoji: '☕' },
+
+  // Soft drinks (regional)
+  { id: 890, name: 'Vimto Cordial', brand: 'Vimto', per: 250, unit: 'ml', kcal: 110, p: 0, c: 28, f: 0, fiber: 0, sugar: 27, sodium: 20, emoji: '🥤' },
+  { id: 891, name: 'Mountain Dew', brand: 'Can 330ml', per: 330, unit: 'ml', kcal: 155, p: 0, c: 41, f: 0, fiber: 0, sugar: 41, sodium: 50, emoji: '🥤' },
+  { id: 892, name: '7UP', brand: 'Can 330ml', per: 330, unit: 'ml', kcal: 140, p: 0, c: 37, f: 0, fiber: 0, sugar: 37, sodium: 45, emoji: '🥤' },
+  { id: 893, name: 'Fanta Orange', brand: 'Can 330ml', per: 330, unit: 'ml', kcal: 145, p: 0, c: 40, f: 0, fiber: 0, sugar: 40, sodium: 40, emoji: '🥤' },
+  { id: 894, name: 'Nestea Lemon', brand: 'Can 320ml', per: 320, unit: 'ml', kcal: 90, p: 0, c: 23, f: 0, fiber: 0, sugar: 22, sodium: 20, emoji: '🥤' },
+  { id: 895, name: 'Barbican Non-Alcoholic', brand: 'Barbican', per: 330, unit: 'ml', kcal: 150, p: 0.5, c: 36, f: 0, fiber: 0, sugar: 34, sodium: 30, emoji: '🍺' },
+
+  // Chocolates & confectionery (regional stock)
+  { id: 910, name: 'Galaxy Milk Chocolate', brand: 'Galaxy', per: 40, unit: 'g', kcal: 215, p: 3, c: 23, f: 12, fiber: 1, sugar: 22, sodium: 50, emoji: '🍫' },
+  { id: 911, name: 'Galaxy Minstrels', brand: 'Galaxy', per: 40, unit: 'g', kcal: 200, p: 2.5, c: 26, f: 9.5, fiber: 1, sugar: 24, sodium: 40, emoji: '🍫' },
+  { id: 912, name: 'Dairy Milk', brand: 'Cadbury', per: 40, unit: 'g', kcal: 215, p: 3, c: 23, f: 12, fiber: 1, sugar: 22, sodium: 50, emoji: '🍫' },
+  { id: 913, name: 'Twix', brand: 'Twin bar', per: 50, unit: 'g', kcal: 250, p: 2.5, c: 33, f: 12, fiber: 1, sugar: 25, sodium: 100, emoji: '🍫' },
+  { id: 914, name: 'Bounty', brand: 'Twin bar', per: 57, unit: 'g', kcal: 280, p: 2, c: 34, f: 15, fiber: 2, sugar: 27, sodium: 70, emoji: '🥥' },
+  { id: 915, name: 'Mars Bar', brand: 'Standard', per: 51, unit: 'g', kcal: 230, p: 2, c: 34, f: 9, fiber: 0.5, sugar: 30, sodium: 85, emoji: '🍫' },
+  { id: 916, name: 'Ferrero Rocher', brand: 'Per piece', per: 12.5, unit: 'g', kcal: 73, p: 1, c: 6, f: 5, fiber: 0.3, sugar: 5, sodium: 7, emoji: '🍬' },
+  { id: 917, name: 'Kinder Bueno', brand: 'Single bar', per: 22, unit: 'g', kcal: 120, p: 1.5, c: 12, f: 7.5, fiber: 0.5, sugar: 10, sodium: 25, emoji: '🍫' },
+
+  // Chips & snacks (regional flavors)
+  { id: 930, name: 'Lay\'s French Cheese', brand: "Lay's", per: 28, unit: 'g', kcal: 155, p: 2, c: 15, f: 10, fiber: 1, sugar: 1, sodium: 180, emoji: '🍟' },
+  { id: 931, name: 'Lay\'s Salt & Vinegar', brand: "Lay's", per: 28, unit: 'g', kcal: 155, p: 2, c: 15, f: 10, fiber: 1, sugar: 0, sodium: 210, emoji: '🍟' },
+  { id: 932, name: 'Lay\'s Chicken', brand: "Lay's", per: 28, unit: 'g', kcal: 150, p: 2, c: 15, f: 9, fiber: 1, sugar: 1, sodium: 200, emoji: '🍟' },
+  { id: 933, name: 'Pringles Original', brand: 'Pringles', per: 30, unit: 'g', kcal: 160, p: 2, c: 15, f: 10, fiber: 1, sugar: 0.5, sodium: 170, emoji: '🍟' },
+  { id: 934, name: 'Pringles Sour Cream', brand: 'Pringles', per: 30, unit: 'g', kcal: 160, p: 2, c: 15, f: 10, fiber: 1, sugar: 1, sodium: 170, emoji: '🍟' },
+  { id: 935, name: 'Mr. Chips Potato', brand: 'Mr. Chips', per: 25, unit: 'g', kcal: 135, p: 2, c: 14, f: 8, fiber: 1, sugar: 0.5, sodium: 160, emoji: '🍟' },
+  { id: 936, name: 'Oman Chips', brand: 'Oman Chips', per: 15, unit: 'g', kcal: 80, p: 1, c: 9, f: 4.5, fiber: 0.5, sugar: 0, sodium: 90, emoji: '🍟' },
+  { id: 937, name: 'Doritos Nacho Cheese', brand: 'Doritos', per: 28, unit: 'g', kcal: 150, p: 2, c: 18, f: 8, fiber: 1, sugar: 1, sodium: 210, emoji: '🧀' },
+
+  // Biscuits & cookies (regional)
+  { id: 950, name: 'Tiffany Digestive', brand: 'Tiffany', per: 15, unit: 'g', kcal: 70, p: 1, c: 10, f: 3, fiber: 0.5, sugar: 2, sodium: 60, emoji: '🍪' },
+  { id: 951, name: 'Britannia Marie Gold', brand: 'Britannia', per: 18, unit: 'g', kcal: 80, p: 1.5, c: 14, f: 2, fiber: 0.3, sugar: 3, sodium: 55, emoji: '🍪' },
+  { id: 952, name: 'Americana Croissant', brand: 'Americana', per: 50, unit: 'g', kcal: 210, p: 4, c: 26, f: 10, fiber: 1, sugar: 7, sodium: 200, emoji: '🥐' },
+  { id: 953, name: 'Lu Petit Beurre', brand: 'LU', per: 10, unit: 'g', kcal: 45, p: 0.7, c: 7, f: 1.3, fiber: 0.2, sugar: 2, sodium: 35, emoji: '🍪' },
+  { id: 954, name: 'Oreo Original (3)', brand: 'Oreo', per: 34, unit: 'g', kcal: 160, p: 2, c: 25, f: 7, fiber: 1, sugar: 14, sodium: 135, emoji: '🍪' },
+
+  // Breakfast / cereal (regional)
+  { id: 970, name: 'Corn Flakes', brand: "Kellogg's", per: 30, unit: 'g', kcal: 110, p: 2, c: 25, f: 0, fiber: 1, sugar: 3, sodium: 200, emoji: '🥣' },
+  { id: 971, name: 'Coco Pops', brand: "Kellogg's", per: 30, unit: 'g', kcal: 115, p: 1.5, c: 26, f: 0.5, fiber: 1, sugar: 9, sodium: 110, emoji: '🥣' },
+  { id: 972, name: 'Nutella', brand: 'Nutella', per: 15, unit: 'g', kcal: 80, p: 1, c: 8.5, f: 4.5, fiber: 0.5, sugar: 8, sodium: 2, emoji: '🍫' },
+  { id: 973, name: 'Strawberry Jam', brand: 'Al Wadi Al Akhdar', per: 20, unit: 'g', kcal: 50, p: 0, c: 13, f: 0, fiber: 0, sugar: 12, sodium: 5, emoji: '🍓' },
+  { id: 974, name: 'Peanut Butter Crunchy', brand: 'Al Ain', per: 32, unit: 'g', kcal: 190, p: 7, c: 7, f: 16, fiber: 2, sugar: 3, sodium: 140, emoji: '🥜' },
+
+  // Breads (regional bakery)
+  { id: 990, name: 'Samoli Bread Roll', brand: 'Bakery', per: 60, unit: 'g', kcal: 170, p: 5, c: 32, f: 2, fiber: 1, sugar: 1, sodium: 320, emoji: '🍞' },
+  { id: 991, name: 'Sliced Bread', brand: 'Modern Bakery', per: 28, unit: 'g', kcal: 75, p: 2.5, c: 14, f: 1, fiber: 0.7, sugar: 1.5, sodium: 150, emoji: '🍞' },
+  { id: 992, name: 'Khameer Bread', brand: 'Emirati', per: 80, unit: 'g', kcal: 225, p: 6, c: 44, f: 2.5, fiber: 2, sugar: 3, sodium: 340, emoji: '🫓' },
+
+  // Rice & grains (regional)
+  { id: 1000, name: 'Basmati Rice Cooked', brand: 'India Gate', per: 100, unit: 'g', kcal: 130, p: 2.7, c: 28, f: 0.3, fiber: 0.4, sugar: 0, sodium: 1, emoji: '🍚' },
+  { id: 1001, name: 'Basmati Rice Cooked', brand: 'Dawat', per: 100, unit: 'g', kcal: 130, p: 2.7, c: 28, f: 0.3, fiber: 0.4, sugar: 0, sodium: 1, emoji: '🍚' },
+  { id: 1002, name: 'Vermicelli', brand: 'Regal', per: 50, unit: 'g', kcal: 180, p: 6, c: 36, f: 1, fiber: 1, sugar: 1, sodium: 5, emoji: '🍜' },
 ];
 
 const MEAL_PLANS = [
@@ -730,12 +844,14 @@ export default function Fitora() {
   const [logs, setLogs] = useStorage('fitora_logs', {});
   const [favorites, setFavorites] = useStorage('fitora_favs', [1, 2, 9, 22]);
   const [recent, setRecent] = useStorage('fitora_recent', [1, 9, 22, 3]);
+  const [customFoods, setCustomFoods] = useStorage('fitora_custom_foods', []);
   const [goals, setGoals] = useStorage('fitora_goals', { kcal: 2200, p: 150, c: 230, f: 75, type: 'maintenance' });
   const [weight, setWeight] = useStorage('fitora_weight', [
     { date: todayKey(), kg: 75.2 },
   ]);
   const [streak, setStreak] = useStorage('fitora_streak', 0);
   const [showSearch, setShowSearch] = useState(false);
+  const [showCreateCustom, setShowCreateCustom] = useState(false);
   const [editEntry, setEditEntry] = useState(null);
   const [showGoals, setShowGoals] = useState(false);
   const [toast, setToast] = useState(null);
@@ -898,6 +1014,7 @@ export default function Fitora() {
                 theme={theme} goals={goals} setGoals={setGoals} streak={streak}
                 dark={dark} setDark={setDark} logs={logs}
                 onEditGoals={() => setShowGoals(true)}
+                customFoods={customFoods} setCustomFoods={setCustomFoods}
               />
             </motion.div>
           )}
@@ -932,7 +1049,26 @@ export default function Fitora() {
           <SearchModal
             theme={theme} onClose={() => setShowSearch(false)}
             favorites={favorites} recent={recent}
+            customFoods={customFoods}
             onToggleFav={toggleFav} onAdd={addEntry}
+            onCreateCustom={() => { setShowSearch(false); setShowCreateCustom(true); }}
+          />
+        )}
+      </AnimatePresence>
+
+      <AnimatePresence>
+        {showCreateCustom && (
+          <CreateCustomFoodModal
+            theme={theme}
+            onClose={() => setShowCreateCustom(false)}
+            onSave={(food) => {
+              const newFood = { ...food, id: `custom_${Date.now()}`, source: 'custom' };
+              setCustomFoods([...customFoods, newFood]);
+              setShowCreateCustom(false);
+              // Re-open search so user can log the food they just made
+              setTimeout(() => setShowSearch(true), 250);
+              showToast(`Created "${newFood.name}"`, newFood.emoji);
+            }}
           />
         )}
       </AnimatePresence>
@@ -1603,7 +1739,7 @@ function EntryRow({ theme, entry, onEdit, onRemove }) {
 }
 
 // ============ SEARCH MODAL ============
-function SearchModal({ theme, onClose, favorites, recent, onToggleFav, onAdd }) {
+function SearchModal({ theme, onClose, favorites, recent, customFoods = [], onToggleFav, onAdd, onCreateCustom }) {
   const [q, setQ] = useState('');
   const [selected, setSelected] = useState(null);
   const [meal, setMeal] = useState(guessMeal());
@@ -1621,14 +1757,15 @@ function SearchModal({ theme, onClose, favorites, recent, onToggleFav, onAdd }) 
     if (selected) setAmount(selected.per);
   }, [selected]);
 
-  // Local (built-in) matches — shown instantly
+  // Local (built-in + custom) matches — shown instantly
   const localResults = useMemo(() => {
     if (!q.trim()) return [];
     const ql = q.toLowerCase().trim();
     const scored = [];
-    for (const f of FOOD_DB) {
+    // Search built-in + custom foods together
+    for (const f of [...customFoods, ...FOOD_DB]) {
       const n = f.name.toLowerCase();
-      const b = f.brand.toLowerCase();
+      const b = (f.brand || '').toLowerCase();
       let score = 0;
       // Exact name match wins
       if (n === ql) score = 100;
@@ -1642,11 +1779,15 @@ function SearchModal({ theme, onClose, favorites, recent, onToggleFav, onAdd }) 
       else if (n.includes(ql)) score = 30;
       // Brand contains query
       else if (b.includes(ql)) score = 10;
-      if (score > 0) scored.push({ f, score });
+      // Boost custom foods slightly so users see their own creations first
+      if (score > 0) {
+        if (f.source === 'custom') score += 5;
+        scored.push({ f, score });
+      }
     }
     scored.sort((a, b) => b.score - a.score);
     return scored.slice(0, 12).map(x => x.f);
-  }, [q]);
+  }, [q, customFoods]);
 
   // USDA search — debounced, 280ms after last keystroke
   useEffect(() => {
@@ -1762,12 +1903,35 @@ function SearchModal({ theme, onClose, favorites, recent, onToggleFav, onAdd }) 
                       ))}
                     </Section>
                   )}
+                  {customFoods.length > 0 && (
+                    <Section theme={theme} title="My Foods" icon="✨">
+                      {customFoods.slice(0, 6).map(f => (
+                        <FoodRow key={f.id} theme={theme} food={f} onSelect={() => setSelected(f)}
+                          favored={false} onFav={() => {}} />
+                      ))}
+                    </Section>
+                  )}
                   <Section theme={theme} title="Recent" icon="🕐">
                     {recentFoods.map(f => (
                       <FoodRow key={f.id} theme={theme} food={f} onSelect={() => setSelected(f)}
                         favored={favorites.includes(f.id)} onFav={() => onToggleFav(f.id)} />
                     ))}
                   </Section>
+                  {/* Create custom food CTA */}
+                  <motion.button
+                    whileTap={{ scale: 0.98 }}
+                    onClick={onCreateCustom}
+                    style={{
+                      width: '100%', marginTop: '18px', padding: '16px',
+                      borderRadius: '16px',
+                      background: theme.surface,
+                      border: `1.5px dashed ${theme.accent}66`,
+                      color: theme.accent, fontWeight: 700, fontSize: '13px',
+                      display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '8px',
+                    }}
+                  >
+                    <Plus size={14} strokeWidth={2.6} /> Create custom food
+                  </motion.button>
                 </>
               ) : (
                 <div style={{ marginTop: '12px' }}>
@@ -1822,10 +1986,29 @@ function SearchModal({ theme, onClose, favorites, recent, onToggleFav, onAdd }) 
                   )}
 
                   {!loading && !error && localResults.length === 0 && remoteResults.length === 0 && q.trim().length >= 2 && (
-                    <div style={{ textAlign: 'center', padding: '40px 20px', color: theme.textSub }}>
+                    <div style={{ textAlign: 'center', padding: '40px 20px 16px', color: theme.textSub }}>
                       <div style={{ fontSize: '32px', marginBottom: '8px' }}>🔍</div>
-                      <div style={{ fontSize: '14px' }}>No matches for "{q}"</div>
+                      <div style={{ fontSize: '14px', marginBottom: '4px' }}>No matches for "{q}"</div>
+                      <div style={{ fontSize: '12px', color: theme.textMuted }}>Create it yourself — takes 10 seconds.</div>
                     </div>
+                  )}
+
+                  {/* Create custom food CTA — always visible when user is searching with real query */}
+                  {!loading && q.trim().length >= 2 && (
+                    <motion.button
+                      whileTap={{ scale: 0.98 }}
+                      onClick={onCreateCustom}
+                      style={{
+                        width: '100%', marginTop: '14px', padding: '14px',
+                        borderRadius: '16px',
+                        background: theme.surface,
+                        border: `1.5px dashed ${theme.accent}66`,
+                        color: theme.accent, fontWeight: 700, fontSize: '13px',
+                        display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '8px',
+                      }}
+                    >
+                      <Plus size={14} strokeWidth={2.6} /> Create "{q.trim()}" as custom food
+                    </motion.button>
                   )}
 
                   {q.trim().length === 1 && (
@@ -2671,7 +2854,8 @@ function PlansView({ theme, onPick }) {
 }
 
 // ============ ME VIEW ============
-function MeView({ theme, goals, setGoals, streak, dark, setDark, logs, onEditGoals }) {
+function MeView({ theme, goals, setGoals, streak, dark, setDark, logs, onEditGoals, customFoods, setCustomFoods }) {
+  const [showMyFoods, setShowMyFoods] = useState(false);
   const totalLogs = Object.values(logs).flat().length;
   const activeDays = Object.values(logs).filter(a => a.length > 0).length;
 
@@ -2748,6 +2932,12 @@ function MeView({ theme, goals, setGoals, streak, dark, setDark, logs, onEditGoa
           right={<Toggle on={dark} theme={theme} />} last />
       </SettingsGroup>
 
+      <SettingsGroup theme={theme} title="My foods">
+        <SettingRow theme={theme} icon={<Sparkles size={16} />} label="Custom foods"
+          hint={`${customFoods.length} ${customFoods.length === 1 ? 'food' : 'foods'} saved`}
+          onClick={() => setShowMyFoods(true)} last />
+      </SettingsGroup>
+
       <SettingsGroup theme={theme} title="Data & privacy">
         <SettingRow theme={theme} icon={<Edit3 size={16} />} label="Export my data" hint="Download JSON"
           onClick={exportData} />
@@ -2766,6 +2956,17 @@ function MeView({ theme, goals, setGoals, streak, dark, setDark, logs, onEditGoa
         </div>
         Private by design · Offline-first
       </div>
+
+      <AnimatePresence>
+        {showMyFoods && (
+          <MyFoodsSheet
+            theme={theme}
+            customFoods={customFoods}
+            onClose={() => setShowMyFoods(false)}
+            onDelete={(id) => setCustomFoods(customFoods.filter(f => f.id !== id))}
+          />
+        )}
+      </AnimatePresence>
     </div>
   );
 }
@@ -2930,4 +3131,399 @@ function guessMeal() {
   if (h < 15) return 'lunch';
   if (h < 21) return 'dinner';
   return 'snack';
+}
+
+// ============ CREATE CUSTOM FOOD MODAL ============
+// Lets users add a food that's not in any database — paste macros off a nutrition label.
+function CreateCustomFoodModal({ theme, onClose, onSave }) {
+  const [name, setName] = useState('');
+  const [brand, setBrand] = useState('');
+  const [emoji, setEmoji] = useState('🍽️');
+  const [per, setPer] = useState(100);
+  const [unit, setUnit] = useState('g');
+  const [kcal, setKcal] = useState('');
+  const [p, setP] = useState('');
+  const [c, setC] = useState('');
+  const [f, setF] = useState('');
+  const [fiber, setFiber] = useState('');
+  const [sugar, setSugar] = useState('');
+  const [sodium, setSodium] = useState('');
+  const [showEmojiPicker, setShowEmojiPicker] = useState(false);
+
+  const canSave = name.trim().length > 0 && kcal !== '' && !isNaN(+kcal);
+
+  const handleSave = () => {
+    if (!canSave) return;
+    onSave({
+      name: name.trim(),
+      brand: brand.trim() || 'My Foods',
+      emoji,
+      per: +per || 100,
+      unit,
+      kcal: Math.max(0, +kcal || 0),
+      p: Math.max(0, +p || 0),
+      c: Math.max(0, +c || 0),
+      f: Math.max(0, +f || 0),
+      fiber: Math.max(0, +fiber || 0),
+      sugar: Math.max(0, +sugar || 0),
+      sodium: Math.max(0, +sodium || 0),
+    });
+  };
+
+  // Small curated emoji grid for food categories
+  const emojiOptions = ['🍽️', '🍎', '🥗', '🍗', '🥩', '🐟', '🥚', '🥛', '🧀', '🍞', '🍚', '🍝', '🍕', '🍔', '🌯', '🌮', '🍣', '🍜', '🥣', '🍲', '🥘', '🍛', '🫓', '🥪', '🫘', '🥜', '🌰', '🥥', '🥑', '🍅', '🥦', '🥕', '🌽', '🍌', '🍓', '🫐', '🍇', '🍊', '🍋', '🍇', '🍑', '🍉', '🍍', '🥭', '🍫', '🍪', '🍰', '🍩', '🍯', '🥐', '🧈', '🥤', '☕', '🍵', '🥃', '🍺', '🍷', '🌶️', '🧄', '🧅', '🍆', '🍄', '🦐', '🦀', '🥓'];
+
+  return (
+    <motion.div
+      initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
+      style={{
+        position: 'fixed', inset: 0, background: 'rgba(0,0,0,0.5)',
+        backdropFilter: 'blur(8px)', WebkitBackdropFilter: 'blur(8px)',
+        zIndex: 110,
+        display: 'flex', alignItems: 'flex-end', justifyContent: 'center',
+      }}
+      onClick={onClose}
+    >
+      <motion.div
+        initial={{ y: '100%' }} animate={{ y: 0 }} exit={{ y: '100%' }}
+        transition={{ type: 'spring', damping: 32, stiffness: 320 }}
+        onClick={e => e.stopPropagation()}
+        style={{
+          width: '100%', maxWidth: '480px',
+          background: theme.bg, borderTopLeftRadius: '28px', borderTopRightRadius: '28px',
+          height: '92vh', display: 'flex', flexDirection: 'column',
+        }}
+      >
+        <div style={{ padding: '10px 0 0', display: 'flex', justifyContent: 'center' }}>
+          <div style={{ width: '36px', height: '4px', background: theme.border, borderRadius: '100px' }} />
+        </div>
+
+        {/* Header */}
+        <div style={{ padding: '14px 20px 10px', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+          <div className="serif" style={{ fontSize: '26px' }}>New food</div>
+          <button onClick={onClose} style={{
+            width: '32px', height: '32px', borderRadius: '10px',
+            background: theme.surface, display: 'grid', placeItems: 'center',
+          }}>
+            <X size={16} />
+          </button>
+        </div>
+
+        {/* Scrollable form */}
+        <div style={{ flex: 1, overflowY: 'auto', padding: '6px 20px 16px' }}>
+          {/* Name + emoji */}
+          <div style={{
+            background: theme.surface, borderRadius: '16px', padding: '14px',
+            border: `1px solid ${theme.border}`,
+            display: 'flex', gap: '10px', alignItems: 'center', marginBottom: '12px',
+          }}>
+            <button
+              onClick={() => setShowEmojiPicker(!showEmojiPicker)}
+              style={{
+                width: '56px', height: '56px', borderRadius: '14px',
+                background: theme.surfaceAlt,
+                display: 'grid', placeItems: 'center',
+                fontSize: '28px', flexShrink: 0,
+                border: `1px solid ${showEmojiPicker ? theme.accent : 'transparent'}`,
+              }}
+            >
+              {emoji}
+            </button>
+            <div style={{ flex: 1, minWidth: 0 }}>
+              <input
+                value={name}
+                onChange={e => setName(e.target.value)}
+                placeholder="Food name"
+                autoFocus
+                style={{
+                  width: '100%', border: 'none', outline: 'none', background: 'transparent',
+                  color: theme.text, fontSize: '15px', fontWeight: 700,
+                }}
+              />
+              <input
+                value={brand}
+                onChange={e => setBrand(e.target.value)}
+                placeholder="Brand (optional)"
+                style={{
+                  width: '100%', border: 'none', outline: 'none', background: 'transparent',
+                  color: theme.textSub, fontSize: '12px', marginTop: '3px',
+                }}
+              />
+            </div>
+          </div>
+
+          {/* Emoji picker */}
+          <AnimatePresence>
+            {showEmojiPicker && (
+              <motion.div
+                initial={{ height: 0, opacity: 0 }} animate={{ height: 'auto', opacity: 1 }} exit={{ height: 0, opacity: 0 }}
+                style={{ overflow: 'hidden', marginBottom: '12px' }}
+              >
+                <div style={{
+                  background: theme.surface, borderRadius: '16px',
+                  border: `1px solid ${theme.border}`, padding: '10px',
+                  display: 'grid', gridTemplateColumns: 'repeat(8, 1fr)', gap: '4px',
+                }}>
+                  {emojiOptions.map((e, i) => (
+                    <button
+                      key={i}
+                      onClick={() => { setEmoji(e); setShowEmojiPicker(false); }}
+                      style={{
+                        padding: '8px 0', borderRadius: '10px',
+                        fontSize: '22px',
+                        background: emoji === e ? theme.accentSoft : 'transparent',
+                      }}
+                    >
+                      {e}
+                    </button>
+                  ))}
+                </div>
+              </motion.div>
+            )}
+          </AnimatePresence>
+
+          {/* Serving size */}
+          <div style={{
+            fontSize: '11px', fontWeight: 700, color: theme.textMuted,
+            textTransform: 'uppercase', letterSpacing: '0.1em', marginBottom: '8px', padding: '0 4px',
+          }}>
+            Serving size
+          </div>
+          <div style={{
+            background: theme.surface, borderRadius: '16px',
+            border: `1px solid ${theme.border}`, padding: '4px',
+            marginBottom: '14px',
+            display: 'flex', alignItems: 'center', gap: '4px',
+          }}>
+            <input
+              type="number" value={per}
+              onChange={e => setPer(e.target.value)}
+              style={{
+                flex: 1, border: 'none', outline: 'none', background: 'transparent',
+                padding: '12px 14px', color: theme.text, fontSize: '15px',
+              }}
+            />
+            {['g', 'ml', 'item', 'cup', 'tbsp'].map(u => (
+              <button
+                key={u}
+                onClick={() => setUnit(u)}
+                style={{
+                  padding: '8px 12px', borderRadius: '10px',
+                  background: unit === u ? theme.accent : 'transparent',
+                  color: unit === u ? '#fff' : theme.textSub,
+                  fontSize: '12px', fontWeight: 600,
+                }}
+              >
+                {u}
+              </button>
+            ))}
+          </div>
+
+          {/* Macros */}
+          <div style={{
+            fontSize: '11px', fontWeight: 700, color: theme.textMuted,
+            textTransform: 'uppercase', letterSpacing: '0.1em', marginBottom: '8px', padding: '0 4px',
+            display: 'flex', justifyContent: 'space-between',
+          }}>
+            <span>Nutrition per {per}{unit}</span>
+            <span style={{ textTransform: 'none', letterSpacing: 'normal', color: theme.textMuted }}>
+              from label
+            </span>
+          </div>
+          <div style={{
+            background: theme.surface, borderRadius: '16px',
+            border: `1px solid ${theme.border}`,
+            marginBottom: '14px',
+          }}>
+            <MacroInputRow theme={theme} label="Calories" unit="kcal" value={kcal} onChange={setKcal} color={theme.accent} required />
+            <MacroInputRow theme={theme} label="Protein" unit="g" value={p} onChange={setP} color={theme.red} />
+            <MacroInputRow theme={theme} label="Carbs" unit="g" value={c} onChange={setC} color={theme.orange} />
+            <MacroInputRow theme={theme} label="Fat" unit="g" value={f} onChange={setF} color={theme.purple} last />
+          </div>
+
+          {/* Extra nutrients */}
+          <div style={{
+            fontSize: '11px', fontWeight: 700, color: theme.textMuted,
+            textTransform: 'uppercase', letterSpacing: '0.1em', marginBottom: '8px', padding: '0 4px',
+          }}>
+            More (optional)
+          </div>
+          <div style={{
+            background: theme.surface, borderRadius: '16px',
+            border: `1px solid ${theme.border}`,
+            marginBottom: '18px',
+          }}>
+            <MacroInputRow theme={theme} label="Fiber" unit="g" value={fiber} onChange={setFiber} />
+            <MacroInputRow theme={theme} label="Sugar" unit="g" value={sugar} onChange={setSugar} />
+            <MacroInputRow theme={theme} label="Sodium" unit="mg" value={sodium} onChange={setSodium} last />
+          </div>
+
+          <div style={{ fontSize: '12px', color: theme.textMuted, textAlign: 'center', padding: '0 20px' }}>
+            Your custom foods are saved privately on this device.
+          </div>
+        </div>
+
+        {/* Save button */}
+        <div style={{ padding: '12px 20px 24px', borderTop: `1px solid ${theme.border}`, background: theme.bg }}>
+          <motion.button
+            whileTap={canSave ? { scale: 0.97 } : {}}
+            onClick={handleSave}
+            disabled={!canSave}
+            style={{
+              width: '100%', padding: '16px', borderRadius: '16px',
+              background: canSave
+                ? `linear-gradient(135deg, ${theme.accent}, ${theme.accentDeep})`
+                : theme.surfaceAlt,
+              color: canSave ? '#fff' : theme.textMuted,
+              fontSize: '15px', fontWeight: 700,
+              display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '8px',
+              boxShadow: canSave ? `0 4px 14px ${theme.accent}50` : 'none',
+              cursor: canSave ? 'pointer' : 'not-allowed',
+            }}
+          >
+            <Check size={18} strokeWidth={3} />
+            {canSave ? `Save ${name.trim() || 'food'}` : 'Name and calories required'}
+          </motion.button>
+        </div>
+      </motion.div>
+    </motion.div>
+  );
+}
+
+function MacroInputRow({ theme, label, unit, value, onChange, color, required, last }) {
+  return (
+    <div style={{
+      padding: '13px 16px', display: 'flex', alignItems: 'center', gap: '12px',
+      borderBottom: last ? 'none' : `1px solid ${theme.border}`,
+    }}>
+      <div style={{ flex: 1, display: 'flex', alignItems: 'center', gap: '8px' }}>
+        {color && <div style={{ width: '8px', height: '8px', borderRadius: '50%', background: color }} />}
+        <div style={{ fontSize: '14px', fontWeight: 600 }}>
+          {label}
+          {required && <span style={{ color: theme.red, marginLeft: '4px' }}>*</span>}
+        </div>
+      </div>
+      <input
+        type="number"
+        inputMode="decimal"
+        value={value}
+        onChange={e => onChange(e.target.value)}
+        placeholder="0"
+        style={{
+          width: '80px', textAlign: 'right',
+          border: 'none', outline: 'none', background: 'transparent',
+          color: theme.text, fontSize: '15px', fontWeight: 600,
+          fontVariantNumeric: 'tabular-nums',
+        }}
+      />
+      <div style={{ fontSize: '12px', color: theme.textMuted, fontWeight: 600, minWidth: '30px' }}>
+        {unit}
+      </div>
+    </div>
+  );
+}
+
+// ============ MY FOODS SHEET ============
+// View + delete the user's custom foods
+function MyFoodsSheet({ theme, customFoods, onClose, onDelete }) {
+  return (
+    <motion.div
+      initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
+      onClick={onClose}
+      style={{
+        position: 'fixed', inset: 0, background: 'rgba(0,0,0,0.5)',
+        backdropFilter: 'blur(8px)', WebkitBackdropFilter: 'blur(8px)',
+        zIndex: 110,
+        display: 'flex', alignItems: 'flex-end', justifyContent: 'center',
+      }}
+    >
+      <motion.div
+        initial={{ y: '100%' }} animate={{ y: 0 }} exit={{ y: '100%' }}
+        transition={{ type: 'spring', damping: 32, stiffness: 320 }}
+        onClick={e => e.stopPropagation()}
+        style={{
+          width: '100%', maxWidth: '480px',
+          background: theme.bg, borderTopLeftRadius: '28px', borderTopRightRadius: '28px',
+          height: '85vh', display: 'flex', flexDirection: 'column',
+        }}
+      >
+        <div style={{ padding: '10px 0 0', display: 'flex', justifyContent: 'center' }}>
+          <div style={{ width: '36px', height: '4px', background: theme.border, borderRadius: '100px' }} />
+        </div>
+        <div style={{ padding: '14px 20px 10px', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+          <div>
+            <div className="serif" style={{ fontSize: '26px' }}>My foods</div>
+            <div style={{ fontSize: '12px', color: theme.textSub, marginTop: '2px' }}>
+              {customFoods.length} custom {customFoods.length === 1 ? 'food' : 'foods'}
+            </div>
+          </div>
+          <button onClick={onClose} style={{
+            width: '32px', height: '32px', borderRadius: '10px',
+            background: theme.surface, display: 'grid', placeItems: 'center',
+          }}>
+            <X size={16} />
+          </button>
+        </div>
+
+        <div style={{ flex: 1, overflowY: 'auto', padding: '6px 20px 20px' }}>
+          {customFoods.length === 0 ? (
+            <div style={{ textAlign: 'center', padding: '60px 20px', color: theme.textSub }}>
+              <div style={{ fontSize: '40px', marginBottom: '12px' }}>✨</div>
+              <div className="serif" style={{ fontSize: '20px', color: theme.text, marginBottom: '6px' }}>
+                No custom foods yet
+              </div>
+              <div style={{ fontSize: '13px', lineHeight: 1.5, maxWidth: '280px', margin: '0 auto' }}>
+                When you search for something that's not in the database, tap "Create custom food" to save it here.
+              </div>
+            </div>
+          ) : (
+            <div style={{
+              background: theme.surface, borderRadius: '16px',
+              border: `1px solid ${theme.border}`, overflow: 'hidden',
+            }}>
+              {customFoods.map((f, i) => (
+                <motion.div
+                  key={f.id}
+                  layout
+                  initial={{ opacity: 0, y: 6 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0, x: 20 }}
+                  transition={{ delay: i * 0.03 }}
+                  style={{
+                    padding: '12px 14px', display: 'flex', alignItems: 'center', gap: '12px',
+                    borderBottom: i === customFoods.length - 1 ? 'none' : `1px solid ${theme.border}`,
+                  }}
+                >
+                  <div style={{
+                    width: '40px', height: '40px', borderRadius: '11px',
+                    background: theme.surfaceAlt,
+                    display: 'grid', placeItems: 'center', fontSize: '20px',
+                    flexShrink: 0,
+                  }}>{f.emoji}</div>
+                  <div style={{ flex: 1, minWidth: 0 }}>
+                    <div style={{ fontSize: '14px', fontWeight: 600 }}>{f.name}</div>
+                    <div className="tabular" style={{ fontSize: '12px', color: theme.textMuted, marginTop: '1px' }}>
+                      {f.brand} · {f.kcal} kcal / {f.per}{f.unit}
+                    </div>
+                  </div>
+                  <button
+                    onClick={() => {
+                      if (confirm(`Delete "${f.name}"?`)) onDelete(f.id);
+                    }}
+                    style={{
+                      width: '32px', height: '32px', borderRadius: '10px',
+                      display: 'grid', placeItems: 'center',
+                      color: theme.red,
+                    }}
+                  >
+                    <Trash2 size={14} />
+                  </button>
+                </motion.div>
+              ))}
+            </div>
+          )}
+        </div>
+      </motion.div>
+    </motion.div>
+  );
 }
